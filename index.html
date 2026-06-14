@@ -527,6 +527,7 @@ function addMember(){
   document.getElementById('mName').value='';document.getElementById('mYear').value='';document.getElementById('mName').focus();renderMembers();persist();
 }
 function toggleStable(id){const m=members.find(m=>m.id===id);if(!m)return;m.stable=!m.stable;persist();renderMembers();}
+function removeMember(id){if(editingId===id)editingId=null;members=members.filter(m=>m.id!==id);persist();renderMembers();}
 function startEdit(id){editingId=id;renderMembers();}
 function cancelEdit(){editingId=null;renderMembers();}
 function saveEdit(id){
@@ -562,8 +563,8 @@ function renderMembers(){
         <td style="padding:4px;text-align:center;"><span class="stable-toggle ${m.stable?'on':''}" onclick="toggleStable(${m.id})"></span></td>
         <td></td>
         <td style="padding:4px;white-space:nowrap;">
-          <button onclick="saveEdit(${m.id})" style="font-size:11px;padding:2px 6px;"><i class="ti ti-check"></i></button>
-          <button onclick="cancelEdit()" style="font-size:11px;padding:2px 6px;color:var(--color-text-secondary);"><i class="ti ti-x"></i></button>
+          <button onclick="saveEdit(${m.id})" style="font-size:12px;padding:4px 10px;background:#27500A;color:#fff;border-color:#27500A;font-weight:500;"><i class="ti ti-check"></i> Save</button>
+          <button onclick="cancelEdit()" style="font-size:12px;padding:4px 10px;margin-left:4px;"><i class="ti ti-x"></i> Cancel</button>
         </td>`;
       setTimeout(()=>{const el=document.getElementById('eName');if(el)el.focus();},50);
     } else {
@@ -581,7 +582,10 @@ function renderMembers(){
         <td style="padding:7px 6px;">${m.active?'<span class="avail-yes">Yes</span>':'<span class="avail-no">No</span>'}</td>
         <td style="padding:7px 6px;text-align:center;"><span class="stable-toggle ${m.stable?'on':''}" onclick="toggleStable(${m.id})" title="${m.stable?'Stable — click to unset':'Mark as stable'}"></span>${m.stable?' <span style="font-size:10px;color:#3C3489;">★</span>':''}</td>
         <td style="padding:7px 6px;">${!m.active?'<span style="font-size:11px;color:var(--color-text-secondary);">—</span>':(elig?`<span class="elig-yes pill" style="font-size:10px;">${lc}</span>`:`<span class="elig-no pill" style="font-size:10px;">✗</span>`)}</td>
-        <td style="padding:7px 4px;text-align:right;"><button onclick="startEdit(${m.id})" style="font-size:11px;padding:2px 6px;"><i class="ti ti-edit"></i></button></td>`;
+        <td style="padding:7px 4px;text-align:right;white-space:nowrap;">
+          <button onclick="startEdit(${m.id})" style="font-size:13px;padding:5px 9px;" title="Edit"><i class="ti ti-edit"></i></button>
+          <button onclick="if(confirm('Remove '+${JSON.stringify(m.name)}+'?'))removeMember(${m.id})" style="font-size:13px;padding:5px 9px;color:#b91c1c;margin-left:3px;" title="Remove"><i class="ti ti-trash"></i></button>
+        </td>`;
     }
     tbody.appendChild(tr);
   });
