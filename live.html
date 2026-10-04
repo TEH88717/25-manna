@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>25-manna live — 2026</title>
+<style>
+:root{
+  --bg:#F7F5F0; --bg-card:#FFFFFF; --text:#20231F; --text-secondary:#5B5F58; --border:#E1DED4;
+  --accent:#27500A; --accent-bg:#E5F0DE; --slow:#993C1D; --slow-bg:#FAECE7; --restart:#993C1D; --restart-bg:#FAECE7;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#171814; --bg-card:#20231F; --text:#EDEBE3; --text-secondary:#A2A69A; --border:#33362F;
+    --accent:#8FD16B; --accent-bg:#233B18; --slow:#E08B6B; --slow-bg:#3B241C; --restart:#E08B6B; --restart-bg:#3B241C; }
+}
+*{box-sizing:border-box;}
+body{margin:0;padding:20px 16px 48px;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-variant-numeric:tabular-nums;}
+.wrap{max-width:720px;margin:0 auto;}
+h1{font-size:19px;font-weight:700;margin:0 0 2px;}
+.sub{font-size:12px;color:var(--text-secondary);margin-bottom:16px;}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:14px;}
+.stats{display:flex;gap:24px;flex-wrap:wrap;}
+.stat-label{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:2px;}
+.stat-value{font-size:24px;font-weight:700;}
+.banner{padding:10px 14px;border-radius:12px;font-size:12.5px;margin-bottom:14px;}
+.banner.restart{background:var(--restart-bg);color:var(--restart);}
+.banner.stale{background:var(--slow-bg);color:var(--slow);}
+.grouphdr{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.03em;padding:10px 4px 4px;}
+.leg{display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.leg:last-child{border-bottom:none;}
+.leg-key{width:34px;font-weight:700;font-size:13px;flex-shrink:0;}
+.diffpill{font-size:9.5px;font-weight:600;padding:2px 6px;border-radius:20px;flex-shrink:0;}
+.leg-main{flex:1;min-width:140px;}
+.leg-runner{font-size:13.5px;font-weight:500;}
+.leg-meta{font-size:11px;color:var(--text-secondary);}
+.leg-time{font-size:13px;font-weight:600;text-align:right;min-width:56px;}
+.leg-status{font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:20px;flex-shrink:0;}
+.status-done{background:var(--accent-bg);color:var(--accent);}
+.status-eta{background:var(--border);color:var(--text-secondary);}
+.leg-delta{font-size:11px;font-weight:600;min-width:78px;text-align:right;flex-shrink:0;}
+.delta-slow{color:var(--slow);}
+.delta-fast{color:var(--accent);}
+.foot{font-size:11px;color:var(--text-secondary);text-align:center;margin-top:18px;line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>25-manna — <span id="hYear"></span></h1>
+  <div class="sub">Mölndal Outdoor · ögonblicksbild, uppdaterad av lagledaren för hand — inte automatiskt live</div>
+  <div id="root"></div>
+</div>
+<script>
+const DATA={"year":2026,"generatedAtLabel":"2026-10-04 21:47","etaClock":"16:51","confirmedCount":0,"totalLegs":25,"restartKeys":[],"runningNow":[],"legs":[{"key":"1","label":"1","group":null,"diff":"Blå","km":5.5,"runner":"Karolina Wildheim","startClock":"09:00","finishClock":"09:47","legTime":null,"isActual":false,"isRestart":false,"pace":8.5,"winnerPace":6,"paceDelta":2.5},{"key":"2","label":"2","group":null,"diff":"Blå","km":7.3,"runner":"Hugo Olsson","startClock":"09:47","finishClock":"10:34","legTime":null,"isActual":false,"isRestart":false,"pace":6.5,"winnerPace":5.07,"paceDelta":1.43},{"key":"3:1","label":"3:1","group":"3","diff":"Orange","km":4.5,"runner":"Louise Olsson","startClock":"10:34","finishClock":"11:28","legTime":null,"isActual":false,"isRestart":false,"pace":12,"winnerPace":6.22,"paceDelta":5.78},{"key":"3:2","label":"3:2","group":"3","diff":"Orange","km":4.5,"runner":"Henrik Olsson","startClock":"10:34","finishClock":"11:28","legTime":null,"isActual":false,"isRestart":false,"pace":12,"winnerPace":6.22,"paceDelta":5.78},{"key":"3:3","label":"3:3","group":"3","diff":"Orange","km":4.5,"runner":"Alice Olsson","startClock":"10:34","finishClock":"11:15","legTime":null,"isActual":false,"isRestart":false,"pace":9,"winnerPace":6.22,"paceDelta":2.78},{"key":"3:4","label":"3:4","group":"3","diff":"Orange","km":4.5,"runner":"Anders Nordelöf","startClock":"10:34","finishClock":"11:14","legTime":null,"isActual":false,"isRestart":false,"pace":8.75,"winnerPace":6.22,"paceDelta":2.53},{"key":"4:1","label":"4:1","group":"4","diff":"Vit","km":2.6,"runner":"Erika Asp","startClock":"11:14","finishClock":"11:34","legTime":null,"isActual":false,"isRestart":false,"pace":8,"winnerPace":6.15,"paceDelta":1.85},{"key":"4:2","label":"4:2","group":"4","diff":"Vit","km":2.6,"runner":"Lotta Falk","startClock":"11:15","finishClock":"11:36","legTime":null,"isActual":false,"isRestart":false,"pace":8,"winnerPace":6.15,"paceDelta":1.85},{"key":"4:3","label":"4:3","group":"4","diff":"Vit","km":2.6,"runner":"Vilhelmina Axenborg","startClock":"11:28","finishClock":"11:48","legTime":null,"isActual":false,"isRestart":false,"pace":7.5,"winnerPace":6.15,"paceDelta":1.35},{"key":"4:4","label":"4:4","group":"4","diff":"Vit","km":2.6,"runner":"Klara Brockmark","startClock":"11:28","finishClock":"11:46","legTime":null,"isActual":false,"isRestart":false,"pace":7,"winnerPace":6.15,"paceDelta":0.85},{"key":"5:1","label":"5:1","group":"5","diff":"Blå","km":6.3,"runner":"Erik Hulthén","startClock":"11:34","finishClock":"12:31","legTime":null,"isActual":false,"isRestart":false,"pace":9,"winnerPace":6.03,"paceDelta":2.97},{"key":"5:2","label":"5:2","group":"5","diff":"Blå","km":6.3,"runner":"Gustav Le Dous","startClock":"11:36","finishClock":"12:32","legTime":null,"isActual":false,"isRestart":false,"pace":9,"winnerPace":6.03,"paceDelta":2.97},{"key":"5:3","label":"5:3","group":"5","diff":"Blå","km":6.3,"runner":"Martin Wildheim","startClock":"11:46","finishClock":"12:37","legTime":null,"isActual":false,"isRestart":false,"pace":8,"winnerPace":6.03,"paceDelta":1.97},{"key":"5:4","label":"5:4","group":"5","diff":"Blå","km":6.3,"runner":"Theander Hulthén","startClock":"11:48","finishClock":"12:32","legTime":null,"isActual":false,"isRestart":false,"pace":7,"winnerPace":6.03,"paceDelta":0.97},{"key":"6:1","label":"6:1","group":"6","diff":"Violett","km":4.4,"runner":"Karin Prince","startClock":"12:31","finishClock":"13:17","legTime":null,"isActual":false,"isRestart":false,"pace":10.38,"winnerPace":7.27,"paceDelta":3.11},{"key":"6:2","label":"6:2","group":"6","diff":"Violett","km":4.4,"runner":"Maja Nordelöf","startClock":"12:32","finishClock":"13:16","legTime":null,"isActual":false,"isRestart":false,"pace":10,"winnerPace":7.27,"paceDelta":2.73},{"key":"6:3","label":"6:3","group":"6","diff":"Violett","km":4.4,"runner":"Evelina Hall","startClock":"12:32","finishClock":"13:13","legTime":null,"isActual":false,"isRestart":false,"pace":9.25,"winnerPace":7.27,"paceDelta":1.98},{"key":"6:4","label":"6:4","group":"6","diff":"Violett","km":4.4,"runner":"Agnes Asp","startClock":"12:37","finishClock":"13:18","legTime":null,"isActual":false,"isRestart":false,"pace":9.25,"winnerPace":7.27,"paceDelta":1.98},{"key":"7:1","label":"7:1","group":"7","diff":"Violett","km":5.6,"runner":"Anders Cullbrand","startClock":"13:13","finishClock":"14:09","legTime":null,"isActual":false,"isRestart":false,"pace":10,"winnerPace":5.54,"paceDelta":4.46},{"key":"7:2","label":"7:2","group":"7","diff":"Violett","km":5.6,"runner":"Henrik Wikner","startClock":"13:16","finishClock":"14:07","legTime":null,"isActual":false,"isRestart":false,"pace":9.13,"winnerPace":5.54,"paceDelta":3.59},{"key":"7:3","label":"7:3","group":"7","diff":"Violett","km":5.6,"runner":"Anna Nordelöf","startClock":"13:17","finishClock":"14:06","legTime":null,"isActual":false,"isRestart":false,"pace":8.88,"winnerPace":5.54,"paceDelta":3.34},{"key":"7:4","label":"7:4","group":"7","diff":"Violett","km":5.6,"runner":"Anders Asp","startClock":"13:18","finishClock":"14:04","legTime":null,"isActual":false,"isRestart":false,"pace":8.25,"winnerPace":5.54,"paceDelta":2.71},{"key":"23","label":"23","group":null,"diff":"Orange","km":4.2,"runner":"Mattias Brockmark","startClock":"14:09","finishClock":"14:47","legTime":null,"isActual":false,"isRestart":false,"pace":9,"winnerPace":6.43,"paceDelta":2.57},{"key":"24","label":"24","group":null,"diff":"Blå","km":6,"runner":"Molly Nordelöf","startClock":"14:47","finishClock":"15:47","legTime":null,"isActual":false,"isRestart":false,"pace":10,"winnerPace":6.17,"paceDelta":3.83},{"key":"25","label":"25","group":null,"diff":"Blå","km":8,"runner":"Jacob Axenborg","startClock":"15:47","finishClock":"16:51","legTime":null,"isActual":false,"isRestart":false,"pace":8,"winnerPace":5.13,"paceDelta":2.87}],"generatedAtMs":1791143228188};
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+const DIFF_COLORS={"Vit":{"bg":"#E8E6DD","fg":"#444441"},"Gul":{"bg":"#FAEEDA","fg":"#633806"},"Orange":{"bg":"#FAECE7","fg":"#993C1D"},"Violett":{"bg":"#EEEDFE","fg":"#3C3489"},"Röd":{"bg":"#FBEAEA","fg":"#96271E"},"Blå":{"bg":"#E6F1FB","fg":"#0C447C"}};
+function render(){
+  document.getElementById('hYear').textContent=DATA.year;
+  const root=document.getElementById('root');
+  let html='';
+  const ageMin=(Date.now()-DATA.generatedAtMs)/60000;
+  if(ageMin>90){
+    html+='<div class="banner stale">Den h\u00e4r sidan uppdaterades senast '+esc(DATA.generatedAtLabel)+' \u2014 fr\u00e5ga lagledaren om en f\u00e4rskare version har publicerats.</div>';
+  }
+  html+='<div class="card"><div class="stats">'
+    +'<div><div class="stat-label">P\u00e5g\u00e5r just nu</div><div class="stat-value" style="font-size:16px;">'+(DATA.runningNow.length?DATA.runningNow.map(r=>esc(r.label)+(r.runner?' ('+esc(r.runner)+')':'')).join(', '):'\u2014')+'</div></div>'
+    +'<div><div class="stat-label">Prognos m\u00e5ltid</div><div class="stat-value">'+esc(DATA.etaClock||'\u2014')+'</div></div>'
+    +'<div><div class="stat-label">Bekr\u00e4ftade str\u00e4ckor</div><div class="stat-value">'+DATA.confirmedCount+'/'+DATA.totalLegs+'</div></div>'
+    +'</div></div>';
+  if(DATA.restartKeys.length){
+    html+='<div class="banner restart">Omstart v\u00e4ntas/till\u00e4mpades f\u00f6r str\u00e4ckorna '+esc(DATA.restartKeys.join(', '))+' (start senarelagd till samlingsstarten).</div>';
+  }
+  html+='<div class="card" style="padding:6px 14px;">';
+  let lastGroup=null;
+  DATA.legs.forEach(leg=>{
+    if(leg.group&&leg.group!==lastGroup){lastGroup=leg.group;html+='<div class="grouphdr">Grupp '+leg.group+'</div>';}
+    else if(!leg.group)lastGroup=null;
+    const dc=DIFF_COLORS[leg.diff]||DIFF_COLORS['Bl\u00e5'];
+    const restartNote=leg.isRestart?' <span title="Omstart \u2014 kortad bana">\u21bb</span>':'';
+    const timeLabel=leg.legTime?leg.legTime:(leg.pace!=null?'ca '+esc(leg.startClock||'')+'\u2013'+esc(leg.finishClock||''):'\u2014');
+    let deltaHtml='';
+    if(leg.paceDelta!=null){
+      const slow=leg.paceDelta>0;
+      deltaHtml='<div class="leg-delta '+(slow?'delta-slow':'delta-fast')+'">'+(slow?'+':'\u2212')+Math.abs(leg.paceDelta).toFixed(1)+' min/km</div>';
+    }else{
+      deltaHtml='<div class="leg-delta" style="color:var(--text-secondary);">\u2014</div>';
+    }
+    html+='<div class="leg">'
+      +'<div class="leg-key">'+esc(leg.label)+restartNote+'</div>'
+      +'<div class="diffpill" style="background:'+dc.bg+';color:'+dc.fg+';">'+esc(leg.diff||'')+'</div>'
+      +'<div class="leg-main"><div class="leg-runner">'+(leg.runner?esc(leg.runner):'\u2014 ingen tilldelad \u2014')+'</div><div class="leg-meta">'+(leg.startClock?'start '+esc(leg.startClock):'')+(leg.km?' \u00b7 '+leg.km+' km':'')+'</div></div>'
+      +'<div class="leg-time">'+esc(timeLabel)+'</div>'
+      +'<div class="leg-status '+(leg.isActual?'status-done':'status-eta')+'">'+(leg.isActual?'Klar':'Prognos')+'</div>'
+      +deltaHtml
+      +'</div>';
+  });
+  html+='</div>';
+  root.innerHTML=html;
+}
+render();
+</script>
+<div class="foot">Uppdaterad 2026-10-04 21:47 av lagledaren. Genererad från 25-manna-planeraren.</div>
+</body>
+</html>
