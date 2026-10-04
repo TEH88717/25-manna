@@ -1,0 +1,4510 @@
+{
+  "activeSavedLineupIdByYear": {
+    "2019": null,
+    "2022": null,
+    "2023": null,
+    "2024": null,
+    "2025": null,
+    "2026": null
+  },
+  "activeYear": 2026,
+  "boostEnabled": true,
+  "ghConfig": {
+    "branch": "main",
+    "owner": "TEH88717",
+    "path": "index.html",
+    "publicUrl": "",
+    "repo": "25-manna"
+  },
+  "lineups": {
+    "2019": {
+      "assignments": {
+        "1": 1788990830597,
+        "2": 1788990830584,
+        "23": 1788990830581,
+        "24": 1789881985500,
+        "25": 1789927390986,
+        "3:1": 1788990830585,
+        "3:2": 1788990830604,
+        "3:3": 1788990830571,
+        "3:4": 1788990830587,
+        "4:1": 1788990830615,
+        "4:2": 1788990830616,
+        "4:3": 1788990830574,
+        "4:4": 1788990830599,
+        "5:1": 1788990830570,
+        "5:2": 1788990830594,
+        "5:3": 1788990830601,
+        "5:4": 1788990830580,
+        "6:1": 1789927452363,
+        "6:2": 1789927193333,
+        "6:3": 1788990830590,
+        "6:4": 1788990830569,
+        "7:1": 1789927211766,
+        "7:2": 1788990830593,
+        "7:3": 1788990830588,
+        "7:4": 1788990830598
+      },
+      "sourceNames": {
+        "1": "Arvid Persson",
+        "2": "Anna Nordelöf",
+        "23": "Theander Hulthén",
+        "24": "Martin Rådbo",
+        "25": "Maja Ottosson",
+        "3:1": "Maja Nordelöf",
+        "3:2": "Johanna Hulthén",
+        "3:3": "Erika Asp",
+        "3:4": "Alice Olsson",
+        "4:1": "Saga Wildheim",
+        "4:2": "Vera Wildheim",
+        "4:3": "Klara Brockmark",
+        "4:4": "Gustav Brockmark",
+        "5:1": "Anders Asp",
+        "5:2": "Karolina Wildheim",
+        "5:3": "Nils Anders Danielsson",
+        "5:4": "Erik Hulthén",
+        "6:1": "Tove Persson",
+        "6:2": "Elsa Asp",
+        "6:3": "Louise Olsson",
+        "6:4": "Agnes Asp",
+        "7:1": "Kjell Andersson",
+        "7:2": "Martin Wildheim",
+        "7:3": "Henrik Olsson",
+        "7:4": "Susanne Bergh"
+      },
+      "year": 2019
+    },
+    "2022": {
+      "assignments": {
+        "1": 1788990830584,
+        "2": 1788990830570,
+        "23": 1788990830598,
+        "24": 1788990830594,
+        "25": 1788990830575,
+        "3:1": 1788990830615,
+        "3:2": 1788990830589,
+        "3:3": 1788990830600,
+        "3:4": 1788990830574,
+        "4:1": 1788990830596,
+        "4:2": 1788990830599,
+        "4:3": 1788990830616,
+        "4:4": 1788990830586,
+        "5:1": 1788990830583,
+        "5:2": 1788990830577,
+        "5:3": 1788990830607,
+        "5:4": 1788990830593,
+        "6:1": 1788990830571,
+        "6:2": 1788990830587,
+        "6:3": 1788990830585,
+        "6:4": 1788990830610,
+        "7:1": 1788990830605,
+        "7:2": 1788990830588,
+        "7:3": 1788990830581,
+        "7:4": 1788990830580
+      },
+      "sourceNames": {
+        "1": "Anna Nordelöf",
+        "2": "Anders Asp",
+        "23": "Susanne Bergh",
+        "24": "Karolina Wildheim",
+        "25": "Mattias Brockmark",
+        "3:1": "Saga Wildheim",
+        "3:2": "Hugo Olsson",
+        "3:3": "Sofia Brockmark",
+        "3:4": "Klara Brockmark",
+        "4:1": "Erik Alsterberg",
+        "4:2": "Gustav Brockmark",
+        "4:3": "Vera Wildheim",
+        "4:4": "Molly Nordelöf",
+        "5:1": "Anders Nordelöf",
+        "5:2": "Anders Cullbrand",
+        "5:3": "Johan Lingsten",
+        "5:4": "Martin Wildheim",
+        "6:1": "Erika Asp",
+        "6:2": "Alice Olsson",
+        "6:3": "Maja Nordelöf",
+        "6:4": "Ida Sellstedt",
+        "7:1": "Viktor Jansson",
+        "7:2": "Henrik Olsson",
+        "7:3": "Theander Hulthén",
+        "7:4": "Erik Hulthén"
+      },
+      "year": 2022
+    },
+    "2023": {
+      "assignments": {
+        "1": 1788990830606,
+        "2": 1788990830594,
+        "23": 1788990830600,
+        "24": 1788990830580,
+        "25": 1788990830584,
+        "3:1": 1788990830615,
+        "3:2": 1788990830598,
+        "3:3": 1788990830574,
+        "3:4": 1788990830588,
+        "4:1": 1788990830586,
+        "4:2": 1788990830616,
+        "4:3": 1788990830602,
+        "4:4": 1788990830599,
+        "5:1": 1788990830577,
+        "5:2": 1788990830583,
+        "5:3": 1788990830575,
+        "5:4": 1788990830593,
+        "6:1": 1788990830587,
+        "6:2": 1788990830608,
+        "6:3": 1788990830569,
+        "6:4": 1788990830610,
+        "7:1": 1788990830605,
+        "7:2": 1788990830609,
+        "7:3": 1788990830581,
+        "7:4": 1788990830570
+      },
+      "sourceNames": {
+        "1": "Joakim Kaminsky",
+        "2": "Karolina Wildheim",
+        "23": "Sofia Brockmark",
+        "24": "Erik Hulthén",
+        "25": "Anna Nordelöf",
+        "3:1": "Saga Wildheim",
+        "3:2": "Susanne Bergh",
+        "3:3": "Klara Brockmark",
+        "3:4": "Henrik Olsson",
+        "4:1": "Molly Nordelöf",
+        "4:2": "Vera Wildheim",
+        "4:3": "Gabriela Egerup",
+        "4:4": "Gustav Brockmark",
+        "5:1": "Anders Cullbrand",
+        "5:2": "Anders Nordelöf",
+        "5:3": "Mattias Brockmark",
+        "5:4": "Martin Wildheim",
+        "6:1": "Alice Olsson",
+        "6:2": "Åsa Ottosson",
+        "6:3": "Agnes Asp",
+        "6:4": "Ida Sellstedt",
+        "7:1": "Viktor Jansson",
+        "7:2": "Maria Kaminsky",
+        "7:3": "Theander Hulthén",
+        "7:4": "Anders Asp"
+      },
+      "year": 2023
+    },
+    "2024": {
+      "assignments": {
+        "1": 1788990830594,
+        "2": 1788990830593,
+        "23": 1788990830599,
+        "24": 1788990830569,
+        "25": 1788990830595,
+        "3:1": 1788990830577,
+        "3:2": 1788990830615,
+        "3:3": 1788990830588,
+        "3:4": 1788990830590,
+        "4:1": 1788990830604,
+        "4:2": 1788990830603,
+        "4:3": 1788990830616,
+        "4:4": 1788990830586,
+        "5:1": 1788990830581,
+        "5:2": 1788990830575,
+        "5:3": 1788990830580,
+        "5:4": 1788990830583,
+        "6:1": 1788990830598,
+        "6:2": 1788990830571,
+        "6:3": 1788990830587,
+        "6:4": 1788990830574,
+        "7:1": 1788990830584,
+        "7:2": 1788990830597,
+        "7:3": 1788990830605,
+        "7:4": 1788990830570
+      },
+      "sourceNames": {
+        "1": "Karolina Wildheim",
+        "2": "Martin Wildheim",
+        "23": "Gustav Brockmark",
+        "24": "Agnes Asp",
+        "25": "Henrik Wikner",
+        "3:1": "Anders Cullbrand",
+        "3:2": "Saga Wildheim",
+        "3:3": "Henrik Olsson",
+        "3:4": "Louise Olsson",
+        "4:1": "Johanna Hulthén",
+        "4:2": "Frederik Hulthén",
+        "4:3": "Vera Wildheim",
+        "4:4": "Molly Nordelöf",
+        "5:1": "Theander Hulthén",
+        "5:2": "Mattias Brockmark",
+        "5:3": "Erik Hulthén",
+        "5:4": "Anders Nordelöf",
+        "6:1": "Susanne Bergh",
+        "6:2": "Erika Asp",
+        "6:3": "Alice Olsson",
+        "6:4": "Klara Brockmark",
+        "7:1": "Anna Nordelöf",
+        "7:2": "Arvid Persson",
+        "7:3": "Viktor Jansson",
+        "7:4": "Anders Asp"
+      },
+      "year": 2024
+    },
+    "2025": {
+      "assignments": {
+        "1": 1788990830572,
+        "2": 1788990830594,
+        "23": 1788990830586,
+        "24": 1788990830595,
+        "25": 1788990830587,
+        "3:1": 1788990830577,
+        "3:2": 1788990830599,
+        "3:3": 1788990830590,
+        "3:4": 1788990830588,
+        "4:1": 1788990830613,
+        "4:2": 1788990830611,
+        "4:3": 1788990830616,
+        "4:4": 1788990830573,
+        "5:1": 1788990830580,
+        "5:2": 1788990830593,
+        "5:3": 1788990830581,
+        "5:4": 1788990830589,
+        "6:1": 1788990830612,
+        "6:2": 1788990830578,
+        "6:3": 1788990830569,
+        "6:4": 1788990830584,
+        "7:1": 1788990830605,
+        "7:2": 1788990830614,
+        "7:3": 1788990830575,
+        "7:4": 1788990830570
+      },
+      "sourceNames": {
+        "1": "Jacob Axenborg",
+        "2": "Karolina Wildheim",
+        "23": "Molly Nordelöf",
+        "24": "Henrik Wikner",
+        "25": "Alice Olsson",
+        "3:1": "Anders Cullbrand",
+        "3:2": "Gustav Brockmark",
+        "3:3": "Louise Olsson",
+        "3:4": "Henrik Olsson",
+        "4:1": "Ebbe Sjöberg",
+        "4:2": "Vera Wildheim",
+        "4:3": "Signe Svedberg",
+        "4:4": "Vilhelmina Axenborg",
+        "5:1": "Theander Hulthén",
+        "5:2": "Hugo Olsson",
+        "5:3": "Martin Wildheim",
+        "5:4": "Erik Hulthén",
+        "6:1": "Agnes Asp",
+        "6:2": "Anna Nordelöf",
+        "6:3": "Emma Sjöberg",
+        "6:4": "Lotta Falk",
+        "7:1": "Anders Asp",
+        "7:2": "Mattias Brockmark",
+        "7:3": "Jonas Svedberg",
+        "7:4": "Viktor Jansson"
+      },
+      "year": 2025
+    },
+    "2026": {
+      "assignments": {
+        "1": 1788990830594,
+        "2": 1788990830589,
+        "23": 1788990830575,
+        "24": 1788990830586,
+        "25": 1788990830572,
+        "3:1": 1788990830590,
+        "3:2": 1788990830588,
+        "3:3": 1788990830587,
+        "3:4": 1788990830583,
+        "4:1": 1788990830571,
+        "4:2": 1788990830578,
+        "4:3": 1788990830573,
+        "4:4": 1788990830574,
+        "5:1": 1788990830580,
+        "5:2": 1788990830582,
+        "5:3": 1788990830593,
+        "5:4": 1788990830581,
+        "6:1": 1788990830591,
+        "6:2": 1788990830585,
+        "6:3": 1788990830579,
+        "6:4": 1788990830569,
+        "7:1": 1788990830577,
+        "7:2": 1788990830595,
+        "7:3": 1788990830584,
+        "7:4": 1788990830570
+      },
+      "year": 2026
+    }
+  },
+  "members": [
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830569,
+      "name": "Agnes Asp",
+      "paces": {
+        "Blå": 10,
+        "Vit": 7
+      },
+      "stable": 5,
+      "year": 1999
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830570,
+      "name": "Anders Asp",
+      "paces": {
+        "Blå": 9,
+        "Vit": 6
+      },
+      "stable": 5,
+      "year": 1969
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830571,
+      "name": "Erika Asp",
+      "paces": {
+        "Blå": 13,
+        "Vit": 8
+      },
+      "stable": 5,
+      "year": 1969
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830572,
+      "name": "Jacob Axenborg",
+      "paces": {
+        "Blå": 8,
+        "Vit": 5
+      },
+      "stable": 5,
+      "year": 1977
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830573,
+      "name": "Vilhelmina Axenborg",
+      "paces": {
+        "Blå": 12,
+        "Vit": 7.5
+      },
+      "stable": 0,
+      "year": 2011
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830574,
+      "name": "Klara Brockmark",
+      "paces": {
+        "Blå": 15,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2008
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830575,
+      "name": "Mattias Brockmark",
+      "paces": {
+        "Blå": 11,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1971
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false,
+        "2026": false
+      },
+      "diff": "Vit",
+      "gender": "F",
+      "id": 1788990830576,
+      "name": "Masha Buffoni",
+      "paces": {
+        "Vit": 9
+      },
+      "stable": 0,
+      "year": 2008
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830577,
+      "name": "Anders Cullbrand",
+      "paces": {
+        "Blå": 11,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1971
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830578,
+      "name": "Lotta Falk",
+      "paces": {
+        "Blå": 11,
+        "Vit": 8
+      },
+      "stable": 5,
+      "year": 1967
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830579,
+      "name": "Evelina Hall",
+      "paces": {
+        "Blå": 10,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1999
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830580,
+      "name": "Erik Hulthén",
+      "paces": {
+        "Blå": 9,
+        "Vit": 6
+      },
+      "stable": 5,
+      "year": 1980
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830581,
+      "name": "Theander Hulthén",
+      "paces": {
+        "Blå": 7,
+        "Vit": 5
+      },
+      "stable": 5,
+      "year": 2008
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830582,
+      "name": "Gustav Le Dous",
+      "paces": {
+        "Blå": 9,
+        "Vit": 6
+      },
+      "stable": 0,
+      "year": 1998
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830583,
+      "name": "Anders Nordelöf",
+      "paces": {
+        "Blå": 11,
+        "Vit": 6.5
+      },
+      "stable": 0,
+      "year": 1975
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830584,
+      "name": "Anna Nordelöf",
+      "paces": {
+        "Blå": 9.5,
+        "Vit": 7
+      },
+      "stable": 5,
+      "year": 1976
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830585,
+      "name": "Maja Nordelöf",
+      "paces": {
+        "Blå": 11,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2007
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830586,
+      "name": "Molly Nordelöf",
+      "paces": {
+        "Blå": 10,
+        "Vit": 6
+      },
+      "stable": 4,
+      "year": 2012
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830587,
+      "name": "Alice Olsson",
+      "paces": {
+        "Blå": 11,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2006
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Orange",
+      "gender": "M",
+      "id": 1788990830588,
+      "name": "Henrik Olsson",
+      "paces": {
+        "Orange": 12,
+        "Vit": 8
+      },
+      "stable": 0,
+      "year": 1971
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830589,
+      "name": "Hugo Olsson",
+      "paces": {
+        "Blå": 7,
+        "Vit": 5
+      },
+      "stable": 5,
+      "year": 2008
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Orange",
+      "gender": "F",
+      "id": 1788990830590,
+      "name": "Louise Olsson",
+      "paces": {
+        "Orange": 12,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2003
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830591,
+      "name": "Karin Prince",
+      "paces": {
+        "Blå": 11.5,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2007
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Vit",
+      "gender": "M",
+      "id": 1788990830592,
+      "name": "Ole Rådbo",
+      "paces": {},
+      "stable": 0,
+      "year": 2014
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830593,
+      "name": "Martin Wildheim",
+      "paces": {
+        "Blå": 8,
+        "Vit": 5.5
+      },
+      "stable": 5,
+      "year": 1971
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true,
+        "2026": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830594,
+      "name": "Karolina Wildheim",
+      "paces": {
+        "Blå": 9.5,
+        "Vit": 6
+      },
+      "stable": 5,
+      "year": 1972
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830595,
+      "name": "Henrik Wikner",
+      "paces": {
+        "Blå": 10,
+        "Vit": 6.5
+      },
+      "stable": 0,
+      "year": 1979
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Gul",
+      "gender": "M",
+      "id": 1788990830596,
+      "name": "Erik Alsterberg",
+      "paces": {
+        "Gul": 12,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2011
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830597,
+      "name": "Arvid Persson",
+      "paces": {
+        "Blå": 10,
+        "Vit": 5
+      },
+      "stable": 0,
+      "year": 2003
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830598,
+      "name": "Susanne Bergh",
+      "paces": {
+        "Blå": 12,
+        "Vit": 8
+      },
+      "stable": 0,
+      "year": 1969
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Violett",
+      "gender": "M",
+      "id": 1788990830599,
+      "name": "Gustav Brockmark",
+      "paces": {
+        "Violett": 12,
+        "Vit": 6
+      },
+      "stable": 0,
+      "year": 2010
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Orange",
+      "gender": "F",
+      "id": 1788990830600,
+      "name": "Sofia Brockmark",
+      "paces": {
+        "Orange": 13,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1973
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830601,
+      "name": "Nils Anders Danielsson",
+      "paces": {
+        "Blå": 10,
+        "Vit": 6.5
+      },
+      "stable": 0,
+      "year": 1979
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Orange",
+      "gender": "F",
+      "id": 1788990830602,
+      "name": "Gabriela Egerup",
+      "paces": {
+        "Orange": 12,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1968
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Gul",
+      "gender": "M",
+      "id": 1788990830603,
+      "name": "Frederik Hulthén",
+      "paces": {
+        "Gul": 11,
+        "Vit": 8
+      },
+      "stable": 0,
+      "year": 2011
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Gul",
+      "gender": "F",
+      "id": 1788990830604,
+      "name": "Johanna Hulthén",
+      "paces": {
+        "Gul": 11,
+        "Vit": 8
+      },
+      "stable": 0,
+      "year": 1979
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Violett",
+      "gender": "M",
+      "id": 1788990830605,
+      "name": "Viktor Jansson",
+      "paces": {
+        "Violett": 12,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2005
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830606,
+      "name": "Joakim Kaminsky",
+      "paces": {
+        "Blå": 7,
+        "Vit": 4.5
+      },
+      "stable": 4,
+      "year": 1978
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830607,
+      "name": "Johan Lingsten",
+      "paces": {
+        "Blå": 11,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1971
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830608,
+      "name": "Åsa Ottosson",
+      "paces": {
+        "Blå": 11,
+        "Vit": 7
+      },
+      "stable": 4,
+      "year": 1968
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830609,
+      "name": "Maria Poll",
+      "paces": {
+        "Blå": 9,
+        "Vit": 6.5
+      },
+      "stable": 4,
+      "year": 1984
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830610,
+      "name": "Ida Sellstedt",
+      "paces": {
+        "Blå": 10,
+        "Vit": 7
+      },
+      "stable": 4,
+      "year": 1984
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Gul",
+      "gender": "M",
+      "id": 1788990830611,
+      "name": "Ebbe Sjöberg",
+      "paces": {
+        "Gul": 11,
+        "Vit": 8
+      },
+      "stable": 0,
+      "year": 2014
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1788990830612,
+      "name": "Emma Sjöberg",
+      "paces": {
+        "Blå": 12,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1983
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Orange",
+      "gender": "F",
+      "id": 1788990830613,
+      "name": "Signe Svedberg",
+      "paces": {
+        "Orange": 11,
+        "Vit": 8
+      },
+      "stable": 0,
+      "year": 2013
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1788990830614,
+      "name": "Jonas Svedberg",
+      "paces": {
+        "Blå": 11,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 1978
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Orange",
+      "gender": "F",
+      "id": 1788990830615,
+      "name": "Saga Wildheim",
+      "paces": {
+        "Orange": 11,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2008
+    },
+    {
+      "active": false,
+      "activeYears": {
+        "2019": false
+      },
+      "diff": "Orange",
+      "gender": "F",
+      "id": 1788990830616,
+      "name": "Vera Wildheim",
+      "paces": {
+        "Orange": 10,
+        "Vit": 7
+      },
+      "stable": 0,
+      "year": 2010
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "M",
+      "id": 1789881985500,
+      "name": "Martin Rådbo",
+      "paces": {},
+      "year": 1977
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1789927193333,
+      "name": "Elsa Asp",
+      "paces": {},
+      "year": 2003
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1789927211766,
+      "name": "Kjell Andersson",
+      "paces": {},
+      "year": 1960
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1789927390986,
+      "name": "Maja Ottosson",
+      "paces": {},
+      "year": 1997
+    },
+    {
+      "active": true,
+      "activeYears": {
+        "2019": true
+      },
+      "diff": "Blå",
+      "gender": "F",
+      "id": 1789927452363,
+      "name": "Tove Persson",
+      "paces": {},
+      "year": 2000
+    }
+  ],
+  "results": {
+    "2019": {
+      "legs": {
+        "1": {
+          "legTime": "52:06",
+          "raw": [
+            "52:06",
+            "293",
+            "+15:22",
+            "52:06",
+            "293"
+          ],
+          "runner": "Arvid Persson"
+        },
+        "2": {
+          "legTime": "46:59",
+          "raw": [
+            "46:59",
+            "191",
+            "+13:00",
+            "1:39:05",
+            "235",
+            "-58"
+          ],
+          "runner": "Anna Nordelöf"
+        },
+        "23": {
+          "legTime": "42:53",
+          "raw": [
+            "42:53",
+            "295",
+            "+21:57",
+            "6:37:18",
+            "269",
+            "+8"
+          ],
+          "runner": "Theander Hulthén"
+        },
+        "24": {
+          "legTime": "1:32:36",
+          "raw": [
+            "1:32:36",
+            "283",
+            "+48:03",
+            "8:09:54",
+            "264",
+            "-5"
+          ],
+          "runner": "Martin Rådbo"
+        },
+        "25": {
+          "legTime": "56:10",
+          "raw": [
+            "56:10",
+            "227",
+            "7:56:10",
+            "258",
+            "-6"
+          ],
+          "runner": "Maja Ottosson"
+        },
+        "3:1": {
+          "legTime": "52:26",
+          "raw": [
+            "52:26",
+            "1441",
+            "+31:18",
+            "2:31:31",
+            "313",
+            "+78"
+          ],
+          "runner": "Maja Nordelöf"
+        },
+        "3:2": {
+          "legTime": "54:06",
+          "raw": [
+            "54:06",
+            "1458",
+            "+32:58",
+            "2:33:11",
+            "313",
+            "+78"
+          ],
+          "runner": "Johanna Hulthén"
+        },
+        "3:3": {
+          "legTime": "54:20",
+          "raw": [
+            "54:20",
+            "1459",
+            "+33:12",
+            "2:33:25",
+            "313",
+            "+78"
+          ],
+          "runner": "Erika Asp"
+        },
+        "3:4": {
+          "legTime": "59:57",
+          "raw": [
+            "59:57",
+            "1489",
+            "+38:49",
+            "2:39:02",
+            "313",
+            "+78"
+          ],
+          "runner": "Alice Olsson"
+        },
+        "4:1": {
+          "legTime": "29:48",
+          "raw": [
+            "29:48",
+            "967",
+            "+12:45",
+            "3:03:13",
+            "304",
+            "-9"
+          ],
+          "runner": "Saga Wildheim"
+        },
+        "4:2": {
+          "legTime": "31:46",
+          "raw": [
+            "31:46",
+            "1093",
+            "+14:43",
+            "3:03:17",
+            "304",
+            "-9"
+          ],
+          "runner": "Vera Wildheim"
+        },
+        "4:3": {
+          "legTime": "34:09",
+          "raw": [
+            "34:09",
+            "1215",
+            "+17:06",
+            "3:13:11",
+            "304",
+            "-9"
+          ],
+          "runner": "Klara Brockmark"
+        },
+        "4:4": {
+          "legTime": "40:58",
+          "raw": [
+            "40:58",
+            "1379",
+            "+23:55",
+            "3:14:09",
+            "304",
+            "-9"
+          ],
+          "runner": "Gustav Brockmark"
+        },
+        "5:1": {
+          "legTime": "46:43",
+          "raw": [
+            "46:43",
+            "664",
+            "+15:28",
+            "4:00:52",
+            "275",
+            "-29"
+          ],
+          "runner": "Anders Asp"
+        },
+        "5:2": {
+          "legTime": "58:37",
+          "raw": [
+            "58:37",
+            "1232",
+            "+27:22",
+            "4:01:54",
+            "275",
+            "-29"
+          ],
+          "runner": "Karolina Wildheim"
+        },
+        "5:3": {
+          "legTime": "1:01:15",
+          "raw": [
+            "1:01:15",
+            "1308",
+            "+30:00",
+            "4:04:28",
+            "275",
+            "-29"
+          ],
+          "runner": "Nils Anders Danielsson"
+        },
+        "5:4": {
+          "legTime": "51:30",
+          "raw": [
+            "51:30",
+            "950",
+            "+20:15",
+            "4:04:41",
+            "275",
+            "-29"
+          ],
+          "runner": "Erik Hulthén"
+        },
+        "6:1": {
+          "legTime": "41:56",
+          "raw": [
+            "41:56",
+            "499",
+            "+14:04",
+            "4:46:37",
+            "267",
+            "-8"
+          ],
+          "runner": "Tove Persson"
+        },
+        "6:2": {
+          "legTime": "47:51",
+          "raw": [
+            "47:51",
+            "838",
+            "+19:59",
+            "4:52:19",
+            "267",
+            "-8"
+          ],
+          "runner": "Elsa Asp"
+        },
+        "6:3": {
+          "legTime": "56:12",
+          "raw": [
+            "56:12",
+            "1193",
+            "+28:20",
+            "4:57:04",
+            "267",
+            "-8"
+          ],
+          "runner": "Louise Olsson"
+        },
+        "6:4": {
+          "legTime": "57:29",
+          "raw": [
+            "57:29",
+            "1234",
+            "+29:37",
+            "4:59:23",
+            "267",
+            "-8"
+          ],
+          "runner": "Agnes Asp"
+        },
+        "7:1": {
+          "legTime": "47:51",
+          "raw": [
+            "47:51",
+            "730",
+            "+19:21",
+            "5:44:55",
+            "261",
+            "-6"
+          ],
+          "runner": "Kjell Andersson"
+        },
+        "7:2": {
+          "legTime": "47:02",
+          "raw": [
+            "47:02",
+            "701",
+            "+18:32",
+            "5:46:25",
+            "261",
+            "-6"
+          ],
+          "runner": "Martin Wildheim"
+        },
+        "7:3": {
+          "legTime": "1:01:52",
+          "raw": [
+            "1:01:52",
+            "1259",
+            "+33:22",
+            "5:48:29",
+            "261",
+            "-6"
+          ],
+          "runner": "Henrik Olsson"
+        },
+        "7:4": {
+          "legTime": "1:02:06",
+          "raw": [
+            "1:02:06",
+            "1266",
+            "+33:36",
+            "5:54:25",
+            "261",
+            "-6"
+          ],
+          "runner": "Susanne Bergh"
+        }
+      },
+      "team": {
+        "className": "25manna (381)",
+        "diffToLeader": null,
+        "name": "Mölndal Outdoor IF 1",
+        "place": 258,
+        "raw": [
+          "7:56:10"
+        ],
+        "totalTime": "7:56:10"
+      }
+    },
+    "2022": {
+      "legs": {
+        "1": {
+          "legTime": "46:07",
+          "raw": [
+            "46:07",
+            "176",
+            "+12:26",
+            "46:07",
+            "176",
+            "+12:26"
+          ],
+          "runner": "Anna Nordelöf"
+        },
+        "2": {
+          "legTime": "55:10",
+          "raw": [
+            "55:10",
+            "180",
+            "+15:40",
+            "1:41:17",
+            "173",
+            "-3",
+            "+25:33",
+            "+13:07"
+          ],
+          "runner": "Anders Asp"
+        },
+        "23": {
+          "legTime": "1:03:56",
+          "raw": [
+            "1:03:56",
+            "259",
+            "+41:15",
+            "7:13:04",
+            "201",
+            "+13",
+            "+2:57:57",
+            "+34:59"
+          ],
+          "runner": "Susanne Bergh"
+        },
+        "24": {
+          "legTime": "55:16",
+          "raw": [
+            "55:16",
+            "227",
+            "8:13:45",
+            "194",
+            "-7",
+            "+3:13:03"
+          ],
+          "runner": "Karolina Wildheim"
+        },
+        "25": {
+          "legTime": "56:27",
+          "raw": [
+            "56:27",
+            "272",
+            "8:14:56",
+            "196",
+            "+2",
+            "+3:21:25"
+          ],
+          "runner": "Mattias Brockmark"
+        },
+        "3:1": {
+          "legTime": "38:58",
+          "raw": [
+            "38:58",
+            "458",
+            "+13:09",
+            "2:20:15",
+            "191",
+            "+18",
+            "+53:29",
+            "+27:56"
+          ],
+          "runner": "Hugo Olsson"
+        },
+        "3:2": {
+          "legTime": "46:26",
+          "raw": [
+            "46:26",
+            "769",
+            "+20:37",
+            "2:27:43",
+            "191",
+            "+18",
+            "+53:29",
+            "+27:56"
+          ],
+          "runner": "Klara Brockmark"
+        },
+        "3:3": {
+          "legTime": "48:53",
+          "raw": [
+            "48:53",
+            "849",
+            "+23:04",
+            "2:30:10",
+            "191",
+            "+18",
+            "+53:29",
+            "+27:56"
+          ],
+          "runner": "Saga Wildheim"
+        },
+        "3:4": {
+          "legTime": "59:20",
+          "raw": [
+            "59:20",
+            "1083",
+            "+33:31",
+            "2:40:37",
+            "190",
+            "+17",
+            "+53:29",
+            "+27:56"
+          ],
+          "runner": "Sofia Brockmark"
+        },
+        "4:1": {
+          "legTime": "33:03",
+          "raw": [
+            "33:03",
+            "982",
+            "+20:07",
+            "2:53:18",
+            "185",
+            "-6",
+            "+1:05:41",
+            "+12:12"
+          ],
+          "runner": "Erik Alsterberg"
+        },
+        "4:2": {
+          "legTime": "23:47",
+          "raw": [
+            "23:47",
+            "454",
+            "+10:51",
+            "2:53:57",
+            "185",
+            "-6",
+            "+1:05:41",
+            "+12:12"
+          ],
+          "runner": "Gustav Brockmark"
+        },
+        "4:3": {
+          "legTime": "26:55",
+          "raw": [
+            "26:55",
+            "672",
+            "+13:59",
+            "2:54:38",
+            "185",
+            "-6",
+            "+1:05:41",
+            "+12:12"
+          ],
+          "runner": "Frederik Hulthén"
+        },
+        "4:4": {
+          "legTime": "29:53",
+          "raw": [
+            "29:53",
+            "863",
+            "+16:57",
+            "3:10:30",
+            "185",
+            "-5",
+            "+1:05:41",
+            "+12:12"
+          ],
+          "runner": "Molly Nordelöf"
+        },
+        "5:1": {
+          "legTime": "50:08",
+          "raw": [
+            "50:08",
+            "483",
+            "+15:31",
+            "3:44:46",
+            "174",
+            "-11",
+            "+1:23:44",
+            "+18:03"
+          ],
+          "runner": "Johan Lingsten"
+        },
+        "5:2": {
+          "legTime": "1:07:51",
+          "raw": [
+            "1:07:51",
+            "1083",
+            "+33:14",
+            "4:01:09",
+            "174",
+            "-11",
+            "+1:23:44",
+            "+18:03"
+          ],
+          "runner": "Anders Nordelöf"
+        },
+        "5:3": {
+          "legTime": "1:07:24",
+          "raw": [
+            "1:07:24",
+            "1074",
+            "+32:47",
+            "4:01:21",
+            "174",
+            "-11",
+            "+1:23:44",
+            "+18:03"
+          ],
+          "runner": "Anders Cullbrand"
+        },
+        "5:4": {
+          "legTime": "56:25",
+          "raw": [
+            "56:25",
+            "766",
+            "+21:48",
+            "4:06:55",
+            "174",
+            "-11",
+            "+1:23:44",
+            "+18:03"
+          ],
+          "runner": "Martin Wildheim"
+        },
+        "6:1": {
+          "legTime": "56:55",
+          "raw": [
+            "56:55",
+            "997",
+            "+31:40",
+            "4:41:41",
+            "162",
+            "-12",
+            "+1:40:01",
+            "+16:17"
+          ],
+          "runner": "Erika Asp"
+        },
+        "6:2": {
+          "legTime": "40:40",
+          "raw": [
+            "40:40",
+            "418",
+            "+15:25",
+            "4:42:01",
+            "162",
+            "-12",
+            "+1:40:01",
+            "+16:17"
+          ],
+          "runner": "Maja Nordelöf"
+        },
+        "6:3": {
+          "legTime": "37:58",
+          "raw": [
+            "37:58",
+            "303",
+            "+12:43",
+            "4:44:53",
+            "162",
+            "-12",
+            "+1:40:01",
+            "+16:17"
+          ],
+          "runner": "Ida Sellstedt"
+        },
+        "6:4": {
+          "legTime": "52:06",
+          "raw": [
+            "52:06",
+            "884",
+            "+26:51",
+            "4:53:15",
+            "162",
+            "-12",
+            "+1:40:01",
+            "+16:17"
+          ],
+          "runner": "Alice Olsson"
+        },
+        "7:1": {
+          "legTime": "50:25",
+          "raw": [
+            "50:25",
+            "526",
+            "+20:28",
+            "5:35:18",
+            "188",
+            "+26",
+            "+2:22:58",
+            "+42:57"
+          ],
+          "runner": "Theander Hulthén"
+        },
+        "7:2": {
+          "legTime": "1:00:13",
+          "raw": [
+            "1:00:13",
+            "806",
+            "+30:16",
+            "5:41:54",
+            "188",
+            "+26",
+            "+2:22:58",
+            "+42:57"
+          ],
+          "runner": "Viktor Jansson"
+        },
+        "7:3": {
+          "legTime": "48:49",
+          "raw": [
+            "48:49",
+            "465",
+            "+18:52",
+            "5:42:04",
+            "188",
+            "+26",
+            "+2:22:58",
+            "+42:57"
+          ],
+          "runner": "Erik Hulthén"
+        },
+        "7:4": {
+          "legTime": "1:27:07",
+          "raw": [
+            "1:27:07",
+            "1170",
+            "+57:10",
+            "6:09:08",
+            "188",
+            "+26",
+            "+2:22:58",
+            "+42:57"
+          ],
+          "runner": "Henrik Olsson"
+        }
+      },
+      "team": {
+        "className": "25manna (319)",
+        "diffToLeader": "+3:21:25",
+        "name": "Mölndal Outdoor IF 1",
+        "place": 196,
+        "raw": [
+          "8:14:56",
+          "+3:21:25"
+        ],
+        "totalTime": "8:14:56"
+      }
+    },
+    "2023": {
+      "legs": {
+        "1": {
+          "legTime": "44:21",
+          "raw": [
+            "44:21",
+            "81",
+            "+4:57",
+            "44:21",
+            "81",
+            "+4:57"
+          ],
+          "runner": "Joakim Kaminsky"
+        },
+        "2": {
+          "legTime": "39:41",
+          "raw": [
+            "39:41",
+            "147",
+            "+8:32",
+            "1:24:02",
+            "87",
+            "+6",
+            "+12:08",
+            "+7:11"
+          ],
+          "runner": "Karolina Wildheim"
+        },
+        "23": {
+          "legTime": "1:01:05",
+          "raw": [
+            "1:01:05",
+            "287",
+            "+36:31",
+            "6:12:48",
+            "187",
+            "+34",
+            "+2:05:46",
+            "+31:14"
+          ],
+          "runner": "Sofia Brockmark"
+        },
+        "24": {
+          "legTime": "1:19:08",
+          "raw": [
+            "1:19:08",
+            "231",
+            "+33:46",
+            "7:31:56",
+            "192",
+            "+5",
+            "+2:38:10",
+            "+32:24"
+          ],
+          "runner": "Erik Hulthén"
+        },
+        "25": {
+          "legTime": "53:36",
+          "raw": [
+            "53:36",
+            "219",
+            "8:03:36",
+            "187",
+            "-5",
+            "+2:51:21"
+          ],
+          "runner": "Anna Nordelöf"
+        },
+        "3:1": {
+          "legTime": "42:52",
+          "raw": [
+            "42:52",
+            "863",
+            "+17:59",
+            "2:06:54",
+            "129",
+            "+42",
+            "+29:58",
+            "+17:50"
+          ],
+          "runner": "Saga Wildheim"
+        },
+        "3:2": {
+          "legTime": "44:15",
+          "raw": [
+            "44:15",
+            "922",
+            "+19:22",
+            "2:08:17",
+            "129",
+            "+42",
+            "+29:58",
+            "+17:50"
+          ],
+          "runner": "Susanne Bergh"
+        },
+        "3:3": {
+          "legTime": "44:52",
+          "raw": [
+            "44:52",
+            "951",
+            "+19:59",
+            "2:08:54",
+            "129",
+            "+42",
+            "+29:58",
+            "+17:50"
+          ],
+          "runner": "Henrik Olsson"
+        },
+        "3:4": {
+          "legTime": "46:10",
+          "raw": [
+            "46:10",
+            "992",
+            "+21:17",
+            "2:10:12",
+            "129",
+            "+42",
+            "+29:58",
+            "+17:50"
+          ],
+          "runner": "Klara Brockmark"
+        },
+        "4:1": {
+          "legTime": "18:43",
+          "raw": [
+            "18:43",
+            "363",
+            "+5:38",
+            "2:27:00",
+            "118",
+            "-11",
+            "+34:19",
+            "+4:21"
+          ],
+          "runner": "Vera Wildheim"
+        },
+        "4:2": {
+          "legTime": "20:20",
+          "raw": [
+            "20:20",
+            "551",
+            "+7:15",
+            "2:27:14",
+            "118",
+            "-11",
+            "+34:19",
+            "+4:21"
+          ],
+          "runner": "Molly Nordelöf"
+        },
+        "4:3": {
+          "legTime": "19:31",
+          "raw": [
+            "19:31",
+            "455",
+            "+6:26",
+            "2:29:43",
+            "118",
+            "-11",
+            "+34:19",
+            "+4:21"
+          ],
+          "runner": "Gustav Brockmark"
+        },
+        "4:4": {
+          "legTime": "20:59",
+          "raw": [
+            "20:59",
+            "615",
+            "+7:54",
+            "2:29:53",
+            "118",
+            "-11",
+            "+34:19",
+            "+4:21"
+          ],
+          "runner": "Gabriela Egerup"
+        },
+        "5:1": {
+          "legTime": "51:42",
+          "raw": [
+            "51:42",
+            "691",
+            "+17:01",
+            "3:21:35",
+            "167",
+            "+49",
+            "+1:01:38",
+            "+27:19"
+          ],
+          "runner": "Martin Wildheim"
+        },
+        "5:2": {
+          "legTime": "56:46",
+          "raw": [
+            "56:46",
+            "890",
+            "+22:05",
+            "3:24:00",
+            "167",
+            "+49",
+            "+1:01:38",
+            "+27:19"
+          ],
+          "runner": "Anders Nordelöf"
+        },
+        "5:3": {
+          "legTime": "1:05:50",
+          "raw": [
+            "1:05:50",
+            "1144",
+            "+31:09",
+            "3:32:50",
+            "167",
+            "+49",
+            "+1:01:38",
+            "+27:19"
+          ],
+          "runner": "Anders Cullbrand"
+        },
+        "5:4": {
+          "legTime": "1:06:53",
+          "raw": [
+            "1:06:53",
+            "1159",
+            "+32:12",
+            "3:36:36",
+            "167",
+            "+49",
+            "+1:01:38",
+            "+27:19"
+          ],
+          "runner": "Mattias Brockmark"
+        },
+        "6:1": {
+          "legTime": "47:24",
+          "raw": [
+            "47:24",
+            "533",
+            "+16:05",
+            "4:08:59",
+            "152",
+            "-15",
+            "+1:17:45",
+            "+16:07"
+          ],
+          "runner": "Alice Olsson"
+        },
+        "6:2": {
+          "legTime": "50:19",
+          "raw": [
+            "50:19",
+            "685",
+            "+19:00",
+            "4:14:19",
+            "152",
+            "-15",
+            "+1:17:45",
+            "+16:07"
+          ],
+          "runner": "Åsa Ottosson"
+        },
+        "6:3": {
+          "legTime": "49:53",
+          "raw": [
+            "49:53",
+            "661",
+            "+18:34",
+            "4:22:43",
+            "152",
+            "-15",
+            "+1:17:45",
+            "+16:07"
+          ],
+          "runner": "Agnes Asp"
+        },
+        "6:4": {
+          "legTime": "49:28",
+          "raw": [
+            "49:28",
+            "636",
+            "+18:09",
+            "4:26:04",
+            "152",
+            "-15",
+            "+1:17:45",
+            "+16:07"
+          ],
+          "runner": "Ida Sellstedt"
+        },
+        "7:1": {
+          "legTime": "34:26",
+          "raw": [
+            "34:26",
+            "232",
+            "+8:01",
+            "5:00:30",
+            "153",
+            "+1",
+            "+1:34:32",
+            "+16:47"
+          ],
+          "runner": "Anders Asp"
+        },
+        "7:2": {
+          "legTime": "37:54",
+          "raw": [
+            "37:54",
+            "397",
+            "+11:29",
+            "5:00:37",
+            "153",
+            "+1",
+            "+1:34:32",
+            "+16:47"
+          ],
+          "runner": "Theander Hulthén"
+        },
+        "7:3": {
+          "legTime": "47:06",
+          "raw": [
+            "47:06",
+            "863",
+            "+20:41",
+            "5:01:25",
+            "153",
+            "+1",
+            "+1:34:32",
+            "+16:47"
+          ],
+          "runner": "Maria Poll"
+        },
+        "7:4": {
+          "legTime": "1:02:44",
+          "raw": [
+            "1:02:44",
+            "1247",
+            "+36:19",
+            "5:11:43",
+            "153",
+            "+1",
+            "+1:34:32",
+            "+16:47"
+          ],
+          "runner": "Viktor Jansson"
+        }
+      },
+      "team": {
+        "className": "25manna (340)",
+        "diffToLeader": "+2:51:21",
+        "name": "Mölndal Outdoor IF 1",
+        "place": 187,
+        "raw": [
+          "8:03:36",
+          "+2:51:21"
+        ],
+        "totalTime": "8:03:36"
+      }
+    },
+    "2024": {
+      "legs": {
+        "1": {
+          "legTime": "43:44",
+          "raw": [
+            "43:44",
+            "198",
+            "+11:48",
+            "43:44",
+            "198",
+            "+11:48"
+          ],
+          "runner": "Karolina Wildheim"
+        },
+        "2": {
+          "legTime": "49:45",
+          "raw": [
+            "49:45",
+            "257",
+            "+16:01",
+            "1:33:29",
+            "225",
+            "+27",
+            "+27:49",
+            "+16:01"
+          ],
+          "runner": "Martin Wildheim"
+        },
+        "23": {
+          "legTime": "47:09",
+          "raw": [
+            "47:09",
+            "241",
+            "+25:22",
+            "6:33:02",
+            "188",
+            "+1",
+            "+2:44:30",
+            "+19:22"
+          ],
+          "runner": "Gustav Brockmark"
+        },
+        "24": {
+          "legTime": "56:04",
+          "raw": [
+            "56:04",
+            "210",
+            "+24:31",
+            "7:29:06",
+            "185",
+            "-3",
+            "+3:08:07",
+            "+23:37"
+          ],
+          "runner": "Agnes Asp"
+        },
+        "25": {
+          "legTime": "57:12",
+          "raw": [
+            "57:12",
+            "328",
+            "8:26:18",
+            "190",
+            "+5",
+            "+3:14:49"
+          ],
+          "runner": "Henrik Wikner"
+        },
+        "3:1": {
+          "legTime": "53:37",
+          "raw": [
+            "53:37",
+            "820",
+            "+25:09",
+            "2:27:06",
+            "215",
+            "-10",
+            "+1:10:53",
+            "+43:04"
+          ],
+          "runner": "Anders Cullbrand"
+        },
+        "3:2": {
+          "legTime": "1:06:20",
+          "raw": [
+            "1:06:20",
+            "1102",
+            "+37:52",
+            "2:39:49",
+            "215",
+            "-10",
+            "+1:10:53",
+            "+43:04"
+          ],
+          "runner": "Saga Wildheim"
+        },
+        "3:3": {
+          "legTime": "1:13:09",
+          "raw": [
+            "1:13:09",
+            "1190",
+            "+44:41",
+            "2:46:38",
+            "215",
+            "-10",
+            "+1:10:53",
+            "+43:04"
+          ],
+          "runner": "Henrik Olsson"
+        },
+        "3:4": {
+          "legTime": "1:15:07",
+          "raw": [
+            "1:15:07",
+            "1211",
+            "+46:39",
+            "2:48:36",
+            "215",
+            "-10",
+            "+1:10:53",
+            "+43:04"
+          ],
+          "runner": "Louise Olsson"
+        },
+        "4:1": {
+          "legTime": "28:12",
+          "raw": [
+            "28:12",
+            "1187",
+            "+19:27",
+            "3:16:48",
+            "192",
+            "-23",
+            "+1:13:41",
+            "+2:48"
+          ],
+          "runner": "Johanna Hulthén"
+        },
+        "4:2": {
+          "legTime": "24:33",
+          "raw": [
+            "24:33",
+            "1007",
+            "+15:48",
+            "3:13:09",
+            "192",
+            "-23",
+            "+1:13:41",
+            "+2:48"
+          ],
+          "runner": "Frederik Hulthén"
+        },
+        "4:3": {
+          "legTime": "19:20",
+          "raw": [
+            "19:20",
+            "504",
+            "+10:35",
+            "3:07:56",
+            "192",
+            "-23",
+            "+1:13:41",
+            "+2:48"
+          ],
+          "runner": "Vera Wildheim"
+        },
+        "4:4": {
+          "legTime": "17:58",
+          "raw": [
+            "17:58",
+            "355",
+            "+9:13",
+            "3:06:34",
+            "192",
+            "-23",
+            "+1:13:41",
+            "+2:48"
+          ],
+          "runner": "Molly Nordelöf"
+        },
+        "5:1": {
+          "legTime": "47:43",
+          "raw": [
+            "47:43",
+            "615",
+            "+19:19",
+            "3:54:17",
+            "240",
+            "+48",
+            "+1:58:25",
+            "+44:44"
+          ],
+          "runner": "Theander Hulthén"
+        },
+        "5:2": {
+          "legTime": "54:30",
+          "raw": [
+            "54:30",
+            "894",
+            "+26:06",
+            "4:01:04",
+            "240",
+            "+48",
+            "+1:58:25",
+            "+44:44"
+          ],
+          "runner": "Mattias Brockmark"
+        },
+        "5:3": {
+          "legTime": "58:19",
+          "raw": [
+            "58:19",
+            "1027",
+            "+29:55",
+            "4:04:53",
+            "240",
+            "+48",
+            "+1:58:25",
+            "+44:44"
+          ],
+          "runner": "Erik Hulthén"
+        },
+        "5:4": {
+          "legTime": "1:27:58",
+          "raw": [
+            "1:27:58",
+            "1383",
+            "+59:34",
+            "4:34:32",
+            "240",
+            "+48",
+            "+1:58:25",
+            "+44:44"
+          ],
+          "runner": "Anders Nordelöf"
+        },
+        "6:1": {
+          "legTime": "51:15",
+          "raw": [
+            "51:15",
+            "988",
+            "+42:27",
+            "5:14:31",
+            "217",
+            "-23",
+            "+2:15:19",
+            "+16:54"
+          ],
+          "runner": "Susanne Bergh"
+        },
+        "6:2": {
+          "legTime": "52:39",
+          "raw": [
+            "52:39",
+            "1036",
+            "+43:51",
+            "5:15:55",
+            "217",
+            "-23",
+            "+2:15:19",
+            "+16:54"
+          ],
+          "runner": "Erika Asp"
+        },
+        "6:3": {
+          "legTime": "47:38",
+          "raw": [
+            "47:38",
+            "843",
+            "+38:50",
+            "5:10:54",
+            "217",
+            "-23",
+            "+2:15:19",
+            "+16:54"
+          ],
+          "runner": "Alice Olsson"
+        },
+        "6:4": {
+          "legTime": "46:40",
+          "raw": [
+            "46:40",
+            "812",
+            "+37:52",
+            "5:09:56",
+            "217",
+            "-23",
+            "+2:15:19",
+            "+16:54"
+          ],
+          "runner": "Klara Brockmark"
+        },
+        "7:1": {
+          "legTime": "44:01",
+          "raw": [
+            "44:01",
+            "618",
+            "+18:30",
+            "5:53:57",
+            "187",
+            "-30",
+            "+2:25:08",
+            "+9:49"
+          ],
+          "runner": "Anna Nordelöf"
+        },
+        "7:2": {
+          "legTime": "49:29",
+          "raw": [
+            "49:29",
+            "857",
+            "+23:58",
+            "5:59:25",
+            "187",
+            "-30",
+            "+2:25:08",
+            "+9:49"
+          ],
+          "runner": "Arvid Persson"
+        },
+        "7:3": {
+          "legTime": "55:31",
+          "raw": [
+            "55:31",
+            "1058",
+            "+30:00",
+            "6:05:27",
+            "187",
+            "-30",
+            "+2:25:08",
+            "+9:49"
+          ],
+          "runner": "Viktor Jansson"
+        },
+        "7:4": {
+          "legTime": "35:57",
+          "raw": [
+            "35:57",
+            "308",
+            "+10:26",
+            "5:45:53",
+            "187",
+            "-30",
+            "+2:25:08",
+            "+9:49"
+          ],
+          "runner": "Anders Asp"
+        }
+      },
+      "team": null
+    },
+    "2025": {
+      "legs": {
+        "1": {
+          "legTime": "1:00:18",
+          "raw": [
+            "1:00:18",
+            "303",
+            "+21:22",
+            "1:00:18",
+            "303",
+            "+21:22"
+          ],
+          "runner": "Jacob Axenborg"
+        },
+        "2": {
+          "legTime": "50:38",
+          "raw": [
+            "50:38",
+            "223",
+            "+16:57",
+            "1:50:56",
+            "267",
+            "-36",
+            "+36:38",
+            "+15:16"
+          ],
+          "runner": "Karolina Wildheim"
+        },
+        "23": {
+          "legTime": "34:22",
+          "raw": [
+            "34:22",
+            "192",
+            "+13:44",
+            "6:12:23",
+            "179",
+            "-10",
+            "+2:20:48",
+            "+10:30"
+          ],
+          "runner": "Molly Nordelöf"
+        },
+        "24": {
+          "legTime": "1:23:34",
+          "raw": [
+            "1:23:34",
+            "265",
+            "+42:17",
+            "7:35:57",
+            "198",
+            "+19",
+            "+3:00:27",
+            "+39:39"
+          ],
+          "runner": "Henrik Wikner"
+        },
+        "25": {
+          "legTime": "49:23",
+          "raw": [
+            "49:23",
+            "283",
+            "8:25:20",
+            "198",
+            "0",
+            "+3:07:21"
+          ],
+          "runner": "Alice Olsson"
+        },
+        "3:1": {
+          "legTime": "36:40",
+          "raw": [
+            "36:40",
+            "766",
+            "+14:46",
+            "2:27:36",
+            "239",
+            "-28",
+            "+59:15",
+            "+22:37"
+          ],
+          "runner": "Anders Cullbrand"
+        },
+        "3:2": {
+          "legTime": "37:54",
+          "raw": [
+            "37:54",
+            "827",
+            "+16:00",
+            "2:28:50",
+            "239",
+            "-28",
+            "+59:15",
+            "+22:37"
+          ],
+          "runner": "Gustav Brockmark"
+        },
+        "3:3": {
+          "legTime": "44:13",
+          "raw": [
+            "44:13",
+            "1106",
+            "+22:19",
+            "2:35:09",
+            "239",
+            "-28",
+            "+59:15",
+            "+22:37"
+          ],
+          "runner": "Louise Olsson"
+        },
+        "3:4": {
+          "legTime": "45:46",
+          "raw": [
+            "45:46",
+            "1138",
+            "+23:52",
+            "2:36:42",
+            "239",
+            "-28",
+            "+59:15",
+            "+22:37"
+          ],
+          "runner": "Henrik Olsson"
+        },
+        "4:1": {
+          "legTime": "31:52",
+          "raw": [
+            "31:52",
+            "947",
+            "+15:55",
+            "3:08:34",
+            "211",
+            "-28",
+            "+1:05:52",
+            "+6:37"
+          ],
+          "runner": "Ebbe Sjöberg"
+        },
+        "4:2": {
+          "legTime": "26:08",
+          "raw": [
+            "26:08",
+            "572",
+            "+10:11",
+            "3:02:50",
+            "211",
+            "-28",
+            "+1:05:52",
+            "+6:37"
+          ],
+          "runner": "Vera Wildheim"
+        },
+        "4:3": {
+          "legTime": "34:00",
+          "raw": [
+            "34:00",
+            "1052",
+            "+18:03",
+            "3:10:42",
+            "211",
+            "-28",
+            "+1:05:52",
+            "+6:37"
+          ],
+          "runner": "Signe Svedberg"
+        },
+        "4:4": {
+          "legTime": "25:25",
+          "raw": [
+            "25:25",
+            "516",
+            "+9:28",
+            "3:02:07",
+            "211",
+            "-28",
+            "+1:05:52",
+            "+6:37"
+          ],
+          "runner": "Vilhelmina Axenborg"
+        },
+        "5:1": {
+          "legTime": "41:48",
+          "raw": [
+            "41:48",
+            "399",
+            "+11:02",
+            "3:43:55",
+            "209",
+            "-2",
+            "+1:27:20",
+            "+21:28"
+          ],
+          "runner": "Theander Hulthén"
+        },
+        "5:2": {
+          "legTime": "46:33",
+          "raw": [
+            "46:33",
+            "645",
+            "+15:47",
+            "3:48:40",
+            "209",
+            "-2",
+            "+1:27:20",
+            "+21:28"
+          ],
+          "runner": "Hugo Olsson"
+        },
+        "5:3": {
+          "legTime": "49:02",
+          "raw": [
+            "49:02",
+            "766",
+            "+18:16",
+            "3:51:09",
+            "209",
+            "-2",
+            "+1:27:20",
+            "+21:28"
+          ],
+          "runner": "Martin Wildheim"
+        },
+        "5:4": {
+          "legTime": "55:33",
+          "raw": [
+            "55:33",
+            "1074",
+            "+24:47",
+            "3:57:40",
+            "209",
+            "-2",
+            "+1:27:20",
+            "+21:28"
+          ],
+          "runner": "Erik Hulthén"
+        },
+        "6:1": {
+          "legTime": "44:42",
+          "raw": [
+            "44:42",
+            "291",
+            "+11:16",
+            "4:40:57",
+            "183",
+            "-26",
+            "+1:45:54",
+            "+18:34"
+          ],
+          "runner": "Agnes Asp"
+        },
+        "6:2": {
+          "legTime": "46:02",
+          "raw": [
+            "46:02",
+            "356",
+            "+12:36",
+            "4:42:17",
+            "183",
+            "-26",
+            "+1:45:54",
+            "+18:34"
+          ],
+          "runner": "Anna Nordelöf"
+        },
+        "6:3": {
+          "legTime": "1:00:57",
+          "raw": [
+            "1:00:57",
+            "995",
+            "+27:31",
+            "4:57:12",
+            "183",
+            "-26",
+            "+1:45:54",
+            "+18:34"
+          ],
+          "runner": "Emma Sjöberg"
+        },
+        "6:4": {
+          "legTime": "1:00:07",
+          "raw": [
+            "1:00:07",
+            "971",
+            "+26:41",
+            "4:56:22",
+            "183",
+            "-26",
+            "+1:45:54",
+            "+18:34"
+          ],
+          "runner": "Lotta Falk"
+        },
+        "7:1": {
+          "legTime": "38:08",
+          "raw": [
+            "38:08",
+            "607",
+            "+14:16",
+            "5:26:55",
+            "189",
+            "+6",
+            "+2:10:18",
+            "+24:24"
+          ],
+          "runner": "Anders Asp"
+        },
+        "7:2": {
+          "legTime": "45:39",
+          "raw": [
+            "45:39",
+            "970",
+            "+21:47",
+            "5:34:26",
+            "189",
+            "+6",
+            "+2:10:18",
+            "+24:24"
+          ],
+          "runner": "Mattias Brockmark"
+        },
+        "7:3": {
+          "legTime": "52:46",
+          "raw": [
+            "52:46",
+            "1192",
+            "+28:54",
+            "5:41:33",
+            "189",
+            "+6",
+            "+2:10:18",
+            "+24:24"
+          ],
+          "runner": "Jonas Svedberg"
+        },
+        "7:4": {
+          "legTime": "1:03:00",
+          "raw": [
+            "1:03:00",
+            "1325",
+            "+39:08",
+            "5:51:47",
+            "189",
+            "+6",
+            "+2:10:18",
+            "+24:24"
+          ],
+          "runner": "Viktor Jansson"
+        }
+      },
+      "team": {
+        "className": "25manna (358)",
+        "diffToLeader": "+3:07:21",
+        "name": "Mölndal Outdoor IF 1",
+        "place": 198,
+        "raw": [
+          "8:25:20",
+          "+3:07:21"
+        ],
+        "totalTime": "8:25:20"
+      }
+    },
+    "2026": {
+      "legs": {},
+      "team": null
+    }
+  },
+  "savedLineupsByYear": {
+    "2019": [],
+    "2022": [],
+    "2023": [],
+    "2024": [],
+    "2025": [],
+    "2026": [
+      {
+        "assignments": {
+          "1": 1788990830594,
+          "2": 1788990830589,
+          "23": 1788990830575,
+          "24": 1788990830586,
+          "25": 1788990830572,
+          "3:1": 1788990830590,
+          "3:2": 1788990830588,
+          "3:3": 1788990830583,
+          "3:4": 1788990830587,
+          "4:1": 1788990830571,
+          "4:2": 1788990830578,
+          "4:3": 1788990830574,
+          "4:4": 1788990830573,
+          "5:1": 1788990830580,
+          "5:2": 1788990830582,
+          "5:3": 1788990830593,
+          "5:4": 1788990830581,
+          "6:1": 1788990830591,
+          "6:2": 1788990830585,
+          "6:3": 1788990830569,
+          "6:4": 1788990830579,
+          "7:1": 1788990830577,
+          "7:2": 1788990830595,
+          "7:3": 1788990830584,
+          "7:4": 1788990830570
+        },
+        "id": 1789329605625,
+        "name": "Anders 11 sep"
+      },
+      {
+        "assignments": {
+          "1": 1788990830586,
+          "2": 1788990830589,
+          "23": 1788990830575,
+          "24": 1788990830579,
+          "25": 1788990830572,
+          "3:1": 1788990830590,
+          "3:2": 1788990830588,
+          "3:3": 1788990830587,
+          "3:4": 1788990830583,
+          "4:1": 1788990830571,
+          "4:2": 1788990830578,
+          "4:3": 1788990830574,
+          "4:4": 1788990830573,
+          "5:1": 1788990830580,
+          "5:2": 1788990830582,
+          "5:3": 1788990830593,
+          "5:4": 1788990830581,
+          "6:1": 1788990830591,
+          "6:2": 1788990830585,
+          "6:3": 1788990830584,
+          "6:4": 1788990830594,
+          "7:1": 1788990830577,
+          "7:2": 1788990830569,
+          "7:3": 1788990830595,
+          "7:4": 1788990830570
+        },
+        "id": 1789329819827,
+        "name": "ErikTed 9 sep"
+      }
+    ]
+  },
+  "strategy": "safe",
+  "updatedAt": 1791142543310,
+  "yearRules": {
+    "2019": [
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "forked": true,
+        "key": "1",
+        "km": 6
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "forked": true,
+        "key": "2",
+        "km": 7.2
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "forked": true,
+        "key": "3:1",
+        "km": 4.7
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "forked": true,
+        "key": "3:2",
+        "km": 4.7
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "forked": true,
+        "key": "3:3",
+        "km": 4.7
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "forked": true,
+        "key": "3:4",
+        "km": 4.7
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "forked": true,
+        "key": "4:1",
+        "km": 2.5
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "forked": true,
+        "key": "4:2",
+        "km": 2.5
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "forked": true,
+        "key": "4:3",
+        "km": 2.5
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "forked": true,
+        "key": "4:4",
+        "km": 2.5
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "forked": true,
+        "key": "5:1",
+        "km": 6.3
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "forked": true,
+        "key": "5:2",
+        "km": 6.3
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "forked": true,
+        "key": "5:3",
+        "km": 6.3
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "forked": true,
+        "key": "5:4",
+        "km": 6.3
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "forked": true,
+        "key": "6:1",
+        "km": 4.4
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "forked": true,
+        "key": "6:2",
+        "km": 4.4
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "forked": true,
+        "key": "6:3",
+        "km": 4.4
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "forked": true,
+        "key": "6:4",
+        "km": 4.4
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "forked": true,
+        "key": "7:1",
+        "km": 5.6
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "forked": true,
+        "key": "7:2",
+        "km": 5.6
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "forked": true,
+        "key": "7:3",
+        "km": 5.6
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "forked": true,
+        "key": "7:4",
+        "km": 5.6
+      },
+      {
+        "classes": "-H16/H55-, -D20/D40-",
+        "diff": "Orange",
+        "forked": false,
+        "key": "23",
+        "km": 4.2
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "forked": false,
+        "key": "24",
+        "km": 6.1
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "forked": false,
+        "key": "25",
+        "km": 8.1
+      }
+    ],
+    "2022": [
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "1",
+        "km": 5.2,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "2",
+        "km": 7.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:1",
+        "km": 3.9,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:2",
+        "km": 3.9,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:3",
+        "km": 3.9,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:4",
+        "km": 3.9,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:1",
+        "km": 3.1,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:2",
+        "km": 3.1,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:3",
+        "km": 3.1,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:4",
+        "km": 3.1,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:1",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:2",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:3",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:4",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:1",
+        "km": 4.2,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:2",
+        "km": 4.2,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:3",
+        "km": 4.2,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:4",
+        "km": 4.2,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:1",
+        "km": 5.4,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:2",
+        "km": 5.4,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:3",
+        "km": 5.4,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:4",
+        "km": 5.4,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H55-, -D20/D40-",
+        "diff": "Orange",
+        "femaleReq": "≤20 or ≥40",
+        "forked": false,
+        "key": "23",
+        "km": 3.6,
+        "maleReq": "≤16 or ≥55",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "24",
+        "km": 6,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "25",
+        "km": 8.72,
+        "maleReq": "all",
+        "restartKm": null
+      }
+    ],
+    "2023": [
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "1",
+        "km": 7.9,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "2",
+        "km": 5.2,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:1",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:2",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:3",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:4",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:1",
+        "km": 2.8,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:2",
+        "km": 2.8,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:3",
+        "km": 2.8,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:4",
+        "km": 2.8,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:1",
+        "km": 6.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:2",
+        "km": 6.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:3",
+        "km": 6.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:4",
+        "km": 6.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:1",
+        "km": 4.8,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:2",
+        "km": 4.8,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:3",
+        "km": 4.8,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:4",
+        "km": 4.8,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:1",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:2",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:3",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:4",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H55-, -D20/D40-",
+        "diff": "Orange",
+        "femaleReq": "≤20 or ≥40",
+        "forked": false,
+        "key": "23",
+        "km": 4.2,
+        "maleReq": "≤16 or ≥55",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "24",
+        "km": 9.2,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "25",
+        "km": 6.4,
+        "maleReq": null,
+        "restartKm": null
+      }
+    ],
+    "2024": [
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "1",
+        "km": 5.1,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "2",
+        "km": 6.65,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:1",
+        "km": 4.4,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:2",
+        "km": 4.4,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:3",
+        "km": 4.4,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:4",
+        "km": 4.4,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:1",
+        "km": 2.65,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:2",
+        "km": 2.65,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:3",
+        "km": 2.65,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:4",
+        "km": 2.65,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:1",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:2",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:3",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:4",
+        "km": 5.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:1",
+        "km": 3.7,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:2",
+        "km": 3.7,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:3",
+        "km": 3.7,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:4",
+        "km": 3.7,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:1",
+        "km": 4.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:2",
+        "km": 4.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:3",
+        "km": 4.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Röd",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:4",
+        "km": 4.6,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H55-, -D20/D40-",
+        "diff": "Orange",
+        "femaleReq": "≤20 or ≥40",
+        "forked": false,
+        "key": "23",
+        "km": 3.4,
+        "maleReq": "≤16 or ≥55",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "24",
+        "km": 5,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "25",
+        "km": 8.8,
+        "maleReq": "all",
+        "restartKm": 5.8
+      }
+    ],
+    "2025": [
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "1",
+        "km": 8.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "2",
+        "km": 6.3,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:1",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:2",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:3",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:4",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:1",
+        "km": 3,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:2",
+        "km": 3,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:3",
+        "km": 3,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:4",
+        "km": 3,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:1",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:2",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:3",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:4",
+        "km": 6.5,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:1",
+        "km": 5.6,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:2",
+        "km": 5.6,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:3",
+        "km": 5.6,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:4",
+        "km": 5.6,
+        "maleReq": null,
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:1",
+        "km": 4.9,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:2",
+        "km": 4.9,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:3",
+        "km": 4.9,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:4",
+        "km": 4.9,
+        "maleReq": "all",
+        "restartKm": null
+      },
+      {
+        "classes": "-H16/H55-, -D20/D40-",
+        "diff": "Orange",
+        "femaleReq": "≤20 or ≥40",
+        "forked": false,
+        "key": "23",
+        "km": 4.1,
+        "maleReq": "≤16 or ≥55",
+        "restartKm": null
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "24",
+        "km": 8.8,
+        "maleReq": "all",
+        "restartKm": 6.5
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "25",
+        "km": 6.8,
+        "maleReq": null,
+        "restartKm": 5.4
+      }
+    ],
+    "2026": [
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "1",
+        "km": 5.5,
+        "maleReq": null,
+        "restartKm": null,
+        "winnerLegMin": 33,
+        "winnerPace": 6,
+        "winnerStart": "9:00"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "2",
+        "km": 7.3,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 37,
+        "winnerPace": 5.07,
+        "winnerStart": "9:33"
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:1",
+        "km": 4.5,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null,
+        "winnerLegMin": 28,
+        "winnerPace": 6.22,
+        "winnerStart": "10:10"
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:2",
+        "km": 4.5,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null,
+        "winnerLegMin": 28,
+        "winnerPace": 6.22,
+        "winnerStart": "10:10"
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:3",
+        "km": 4.5,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null,
+        "winnerLegMin": 28,
+        "winnerPace": 6.22,
+        "winnerStart": "10:10"
+      },
+      {
+        "classes": "-H16/H50-, Damer",
+        "diff": "Orange",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "3:4",
+        "km": 4.5,
+        "maleReq": "≤16 or ≥50",
+        "restartKm": null,
+        "winnerLegMin": 28,
+        "winnerPace": 6.22,
+        "winnerStart": "10:10"
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:1",
+        "km": 2.6,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null,
+        "winnerLegMin": 16,
+        "winnerPace": 6.15,
+        "winnerStart": "10:38"
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:2",
+        "km": 2.6,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null,
+        "winnerLegMin": 16,
+        "winnerPace": 6.15,
+        "winnerStart": "10:38"
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:3",
+        "km": 2.6,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null,
+        "winnerLegMin": 16,
+        "winnerPace": 6.15,
+        "winnerStart": "10:38"
+      },
+      {
+        "classes": "-H14/H60-, -D18/D45-",
+        "diff": "Vit",
+        "femaleReq": "≤18 or ≥45",
+        "forked": true,
+        "key": "4:4",
+        "km": 2.6,
+        "maleReq": "≤14 or ≥60",
+        "restartKm": null,
+        "winnerLegMin": 16,
+        "winnerPace": 6.15,
+        "winnerStart": "10:38"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:1",
+        "km": 6.3,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 38,
+        "winnerPace": 6.03,
+        "winnerStart": "10:54"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:2",
+        "km": 6.3,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 38,
+        "winnerPace": 6.03,
+        "winnerStart": "10:54"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:3",
+        "km": 6.3,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 38,
+        "winnerPace": 6.03,
+        "winnerStart": "10:54"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "5:4",
+        "km": 6.3,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 38,
+        "winnerPace": 6.03,
+        "winnerStart": "10:54"
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:1",
+        "km": 4.4,
+        "maleReq": null,
+        "restartKm": null,
+        "winnerLegMin": 32,
+        "winnerPace": 7.27,
+        "winnerStart": "11:32"
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:2",
+        "km": 4.4,
+        "maleReq": null,
+        "restartKm": null,
+        "winnerLegMin": 32,
+        "winnerPace": 7.27,
+        "winnerStart": "11:32"
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:3",
+        "km": 4.4,
+        "maleReq": null,
+        "restartKm": null,
+        "winnerLegMin": 32,
+        "winnerPace": 7.27,
+        "winnerStart": "11:32"
+      },
+      {
+        "classes": "Damer",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "6:4",
+        "km": 4.4,
+        "maleReq": null,
+        "restartKm": null,
+        "winnerLegMin": 32,
+        "winnerPace": 7.27,
+        "winnerStart": "11:32"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:1",
+        "km": 5.6,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 31,
+        "winnerPace": 5.54,
+        "winnerStart": "12:04"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:2",
+        "km": 5.6,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 31,
+        "winnerPace": 5.54,
+        "winnerStart": "12:04"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:3",
+        "km": 5.6,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 31,
+        "winnerPace": 5.54,
+        "winnerStart": "12:04"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Violett",
+        "femaleReq": "all",
+        "forked": true,
+        "key": "7:4",
+        "km": 5.6,
+        "maleReq": "all",
+        "restartKm": null,
+        "winnerLegMin": 31,
+        "winnerPace": 5.54,
+        "winnerStart": "12:04"
+      },
+      {
+        "classes": "-H16/H55-, -D20/D40-",
+        "diff": "Orange",
+        "femaleReq": "≤20 or ≥40",
+        "forked": false,
+        "key": "23",
+        "km": 4.2,
+        "maleReq": "≤16 or ≥55",
+        "restartKm": null,
+        "winnerLegMin": 27,
+        "winnerPace": 6.43,
+        "winnerStart": "12:35"
+      },
+      {
+        "classes": "Damer",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "24",
+        "km": 6,
+        "maleReq": null,
+        "restartKm": 4.5,
+        "winnerLegMin": 37,
+        "winnerPace": 6.17,
+        "winnerStart": "13:02"
+      },
+      {
+        "classes": "Alla",
+        "diff": "Blå",
+        "femaleReq": "all",
+        "forked": false,
+        "key": "25",
+        "km": 8,
+        "maleReq": "all",
+        "restartKm": 6.3,
+        "winnerLegMin": 41,
+        "winnerPace": 5.13,
+        "winnerStart": "13:39"
+      }
+    ]
+  }
+}
