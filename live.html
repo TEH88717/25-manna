@@ -3,107 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>25-manna live — 2026</title>
-<style>
-:root{
-  --bg:#F7F5F0; --bg-card:#FFFFFF; --text:#20231F; --text-secondary:#5B5F58; --border:#E1DED4;
-  --accent:#27500A; --accent-bg:#E5F0DE; --accent-row:#EEF5E8; --warn:#993C1D; --warn-bg:#FAECE7;
-}
-@media (prefers-color-scheme: dark){
-  :root{ --bg:#171814; --bg-card:#20231F; --text:#EDEBE3; --text-secondary:#A2A69A; --border:#33362F;
-    --accent:#8FD16B; --accent-bg:#233B18; --accent-row:#26331D; --warn:#E08B6B; --warn-bg:#3B241C; }
-}
-*{box-sizing:border-box;}
-body{margin:0;padding:20px 16px 48px;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-variant-numeric:tabular-nums;}
-.wrap{max-width:720px;margin:0 auto;}
-h1{font-size:19px;font-weight:700;margin:0 0 2px;}
-.sub{font-size:12px;color:var(--text-secondary);margin-bottom:16px;}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:14px;}
-.stats{display:flex;gap:10px 24px;flex-wrap:wrap;}
-.stat-label{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:2px;}
-.stat-value{font-size:24px;font-weight:700;}
-.stat-sub{font-size:11px;color:var(--text-secondary);margin-top:1px;}
-.now{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-.now-label{font-size:11px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:4px;}
-.now-list{font-size:14px;font-weight:600;line-height:1.45;}
-.banner{padding:10px 14px;border-radius:12px;font-size:12.5px;margin-bottom:14px;}
-.banner.restart,.banner.stale{background:var(--warn-bg);color:var(--warn);}
-.grouphdr{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.03em;padding:10px 4px 4px;}
-.leg{display:flex;align-items:center;gap:10px;padding:8px 6px;border-bottom:1px solid var(--border);}
-.leg:last-child{border-bottom:none;}
-.leg.cur{background:var(--accent-row);border-radius:10px;border-bottom-color:transparent;box-shadow:inset 3px 0 0 var(--accent);}
-.leg-key{width:34px;font-weight:700;font-size:13px;flex-shrink:0;}
-.diffpill{font-size:9.5px;font-weight:600;padding:2px 6px;border-radius:20px;flex-shrink:0;}
-.leg-main{flex:1;min-width:0;}
-.leg-runner{font-size:13.5px;font-weight:500;overflow-wrap:anywhere;}
-.leg-meta{font-size:11px;color:var(--text-secondary);}
-.leg-right{text-align:right;flex-shrink:0;}
-.leg-time{font-size:13px;font-weight:600;white-space:nowrap;}
-.leg-sub{margin-top:3px;font-size:10.5px;color:var(--text-secondary);display:flex;gap:6px;justify-content:flex-end;align-items:center;white-space:nowrap;}
-.leg-status{font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:20px;}
-.status-done{background:var(--accent-bg);color:var(--accent);}
-.status-eta{background:var(--border);color:var(--text-secondary);}
-.status-cur{background:var(--accent);color:var(--bg-card);}
-.foot{font-size:11px;color:var(--text-secondary);text-align:center;margin-top:18px;line-height:1.5;}
-</style>
+<title>25-manna live — flyttad</title>
+<meta http-equiv="refresh" content="0; url=./">
+<link rel="canonical" href="./">
+<script>location.replace('./'+location.search+location.hash);</script>
 </head>
-<body>
-<div class="wrap">
-  <h1>25-manna — <span id="hYear"></span></h1>
-  <div class="sub">Mölndal Outdoor · ögonblicksbild, uppdaterad av lagledaren för hand — inte automatiskt live. Tider med ”ca” är prognoser.</div>
-  <div id="root"></div>
-</div>
-<script>
-const DATA={"year":2026,"generatedAtLabel":"2026-10-05 09:56","etaClock":"16:51","vsPlanMin":null,"teamPlace":null,"confirmedCount":0,"totalLegs":25,"restartKeys":[],"runningNow":[],"legs":[{"key":"1","label":"1","group":null,"diff":"Blå","km":5.5,"runner":"Karolina Wildheim","startClock":"09:00","finishClock":"09:47","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"2","label":"2","group":null,"diff":"Blå","km":7.3,"runner":"Hugo Olsson","startClock":"09:47","finishClock":"10:34","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"3:1","label":"3:1","group":"3","diff":"Orange","km":4.5,"runner":"Louise Olsson","startClock":"10:34","finishClock":"11:28","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"3:2","label":"3:2","group":"3","diff":"Orange","km":4.5,"runner":"Henrik Olsson","startClock":"10:34","finishClock":"11:28","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"3:3","label":"3:3","group":"3","diff":"Orange","km":4.5,"runner":"Alice Olsson","startClock":"10:34","finishClock":"11:15","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"3:4","label":"3:4","group":"3","diff":"Orange","km":4.5,"runner":"Anders Nordelöf","startClock":"10:34","finishClock":"11:14","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"4:1","label":"4:1","group":"4","diff":"Vit","km":2.6,"runner":"Erika Asp","startClock":"11:14","finishClock":"11:34","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"4:2","label":"4:2","group":"4","diff":"Vit","km":2.6,"runner":"Lotta Falk","startClock":"11:15","finishClock":"11:36","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"4:3","label":"4:3","group":"4","diff":"Vit","km":2.6,"runner":"Vilhelmina Axenborg","startClock":"11:28","finishClock":"11:48","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"4:4","label":"4:4","group":"4","diff":"Vit","km":2.6,"runner":"Klara Brockmark","startClock":"11:28","finishClock":"11:46","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"5:1","label":"5:1","group":"5","diff":"Blå","km":6.3,"runner":"Erik Hulthén","startClock":"11:34","finishClock":"12:31","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"5:2","label":"5:2","group":"5","diff":"Blå","km":6.3,"runner":"Gustav Le Dous","startClock":"11:36","finishClock":"12:32","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"5:3","label":"5:3","group":"5","diff":"Blå","km":6.3,"runner":"Martin Wildheim","startClock":"11:46","finishClock":"12:37","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"5:4","label":"5:4","group":"5","diff":"Blå","km":6.3,"runner":"Theander Hulthén","startClock":"11:48","finishClock":"12:32","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"6:1","label":"6:1","group":"6","diff":"Violett","km":4.4,"runner":"Karin Prince","startClock":"12:31","finishClock":"13:17","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"6:2","label":"6:2","group":"6","diff":"Violett","km":4.4,"runner":"Maja Nordelöf","startClock":"12:32","finishClock":"13:16","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"6:3","label":"6:3","group":"6","diff":"Violett","km":4.4,"runner":"Evelina Hall","startClock":"12:32","finishClock":"13:13","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"6:4","label":"6:4","group":"6","diff":"Violett","km":4.4,"runner":"Agnes Asp","startClock":"12:37","finishClock":"13:18","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"7:1","label":"7:1","group":"7","diff":"Violett","km":5.6,"runner":"Anders Cullbrand","startClock":"13:13","finishClock":"14:09","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"7:2","label":"7:2","group":"7","diff":"Violett","km":5.6,"runner":"Henrik Wikner","startClock":"13:16","finishClock":"14:07","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"7:3","label":"7:3","group":"7","diff":"Violett","km":5.6,"runner":"Anna Nordelöf","startClock":"13:17","finishClock":"14:06","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"7:4","label":"7:4","group":"7","diff":"Violett","km":5.6,"runner":"Anders Asp","startClock":"13:18","finishClock":"14:04","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"23","label":"23","group":null,"diff":"Orange","km":4.2,"runner":"Mattias Brockmark","startClock":"14:09","finishClock":"14:47","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"24","label":"24","group":null,"diff":"Blå","km":6,"runner":"Molly Nordelöf","startClock":"14:47","finishClock":"15:47","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null},{"key":"25","label":"25","group":null,"diff":"Blå","km":8,"runner":"Jacob Axenborg","startClock":"15:47","finishClock":"16:51","legTime":null,"isActual":false,"isRestart":false,"isCurrent":false,"place":null}]};
-function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-const DIFF_COLORS={"Vit":{"bg":"#E8E6DD","fg":"#444441"},"Gul":{"bg":"#FAEEDA","fg":"#633806"},"Orange":{"bg":"#FAECE7","fg":"#993C1D"},"Violett":{"bg":"#EEEDFE","fg":"#3C3489"},"Röd":{"bg":"#FBEAEA","fg":"#96271E"},"Blå":{"bg":"#E6F1FB","fg":"#0C447C"}};
-function render(){
-  document.getElementById('hYear').textContent=DATA.year;
-  const root=document.getElementById('root');
-  let html='';
-  const ageMin=(Date.now()-DATA.generatedAtMs)/60000;
-  if(ageMin>90){
-    html+='<div class="banner stale">Den h\u00e4r sidan uppdaterades senast '+esc(DATA.generatedAtLabel)+' \u2014 fr\u00e5ga lagledaren om en f\u00e4rskare version har publicerats.</div>';
-  }
-  let vs='';
-  if(DATA.vsPlanMin!=null){
-    const m=DATA.vsPlanMin;
-    vs='<div><div class="stat-label">Mot plan</div><div class="stat-value">'+(m===0?'I fas':(m>0?'+':'\u2212')+Math.abs(m)+' min')+'</div><div class="stat-sub">'+(m===0?'med planen':(m>0?'efter':'f\u00f6re')+' plan')+'</div></div>';
-  }
-  const place=DATA.teamPlace?'<div><div class="stat-label">Placering</div><div class="stat-value">'+esc(DATA.teamPlace)+'</div><div class="stat-sub">just nu</div></div>':'';
-  html+='<div class="card"><div class="stats">'
-    +'<div><div class="stat-label">Prognos m\u00e5ltid</div><div class="stat-value">'+esc(DATA.etaClock||'\u2014')+'</div></div>'
-    +vs+place
-    +'<div><div class="stat-label">Bekr\u00e4ftade</div><div class="stat-value">'+DATA.confirmedCount+'/'+DATA.totalLegs+'</div><div class="stat-sub">str\u00e4ckor</div></div>'
-    +'</div>'
-    +'<div class="now"><div class="now-label">P\u00e5g\u00e5r just nu</div><div class="now-list">'+(DATA.runningNow.length?DATA.runningNow.map(r=>esc(r.label)+(r.runner?' \u00b7 '+esc(r.runner):'')).join('<br>'):'\u2014')+'</div></div>'
-    +'</div>';
-  if(DATA.restartKeys.length){
-    html+='<div class="banner restart">Omstart v\u00e4ntas/till\u00e4mpades f\u00f6r str\u00e4ckorna '+esc(DATA.restartKeys.join(', '))+' (start senarelagd till samlingsstarten).</div>';
-  }
-  html+='<div class="card" style="padding:6px 10px;">';
-  let lastGroup=null;
-  DATA.legs.forEach(leg=>{
-    if(leg.group&&leg.group!==lastGroup){lastGroup=leg.group;html+='<div class="grouphdr">Grupp '+leg.group+'</div>';}
-    else if(!leg.group)lastGroup=null;
-    const dc=DIFF_COLORS[leg.diff]||DIFF_COLORS['Bl\u00e5'];
-    const restartNote=leg.isRestart?' <span title="Omstart \u2014 kortad bana">\u21bb</span>':'';
-    const timeLabel=leg.legTime?leg.legTime:(leg.finishClock?'ca '+esc(leg.startClock||'')+'\u2013'+esc(leg.finishClock||''):'\u2014');
-    const stCls=leg.isActual?'status-done':(leg.isCurrent?'status-cur':'status-eta');
-    const stTxt=leg.isActual?'Klar':(leg.isCurrent?'P\u00e5g\u00e5r':'Prognos');
-    html+='<div class="leg'+(leg.isCurrent?' cur':'')+'">'
-      +'<div class="leg-key">'+esc(leg.label)+restartNote+'</div>'
-      +'<div class="diffpill" style="background:'+dc.bg+';color:'+dc.fg+';">'+esc(leg.diff||'')+'</div>'
-      +'<div class="leg-main"><div class="leg-runner">'+(leg.runner?esc(leg.runner):'\u2014 ingen tilldelad \u2014')+'</div><div class="leg-meta">'+(leg.startClock?'start '+esc(leg.startClock):'')+(leg.km?' \u00b7 '+leg.km+' km':'')+'</div></div>'
-      +'<div class="leg-right"><div class="leg-time">'+esc(timeLabel)+'</div>'
-      +'<div class="leg-sub">'+(leg.place?'<span>plats '+esc(leg.place)+'</span>':'')+'<span class="leg-status '+stCls+'">'+stTxt+'</span></div></div>'
-      +'</div>';
-  });
-  html+='</div>';
-  root.innerHTML=html;
-}
-render();
-</script>
-<div class="foot">Uppdaterad 2026-10-05 09:56 av lagledaren. Genererad från 25-manna-planeraren.</div>
+<body style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:24px;">
+<p>Live-sidan har flyttat. <a href="./">Gå till live-sidan</a>.</p>
 </body>
 </html>
