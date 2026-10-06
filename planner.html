@@ -79,6 +79,8 @@ table{width:100%;border-collapse:collapse;}
 .sec-violett td{background:rgba(96,68,192,0.07);}
 .sec-rod td{background:rgba(200,40,30,0.06);}
 .sec-bla td{background:rgba(16,96,192,0.06);}
+.sens-in{width:62px;text-align:right;font-variant-numeric:tabular-nums;}
+.sens-in.bad{border-color:#b91c1c;color:var(--color-text-danger);}
 .ghdr-vit{background:rgba(180,180,170,0.14);}
 .ghdr-gul{background:rgba(196,122,10,0.12);}
 .ghdr-orange{background:rgba(200,80,26,0.12);}
@@ -104,6 +106,7 @@ table{width:100%;border-collapse:collapse;}
   <button class="tab-btn" onclick="showTab('eligibility')"><i class="ti ti-chart-bar"></i> Eligibility</button>
   <button class="tab-btn" onclick="showTab('lineup')"><i class="ti ti-tournament"></i> Lineup</button>
   <button class="tab-btn" onclick="showTab('timeline')"><i class="ti ti-timeline"></i> Timeline</button>
+  <button class="tab-btn" onclick="showTab('sens')"><i class="ti ti-adjustments"></i> Känslighet</button>
   <button class="tab-btn" onclick="showTab('results')"><i class="ti ti-flag"></i> Resultat</button>
   <button class="tab-btn" onclick="showTab('live')"><i class="ti ti-broadcast"></i> Live</button>
   <span id="saveInd" class="save-ind"><i class="ti ti-check"></i> Saved</span>
@@ -260,6 +263,12 @@ table{width:100%;border-collapse:collapse;}
   <div id="timelineWrap"></div>
 </div>
 
+<!-- SENSITIVITY -->
+<div id="tab-sens" class="section">
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:0.75rem;max-width:680px;">Känslighetsanalys för <span id="sensYearLabel"></span>, utifrån laguppställningen under Lineup. Ange varje löpares snabbaste och långsammaste tempo (min/km, till exempel 6,5 eller 6:30) på den sträcka löparen har. Tempot är slutligt tempo på sträckan, inklusive fartboost om den är på. En tom ruta använder det förväntade tempot från Members. Bästa fall låter alla springa sitt snabbaste samtidigt och värsta fall sitt långsammaste samtidigt, så spannet är ett ytterläge och inte ett trolig utfall.</div>
+  <div id="sensWrap"></div>
+</div>
+
 <!-- RESULTS -->
 <div id="tab-results" class="section">
   <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:0.75rem;max-width:640px;">Klistra in det faktiska resultatet för <span id="resultsYearLabel"></span> (kopierat från resultatsidan) — appen försöker tolka löpare, sträcktid och placering per sträcka automatiskt. Klistra in ett nytt resultat för att skriva över. Löparhistorik (vilken sträcka och tempo varje löpare hållit, år för år) hittar du under Members — fäll ut pilen framför en löpares namn.</div>
@@ -365,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-04 UTC · build 35';
+const BUILD_STAMP='2026-10-06 UTC · build 42';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -425,6 +434,11 @@ let results={};
 // liveState[year]={started:bool (ticked once when the gun goes), teamPlace:'12' (team's placing
 // right now, free text digits), legPlaces:{legKey:'7'} (placing on that leg)}.
 let liveState={};
+// Känslighetsanalys: sensitivity[year][memberId]={best:min/km|null,worst:min/km|null} — the fastest and
+// slowest FINAL pace (boost included) that runner could plausibly run on whatever leg they have in that
+// year's lineup. Absolute paces, so they go stale if the runner is moved to a leg of another difficulty
+// (the tab flags a best slower than expected / worst faster than expected).
+let sensitivity={};
 function liveYearState(){if(!liveState[activeYear])liveState[activeYear]={started:false,teamPlace:'',legPlaces:{}};const o=liveState[activeYear];if(!o.legPlaces)o.legPlaces={};return o;}
 
 // ─── GITHUB AUTO-PUBLISH (Live-sida för klubbkamrater, build 30) ──────────────
@@ -663,7 +677,7 @@ function parseAgeReq(req,age){
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmtMins(t){const h=Math.floor(t/60),m=Math.round(t%60);return h>0?`${h}h ${m.toString().padStart(2,'0')}m`:`${m}m`;}
-function fmtClock(a){const h=Math.floor(a/60)%24,m=Math.round(a%60);return`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;}
+function fmtClock(a){a=Math.round(a);const h=Math.floor(a/60)%24,m=((a%60)+60)%60;return`${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}`;}
 function fmtReq(r){if(r===null)return`<span style="color:var(--color-text-danger);font-size:11px;">Not allowed</span>`;if(r==='all')return`<span style="font-size:11px;color:var(--color-text-secondary);">Any age</span>`;return`<span style="font-size:11px;">${esc(r)}</span>`;}
 
 function getPaceForDiff(m,d){
@@ -674,9 +688,13 @@ function getPaceForDiff(m,d){
   if(mp==null||vp==null)return null;if(mr===1)return vp;
   return vp+((tr-1)/(mr-1))*(mp-vp);
 }
+let PACE_OVERRIDE=null;
 function getEffectivePace(m,lk){
   const def=getDef(lk);if(!def?.diff)return null;
   let pace=getPaceForDiff(m,def.diff);if(pace==null)return null;
+  // Känslighet tab: while a scenario is simulated, a runner's entered best/worst pace replaces the
+  // expected one (it is already a final pace, so no boost is applied on top).
+  if(PACE_OVERRIDE&&m&&PACE_OVERRIDE[m.id]!=null)return PACE_OVERRIDE[m.id];
   if(boostEnabled&&BOOST[lk]!=null)pace=Math.max(pace-BOOST[lk],1);
   return pace;
 }
@@ -769,7 +787,7 @@ function persist(){
   if(applyingRemote)return; // don't echo a snapshot we just received straight back out
   if(dbDoc){
     const updatedAt=Math.max(Date.now(),latestKnownAt+1);latestKnownAt=updatedAt;
-    const payload={members,yearRules,activeYear,lineups,boostEnabled,strategy,savedLineupsByYear,activeSavedLineupIdByYear,results,liveState,ghConfig,updatedAt};
+    const payload={members,yearRules,activeYear,lineups,boostEnabled,strategy,savedLineupsByYear,activeSavedLineupIdByYear,results,liveState,sensitivity,ghConfig,updatedAt};
     dbDoc.set(payload).then(showSaved).catch(e=>{console.error('Sync failed',e);showSyncError();});
   }else{
     try{
@@ -783,6 +801,7 @@ function persist(){
       localStorage.setItem('25manna_activeSavedLineupIdByYear',JSON.stringify(activeSavedLineupIdByYear));
       localStorage.setItem('25manna_results',JSON.stringify(results));
       localStorage.setItem('25manna_liveState',JSON.stringify(liveState));
+      localStorage.setItem('25manna_sensitivity',JSON.stringify(sensitivity));
       localStorage.setItem('25manna_ghConfig',JSON.stringify(ghConfig));
       showSaved();
     }catch(e){console.error('Save failed',e);}
@@ -834,6 +853,7 @@ function applyLoadedState(){
   if(document.getElementById('tab-eligibility').classList.contains('active'))renderEligibility();
   if(document.getElementById('tab-lineup').classList.contains('active'))refreshLineupTab();
   if(document.getElementById('tab-timeline').classList.contains('active'))renderTimeline();
+  if(document.getElementById('tab-sens').classList.contains('active'))renderSensitivity();
   if(document.getElementById('tab-results').classList.contains('active'))renderResults();
   if(document.getElementById('tab-live').classList.contains('active')){renderGhSettings();renderLive();}
 }
@@ -859,6 +879,7 @@ function loadFromLocalStorage(){
   lineups=raw.lineups;savedLineupsByYear=raw.savedLineupsByYear;activeSavedLineupIdByYear=raw.activeSavedLineupIdByYear;
   try{const s=localStorage.getItem('25manna_results');results=s?JSON.parse(s):{};}catch(e){results={};}
   try{const s=localStorage.getItem('25manna_liveState');liveState=s?JSON.parse(s):{};}catch(e){liveState={};}
+  try{const s=localStorage.getItem('25manna_sensitivity');sensitivity=s?JSON.parse(s):{};}catch(e){sensitivity={};}
   try{const s=localStorage.getItem('25manna_ghConfig');if(s)ghConfig=sanitizeGhConfig(JSON.parse(s));}catch(e){}
   ensureHistoricalYears();
   persist();
@@ -908,12 +929,13 @@ async function initApp(){
         activeSavedLineupIdByYear=raw.activeSavedLineupIdByYear||{};
         results=raw.results||{};
         liveState=raw.liveState||{};
+        sensitivity=raw.sensitivity||{};
         ghConfig=sanitizeGhConfig(raw.ghConfig);
         if(!members.length)members=freshSeedMembers();
         if(!yearRules[2026])yearRules[2026]=build2026Rules();
       }else{
         // Nobody has opened this shared list yet — seed it once from the built-in roster.
-        members=freshSeedMembers();yearRules={2022:build2022Rules(),2023:build2023Rules(),2024:build2024Rules(),2025:build2025Rules(),2026:build2026Rules()};activeYear=2026;lineups={};boostEnabled=true;strategy='optimised';savedLineupsByYear={};activeSavedLineupIdByYear={};results={};liveState={};
+        members=freshSeedMembers();yearRules={2022:build2022Rules(),2023:build2023Rules(),2024:build2024Rules(),2025:build2025Rules(),2026:build2026Rules()};activeYear=2026;lineups={};boostEnabled=true;strategy='optimised';savedLineupsByYear={};activeSavedLineupIdByYear={};results={};liveState={};sensitivity={};
       }
       didSeedHistorical=ensureHistoricalYears();
       applyLoadedState();
@@ -1240,7 +1262,7 @@ function renderLive(){
   LEGS.forEach(leg=>{
     if(leg.group&&leg.group!==lastGroupKey){
       lastGroupKey=leg.group;
-      html+=`<tr><td colspan="8" style="background:var(--color-background-secondary);font-weight:500;font-size:12px;color:var(--color-text-secondary);padding:5px 10px;border-top:0.5px solid var(--color-border-tertiary);">Grupp ${leg.group}</td></tr>`;
+      html+=`<tr><td colspan="8" style="background:var(--color-background-secondary);font-weight:500;font-size:12px;color:var(--color-text-secondary);padding:5px 10px;border-top:0.5px solid var(--color-border-tertiary);">Sträcka ${leg.group}</td></tr>`;
     }else if(!leg.group)lastGroupKey=null;
     const name=expectedRunnerNameForKey(activeYear,leg.key);
     const def=getDef(leg.key);
@@ -1309,22 +1331,68 @@ function renderLive(){
 // (no window.claude, no db, no external calls). It's therefore never automatically live — the
 // exported file only reflects the moment it was generated, which is why the page prominently shows
 // when it was generated and the in-app button explains you need to re-export & re-upload to update it.
+// Live forecast for the clubmates' page: the same Monte Carlo idea as the Känslighet tab, but conditional on the times
+// already entered (those legs are fixed, everything after is drawn) and with the shared day factor updated from how the
+// finished legs went compared with their expected time (normal prior with sd = MC.day, each finished leg is a noisy
+// observation of it). Returns P10/P50/P90 of start and finish per leg plus restart risk. ~4000 runs take a fraction of a
+// second, so it runs synchronously whenever a snapshot is built. Fixed seed, so the same entries give the same page.
+function liveForecastMc(n){
+  const rules=yearRules[activeYear];const asgn=currentLineup().assignments||{};
+  if(!rules||!rules.length)return null;
+  const runners=mcRunners();if(!runners.length)return null;
+  const base=computeLiveRaceTime(asgn,rules,activeYear);
+  const sd0=Math.max(MC.day,0.5)/100;let wsum=1/(sd0*sd0),wdev=0;
+  base.actualKeys.forEach(k=>{
+    const id=asgn[k];if(id==null)return;const m=members.find(x=>x.id===Number(id));const rr=rules.find(x=>x.key===k);const rn=runners.find(x=>x.id===Number(id));
+    if(!m||!rr||!rn)return;
+    const act=parseTimeStrToMinutes(findActualLegResult(results[activeYear],k,expectedRunnerNameForKey(activeYear,k))?.legTime);
+    const exp=calcLegTime(m,rr,false);if(act==null||exp==null||exp<=0)return;
+    if(['24','25'].includes(k)&&base.starts[k]!=null&&base.starts[k]>=EXCHANGE_CLOSE)return; // shortened restart leg: not comparable
+    const sdr=Math.max(0.05,Math.sqrt(Math.max(0,(rn.lo*rn.lo+rn.hi*rn.hi+rn.exp*rn.exp-rn.lo*rn.hi-rn.lo*rn.exp-rn.hi*rn.exp)/18))/rn.exp);
+    const w=1/(sdr*sdr);wsum+=w;wdev+=w*(act/exp-1);
+  });
+  const mu=wdev/wsum,sd=Math.sqrt(1/wsum);
+  const rnd=mcRng(777);const keys=rules.map(r=>r.key);const SS={},FF={};keys.forEach(k=>{SS[k]=[];FF[k]=[];});
+  const fin=[];let r24=0,r25=0,ok=0;
+  try{
+    for(let i=0;i<n;i++){
+      const day=Math.max(-0.3,Math.min(0.3,mu+sd*mcNormal(rnd)));const ov={};
+      runners.forEach(r=>{ov[r.id]=mcTri(rnd,r.lo,r.exp,r.hi)*(1+day);});
+      PACE_OVERRIDE=ov;const a=computeLiveRaceTime(asgn,rules,activeYear);
+      if(a.finishes['25']==null)continue;
+      keys.forEach(k=>{if(a.starts[k]!=null)SS[k].push(a.starts[k]);if(a.finishes[k]!=null)FF[k].push(a.finishes[k]);});
+      fin.push(a.finishes['25']);if(a.restartKeys.has('24'))r24++;if(a.restartKeys.has('25'))r25++;ok++;
+    }
+  }finally{PACE_OVERRIDE=null;}
+  if(!ok)return null;
+  keys.forEach(k=>{SS[k].sort((x,y)=>x-y);FF[k].sort((x,y)=>x-y);});fin.sort((x,y)=>x-y);
+  return{n:ok,mu,sd,SS,FF,fin,r24:r24/ok,r25:r25/ok};
+}
 function buildLiveSnapshotData(){
   const lu=currentLineup();const asgn=lu.assignments||{};const rules=yearRules[activeYear]||[];
   const race=computeLiveRaceTime(asgn,rules,activeYear);
   const r=results[activeYear];
   const ls=liveState[activeYear]||{};
   const curKeys=new Set(liveCurrentKeys(race));
+  let fc=null;try{fc=liveForecastMc(4000);}catch(e){console.error('liveForecastMc',e);fc=null;}
+  // Rounded to 5 minutes: median as the point estimate, P10/P90 rounded outwards as the range. A range that collapses
+  // (everything before it is known) is dropped and the exact deterministic time is used instead.
+  const r5=v=>Math.round(v/5)*5,lo5=v=>Math.floor(v/5)*5,hi5=v=>Math.ceil(v/5)*5;
+  const est=(arr)=>{if(!arr||!arr.length)return null;const p10=mcQuantile(arr,0.1),p90=mcQuantile(arr,0.9);const a=lo5(p10),b=hi5(p90);return{m:r5(mcQuantile(arr,0.5)),a,b,range:(p90-p10)>=2&&b-a>=5};};
   const legs=LEGS.map(leg=>{
     const name=expectedRunnerNameForKey(activeYear,leg.key);
     const def=getDef(leg.key);
     const isRestart=race.restartKeys.has(leg.key);
     const isActual=race.actualKeys.has(leg.key);
     const savedTime=r?.legs?.[leg.key]?.legTime||null;
+    let startClock=race.starts[leg.key]!=null?fmtClock(race.starts[leg.key]):null,finishClock=race.finishes[leg.key]!=null?fmtClock(race.finishes[leg.key]):null,startRange=null;
+    if(fc&&!isActual){
+      const se=est(fc.SS[leg.key]),fe=est(fc.FF[leg.key]);
+      if(se&&se.range){startClock=fmtClock(se.m);startRange=fmtClock(se.a)+'\u2013'+fmtClock(se.b);}
+      if(fe&&fe.range)finishClock=fmtClock(fe.m);
+    }
     return{key:leg.key,label:leg.label,group:leg.group||null,diff:def?.diff||null,km:def?.km??null,
-      runner:name||null,
-      startClock:race.starts[leg.key]!=null?fmtClock(race.starts[leg.key]):null,
-      finishClock:race.finishes[leg.key]!=null?fmtClock(race.finishes[leg.key]):null,
+      runner:name||null,startClock,finishClock,startRange,
       legTime:savedTime,isActual,isRestart,isCurrent:curKeys.has(leg.key),
       place:(ls.legPlaces&&ls.legPlaces[leg.key])||null};
   });
@@ -1336,10 +1404,15 @@ function buildLiveSnapshotData(){
   try{planEnd=computeRaceTime(asgn,rules).finishes['25'];liveEnd=computeLiveRaceTime(asgn,rules,activeYear).finishes['25'];}
   finally{NO_RESTART_SIM=false;}
   const etaMin=race.finishes['25'];
+  let etaClock=etaMin!=null?fmtClock(etaMin):null,etaRange=null;
+  const fe25=fc?est(fc.fin):null;
+  if(fe25&&fe25.range&&race.actualKeys.size<LEGS.length){etaClock=fmtClock(fe25.m);etaRange=fmtClock(fe25.a)+'\u2013'+fmtClock(fe25.b);}
+  const restartRisk=[];
+  if(fc&&race.actualKeys.size<LEGS.length){[['24',fc.r24],['25',fc.r25]].forEach(([k,p])=>{if(p>=0.01&&p<=0.99)restartRisk.push({leg:k,pct:Math.round(p*100)});});}
   const vsPlanMin=(race.actualKeys.size>0&&liveEnd!=null&&planEnd!=null)?(Math.round(liveEnd-planEnd)||0):null;
   return{year:activeYear,
     generatedAtLabel:new Date().toLocaleString('sv-SE',{dateStyle:'short',timeStyle:'short'}),
-    etaClock:etaMin!=null?fmtClock(etaMin):null,
+    etaClock,etaRange,restartRisk,
     vsPlanMin,
     teamPlace:ls.teamPlace||null,
     confirmedCount:race.actualKeys.size,totalLegs:LEGS.length,
@@ -1401,7 +1474,7 @@ h1{font-size:19px;font-weight:700;margin:0 0 2px;}
 <body>
 <div class="wrap">
   <h1>25-manna \u2014 <span id="hYear"></span></h1>
-  <div class="sub">M\u00f6lndal Outdoor \u00b7 \u00f6gonblicksbild, uppdaterad av lagledaren f\u00f6r hand \u2014 inte automatiskt live. Tider med \u201dca\u201d \u00e4r prognoser.</div>
+  <div class="sub">M\u00f6lndal Outdoor \u00b7 \u00f6gonblicksbild, uppdaterad av lagledaren f\u00f6r hand \u2014 inte automatiskt live. Tider med \u201dca\u201d \u00e4r prognoser; intervallet visar n\u00e4r v\u00e4xlingen sannolikt sker.</div>
   <div id="root"></div>
 </div>
 <script>
@@ -1421,10 +1494,11 @@ function render(){
     const m=DATA.vsPlanMin;
     vs='<div><div class="stat-label">Mot plan</div><div class="stat-value">'+(m===0?'I fas':(m>0?'+':'\\u2212')+Math.abs(m)+' min')+'</div><div class="stat-sub">'+(m===0?'med planen':(m>0?'efter':'f\\u00f6re')+' plan')+'</div></div>';
   }
+  const risk=(DATA.restartRisk||[]).map(r=>'<div><div class="stat-label">Risk omstart</div><div class="stat-value">'+r.pct+' %</div><div class="stat-sub">p\\u00e5 str\\u00e4cka '+esc(r.leg)+'</div></div>').join('');
   const place=DATA.teamPlace?'<div><div class="stat-label">Placering</div><div class="stat-value">'+esc(DATA.teamPlace)+'</div><div class="stat-sub">just nu</div></div>':'';
   html+='<div class="card"><div class="stats">'
-    +'<div><div class="stat-label">Prognos m\\u00e5ltid</div><div class="stat-value">'+esc(DATA.etaClock||'\\u2014')+'</div></div>'
-    +vs+place
+    +'<div><div class="stat-label">Prognos m\\u00e5ltid</div><div class="stat-value">'+esc(DATA.etaClock||'\\u2014')+'</div>'+(DATA.etaRange?'<div class="stat-sub">sannolikt '+esc(DATA.etaRange)+'</div>':'')+'</div>'
+    +risk+vs+place
     +'<div><div class="stat-label">Bekr\\u00e4ftade</div><div class="stat-value">'+DATA.confirmedCount+'/'+DATA.totalLegs+'</div><div class="stat-sub">str\\u00e4ckor</div></div>'
     +'</div>'
     +'<div class="now"><div class="now-label">P\\u00e5g\\u00e5r just nu</div><div class="now-list">'+(DATA.runningNow.length?DATA.runningNow.map(r=>esc(r.label)+(r.runner?' \\u00b7 '+esc(r.runner):'')).join('<br>'):'\\u2014')+'</div></div>'
@@ -1435,7 +1509,7 @@ function render(){
   html+='<div class="card" style="padding:6px 10px;">';
   let lastGroup=null;
   DATA.legs.forEach(leg=>{
-    if(leg.group&&leg.group!==lastGroup){lastGroup=leg.group;html+='<div class="grouphdr">Grupp '+leg.group+'</div>';}
+    if(leg.group&&leg.group!==lastGroup){lastGroup=leg.group;html+='<div class="grouphdr">Str\\u00e4cka '+leg.group+'</div>';}
     else if(!leg.group)lastGroup=null;
     const dc=DIFF_COLORS[leg.diff]||DIFF_COLORS['Bl\\u00e5'];
     const restartNote=leg.isRestart?' <span title="Omstart \\u2014 kortad bana">\\u21bb</span>':'';
@@ -1445,7 +1519,7 @@ function render(){
     html+='<div class="leg'+(leg.isCurrent?' cur':'')+'">'
       +'<div class="leg-key">'+esc(leg.label)+restartNote+'</div>'
       +'<div class="diffpill" style="background:'+dc.bg+';color:'+dc.fg+';">'+esc(leg.diff||'')+'</div>'
-      +'<div class="leg-main"><div class="leg-runner">'+(leg.runner?esc(leg.runner):'\\u2014 ingen tilldelad \\u2014')+'</div><div class="leg-meta">'+(leg.startClock?'start '+esc(leg.startClock):'')+(leg.km?' \\u00b7 '+leg.km+' km':'')+'</div></div>'
+      +'<div class="leg-main"><div class="leg-runner">'+(leg.runner?esc(leg.runner):'\\u2014 ingen tilldelad \\u2014')+'</div><div class="leg-meta">'+(leg.startRange?'v\\u00e4xling '+esc(leg.startRange):(leg.startClock?'start '+esc(leg.startClock):''))+(leg.km?' \\u00b7 '+leg.km+' km':'')+'</div></div>'
       +'<div class="leg-right"><div class="leg-time">'+esc(timeLabel)+'</div>'
       +'<div class="leg-sub">'+(leg.place?'<span>plats '+esc(leg.place)+'</span>':'')+'<span class="leg-status '+stCls+'">'+stTxt+'</span></div></div>'
       +'</div>';
@@ -1572,13 +1646,14 @@ function openGhNewFilePage(){
 
 // ─── TAB NAVIGATION ──────────────────────────────────────────────────────────
 function showTab(t){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',['members','rules','eligibility','lineup','timeline','results','live'][i]===t);});
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',['members','rules','eligibility','lineup','timeline','sens','results','live'][i]===t);});
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('tab-'+t).classList.add('active');
   if(t==='members')renderMembers();
   if(t==='eligibility')renderEligibility();
   if(t==='lineup')refreshLineupTab();
   if(t==='timeline')renderTimeline();
+  if(t==='sens')renderSensitivity();
   if(t==='results')renderResults();
   if(t==='live'){renderGhSettings();renderLive();}
 }
@@ -2309,6 +2384,377 @@ function renderLineup(){
     tbody.appendChild(tr);
   });
   document.getElementById('lineupStats').textContent=`${Object.values(asgn).filter(v=>v!=null).length}/${LEGS.length} legs · ${usedIds.size} runners`;
+}
+
+// ─── KÄNSLIGHET (sensitivity: best / worst case total time) ───────────────────
+// Every runner in the current lineup gets two optional inputs — fastest and slowest final pace in
+// min/km. computeRaceTime is simply re-run three times (plan / everyone at their best / everyone at
+// their worst) with PACE_OVERRIDE swapping in the entered paces, so the group hand-over chain, the
+// exchange-close restart rule and the shortened restart legs all behave exactly as in Lineup.
+// The entered paces are stored per year in `sensitivity` (shared db) so they are ready as the input
+// distribution for a later Monte Carlo step.
+const SENS_FILL={fast:8,slow:20}; // quick-fill percentages (UI only, not persisted)
+function sensYear(){if(!sensitivity[activeYear])sensitivity[activeYear]={};return sensitivity[activeYear];}
+function fmtPaceNum(p){return p==null?'':String(Math.round(p*100)/100).replace('.',',');}
+// "6,5" / "6.5" → 6.5, "6:30" → 6.5, empty → null, nonsense → NaN
+function parsePaceInput(str){
+  const t=String(str==null?'':str).trim();if(!t)return null;
+  const mm=t.match(/^(\d{1,2}):(\d{1,2})$/);
+  const v=mm?parseInt(mm[1],10)+parseInt(mm[2],10)/60:parseFloat(t.replace(',','.'));
+  if(!isFinite(v)||v<1||v>40)return NaN;return v;
+}
+function sensScenario(mode){
+  const rules=yearRules[activeYear];const asgn=currentLineup().assignments||{};const sy=sensYear();const ov={};
+  if(mode!=='plan')Object.values(asgn).forEach(id=>{
+    if(id==null)return;const e=sy[id];const v=e?(mode==='best'?e.best:e.worst):null;if(v!=null)ov[id]=v;
+  });
+  PACE_OVERRIDE=ov;
+  try{
+    const race=computeRaceTime(asgn,rules);const legTimes={};
+    rules.forEach(r=>{
+      const id=asgn[r.key];const m=id!=null?members.find(x=>x.id===Number(id)):null;const def=getDef(r.key);
+      const useR=['24','25'].includes(r.key)&&race.restartKeys.has(r.key)&&def?.restartKm!=null;
+      legTimes[r.key]=m?calcLegTime(m,r,useR):null;
+    });
+    return{race,legTimes};
+  }finally{PACE_OVERRIDE=null;}
+}
+// Expandable "Löparhistorik" per runner (same table as on Members) — UI-only, toggled in place so
+// typed values in the pace inputs are never disturbed.
+let sensExpanded=new Set();
+function sensHistRowHtml(m){return`<td colspan="9" style="padding:8px 10px 14px 34px;background:var(--color-background-secondary);border-top:0.5px dashed var(--color-border-tertiary);">${runnerHistoryDetailHtml(m)}</td>`;}
+function sensChevronHtml(m){const ex=sensExpanded.has(m.id);return`<button class="sens-chev" onclick="toggleSensHistory(${m.id})" style="padding:2px 4px;background:transparent;border-color:transparent;line-height:1;" title="${ex?'Dölj':'Visa'} löparhistorik" aria-expanded="${ex}" aria-label="${ex?'Dölj':'Visa'} löparhistorik för ${esc(m.name)}"><i class="ti ti-chevron-right" style="display:inline-block;transition:transform .15s;transform:rotate(${ex?90:0}deg);"></i></button>`;}
+function toggleSensHistory(id){
+  const row=document.getElementById('sens-row-'+id);const m=members.find(x=>x.id===id);if(!row||!m)return;
+  const open=!sensExpanded.has(id);if(open)sensExpanded.add(id);else sensExpanded.delete(id);
+  const old=document.getElementById('sens-hist-'+id);if(old)old.remove();
+  if(open){const tr=document.createElement('tr');tr.id='sens-hist-'+id;tr.className='sens-hist-row';tr.innerHTML=sensHistRowHtml(m);row.after(tr);}
+  const b=row.querySelector('.sens-chev');
+  if(b){b.setAttribute('aria-expanded',open);b.title=(open?'Dölj':'Visa')+' löparhistorik';const i=b.querySelector('i');if(i)i.style.transform='rotate('+(open?90:0)+'deg)';}
+}
+function sensInputId(id,field){return'sens-'+(field==='best'?'b':'w')+'-'+id;}
+function sensChanged(id,field,el){
+  const sy=sensYear();const v=parsePaceInput(el.value);
+  if(Number.isNaN(v)){el.value=fmtPaceNum(sy[id]?sy[id][field]:null);el.title='Skriv tempo i min/km, till exempel 6,5 eller 6:30';return;}
+  const e=sy[id]||(sy[id]={best:null,worst:null});e[field]=v;
+  if(e.best==null&&e.worst==null)delete sy[id];
+  el.value=fmtPaceNum(v);
+  persist();updateSensitivityResults();
+}
+function sensFillEmpty(){
+  const fast=parseFloat(String(document.getElementById('sensFast')?.value||'').replace(',','.')),slow=parseFloat(String(document.getElementById('sensSlow')?.value||'').replace(',','.'));
+  if(isFinite(fast))SENS_FILL.fast=Math.max(0,Math.min(60,fast));if(isFinite(slow))SENS_FILL.slow=Math.max(0,Math.min(300,slow));
+  const asgn=currentLineup().assignments||{};const sy=sensYear();let n=0;
+  Object.entries(asgn).forEach(([key,id])=>{
+    if(id==null)return;const m=members.find(x=>x.id===Number(id));if(!m)return;
+    const exp=getEffectivePace(m,key);if(exp==null)return;
+    const e=sy[m.id]||(sy[m.id]={best:null,worst:null});
+    if(e.best==null){e.best=Math.round(exp*(1-SENS_FILL.fast/100)*100)/100;n++;}
+    if(e.worst==null){e.worst=Math.round(exp*(1+SENS_FILL.slow/100)*100)/100;n++;}
+  });
+  persist();renderSensitivity();
+}
+async function sensClearAll(){
+  if(!Object.keys(sensitivity[activeYear]||{}).length)return;
+  if(!await customConfirm('Rensa alla snabbaste och långsammaste tempon för '+activeYear+'?','Rensa'))return;
+  sensitivity[activeYear]={};persist();renderSensitivity();
+}
+function sensCardHtml(title,tone,sc,planTotal){
+  const t=sc.race.total;
+  const bg={best:'rgba(39,80,10,0.09)',plan:'var(--color-background-secondary)',worst:'rgba(200,80,26,0.11)'}[tone];
+  let delta='';
+  if(t!=null&&planTotal!=null&&tone!=='plan'){const d=Math.round(t-planTotal);delta=`<div style="font-size:12px;font-weight:500;">${d===0?'Samma som plan':(d>0?'+':'−')+Math.abs(d)+' min mot plan'}</div>`;}
+  else if(tone==='plan')delta='<div style="font-size:12px;color:var(--color-text-secondary);">Förväntade tempon</div>';
+  const rk=[...sc.race.restartKeys].filter(k=>['23','24','25'].includes(k)||k.includes(':'));
+  const rs=rk.length?`<div style="font-size:11px;color:#993C1D;margin-top:2px;">Omstart: sträcka ${esc(rk.join(', '))}</div>`:'<div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px;">Ingen omstart</div>';
+  return`<div style="background:${bg};border-radius:var(--border-radius-md);padding:0.75rem 1rem;"><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px;">${title}</div><div id="sens-total-${tone}" style="font-size:24px;font-weight:500;font-variant-numeric:tabular-nums;">${t!=null?fmtMins(t):'ofullständig'}</div><div style="font-size:12px;color:var(--color-text-secondary);font-variant-numeric:tabular-nums;">${t!=null?'i mål '+fmtClock(START_MINS+t):'—'}</div>${delta}${rs}</div>`;
+}
+function updateSensitivityResults(){
+  const rules=yearRules[activeYear];if(!rules)return;
+  const asgn=currentLineup().assignments||{};const sy=sensYear();
+  const plan=sensScenario('plan'),best=sensScenario('best'),worst=sensScenario('worst');
+  const cards=document.getElementById('sensCards');
+  if(cards){
+    const pt=plan.race.total;
+    let span='';if(best.race.total!=null&&worst.race.total!=null)span=`<div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;">Spann mellan bästa och värsta fall: ${fmtMins(worst.race.total-best.race.total)}.</div>`;
+    cards.innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;">${sensCardHtml('Bästa fall','best',best,pt)}${sensCardHtml('Plan','plan',plan,pt)}${sensCardHtml('Värsta fall','worst',worst,pt)}</div>${span}`;
+  }
+  rules.forEach(r=>{
+    const set=(suffix,sc)=>{const el=document.getElementById('sens-t'+suffix+'-'+r.key.replace(':','-'));if(!el)return;const val=sc.legTimes[r.key];const rs=['24','25'].includes(r.key)&&sc.race.restartKeys.has(r.key)&&getDef(r.key)?.restartKm!=null;el.textContent=val!=null?fmtMins(val)+(rs?' *':''):'—';el.title=rs?'Sträckan går efter omstart och är förkortad':'';};
+    set('b',best);set('p',plan);set('w',worst);
+    const id=asgn[r.key];const m=id!=null?members.find(x=>x.id===Number(id)):null;if(!m)return;
+    const exp=getEffectivePace(m,r.key);const e=sy[m.id]||{};
+    const bi=document.getElementById(sensInputId(m.id,'best')),wi=document.getElementById(sensInputId(m.id,'worst'));
+    const badB=e.best!=null&&exp!=null&&(e.best>exp+1e-9||(e.worst!=null&&e.best>e.worst+1e-9));
+    const badW=e.worst!=null&&exp!=null&&(e.worst<exp-1e-9||(e.best!=null&&e.best>e.worst+1e-9));
+    if(bi){bi.classList.toggle('bad',!!badB);bi.title=badB?'Snabbaste tempot är långsammare än förväntat eller än det långsammaste':'';}
+    if(wi){wi.classList.toggle('bad',!!badW);wi.title=badW?'Långsammaste tempot är snabbare än förväntat eller än det snabbaste':'';}
+  });
+  if(MC.res)renderSensMc();
+}
+function renderSensitivity(){
+  const wrap=document.getElementById('sensWrap');if(!wrap)return;
+  const yl=document.getElementById('sensYearLabel');if(yl)yl.textContent=activeYear||'';
+  // Re-renders can arrive from a db echo while someone is typing — keep focus and unsaved text.
+  const ae=document.activeElement;const keep=ae&&wrap.contains(ae)&&ae.id?{id:ae.id,value:ae.value}:null;
+  if(!activeYear||!yearRules[activeYear]||!members.length){wrap.innerHTML='<div style="text-align:center;padding:2rem;color:var(--color-text-secondary);">Lägg till löpare och regler först.</div>';return;}
+  const rules=yearRules[activeYear];const asgn=currentLineup().assignments||{};const sy=sensYear();
+  if(!Object.values(asgn).some(v=>v!=null)){wrap.innerHTML='<div style="text-align:center;padding:2rem;color:var(--color-text-secondary);">Ingen laguppställning för '+esc(activeYear)+' än. Bygg en under Lineup, så dyker löparna upp här.</div>';return;}
+  let rows='';let lastGroup=null;
+  rules.forEach(r=>{
+    const leg=LEGS.find(l=>l.key===r.key)||{key:r.key,label:r.key};const def=getDef(r.key);const dg=def?.diff||'Blå';
+    if(leg.group&&leg.group!==lastGroup){
+      lastGroup=leg.group;
+      rows+=`<tr><td colspan="9" class="${DIFF_GHDR[dg]||'ghdr-bla'}" style="padding:6px 12px;font-weight:500;font-size:12px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);">Sträcka ${leg.group} · ${esc(dg)} · ${def?.km!=null?def.km+' km':''}</td></tr>`;
+    }else if(!leg.group)lastGroup=null;
+    const id=asgn[r.key];const m=id!=null?members.find(x=>x.id===Number(id)):null;const k=r.key.replace(':','-');
+    const sec=DIFF_SEC[dg]||'sec-bla';
+    const legCell=`<td style="padding:6px 10px;font-weight:500;white-space:nowrap;">${esc(leg.label)}${!leg.group&&def?.km!=null?` <span style="font-size:11px;font-weight:400;color:var(--color-text-secondary);">${def.km} km ${esc(dg)}</span>`:''}</td>`;
+    const tcell=(sfx)=>`<td id="sens-t${sfx}-${k}" style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;${sfx==='p'?'font-weight:500;':''}">—</td>`;
+    if(!m){
+      rows+=`<tr class="${sec}"><td></td>${legCell}<td colspan="2" style="padding:6px 10px;color:var(--color-text-secondary);font-size:12px;">Ingen löpare${id!=null?' (okänd)':''}</td><td></td><td></td>${tcell('b')}${tcell('p')}${tcell('w')}</tr>`;
+      return;
+    }
+    const exp=getEffectivePace(m,r.key);const e=sy[m.id]||{};const dc=DIFF_CLASSES[m.diff]||'d-bla';
+    const inp=(field)=>exp==null?'<span style="color:var(--color-text-secondary);font-size:11px;">saknar tempo</span>':`<input type="text" inputmode="decimal" class="sens-in" id="${sensInputId(m.id,field)}" name="${sensInputId(m.id,field)}" aria-label="${field==='best'?'Snabbaste':'Långsammaste'} tempo för ${esc(m.name)} (min/km)" value="${fmtPaceNum(e[field])}" placeholder="${fmtPaceNum(exp)}" onchange="sensChanged(${m.id},'${field}',this)"/>`;
+    rows+=`<tr class="${sec}" id="sens-row-${m.id}"><td style="padding:4px 2px;text-align:center;width:28px;">${sensChevronHtml(m)}</td>${legCell}<td style="padding:6px 10px;"><span style="font-weight:500;">${esc(m.name)}</span> <span class="pill ${dc}" style="font-size:10px;">${esc(m.diff)}</span></td><td style="padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums;">${exp!=null?fmtPaceNum(exp):'—'}</td><td style="padding:4px 6px;text-align:right;">${inp('best')}</td><td style="padding:4px 6px;text-align:right;">${inp('worst')}</td>${tcell('b')}${tcell('p')}${tcell('w')}</tr>`;
+    if(sensExpanded.has(m.id))rows+=`<tr id="sens-hist-${m.id}" class="sens-hist-row">${sensHistRowHtml(m)}</tr>`;
+  });
+  wrap.innerHTML=`
+  <div id="sensCards" style="margin-bottom:1rem;"></div>
+  <div id="sensMc" style="margin-bottom:1rem;"></div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:0.75rem;padding:10px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);">
+    <span style="font-size:12px;color:var(--color-text-secondary);">Förifyll tomma rutor:</span>
+    <label for="sensFast" style="font-size:12px;">snabbast −</label><input type="text" inputmode="decimal" id="sensFast" name="sensFast" value="${SENS_FILL.fast}" style="width:46px;text-align:right;"/><span style="font-size:12px;">%</span>
+    <label for="sensSlow" style="font-size:12px;">långsammast +</label><input type="text" inputmode="decimal" id="sensSlow" name="sensSlow" value="${SENS_FILL.slow}" style="width:46px;text-align:right;"/><span style="font-size:12px;">%</span>
+    <button onclick="sensFillEmpty()"><i class="ti ti-wand"></i> Förifyll</button>
+    <button onclick="sensClearAll()" style="color:var(--color-text-secondary);margin-left:auto;"><i class="ti ti-refresh"></i> Rensa alla</button>
+  </div>
+  <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow-x:auto;">
+    <table style="font-size:13px;min-width:760px;"><thead><tr style="background:var(--color-background-secondary);">
+      <th style="width:28px;"></th><th style="text-align:left;padding:8px 10px;">Sträcka</th><th style="text-align:left;padding:8px 10px;">Löpare</th>
+      <th style="text-align:right;padding:8px;">Förväntat<br><span style="font-weight:400;font-size:11px;color:var(--color-text-secondary);">min/km</span></th>
+      <th style="text-align:right;padding:8px;">Snabbast<br><span style="font-weight:400;font-size:11px;color:var(--color-text-secondary);">min/km</span></th>
+      <th style="text-align:right;padding:8px;">Långsammast<br><span style="font-weight:400;font-size:11px;color:var(--color-text-secondary);">min/km</span></th>
+      <th style="text-align:right;padding:8px;">Tid bäst</th><th style="text-align:right;padding:8px;">Tid plan</th><th style="text-align:right;padding:8px;">Tid värst</th>
+    </tr></thead><tbody>${rows}</tbody></table>
+  </div>
+  <div style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;max-width:680px;">* Sträckan går efter omstart (start ${fmtClock(RESTART_24_25)} för 24 och 25) och är då förkortad (${['24','25'].map(k=>{const d=getDef(k);return k+': '+(d?.restartKm??d?.km)+' km';}).join(', ')}). Därför kan en långsam löpare få kortare tid än i planen på just den sträckan; omstartsregeln sätter alltså ett tak för hur illa det kan gå.</div>`;
+  updateSensitivityResults();renderSensMc();
+  if(keep){const el=document.getElementById(keep.id);if(el){el.value=keep.value;el.focus();try{el.setSelectionRange(el.value.length,el.value.length);}catch(e){}}}
+}
+
+// ─── MONTE CARLO (builds on the Känslighet inputs) ────────────────────────────
+// Each run draws every runner's pace from a triangular distribution (fastest = lower bound, slowest =
+// upper bound, expected pace = mode; a missing side collapses onto the expected pace), then scales ALL
+// paces by one shared "dagsform" factor (terrain, weather, a good/bad day for the whole team; normal
+// distribution, ±3 sd clipped). The race is then simulated twice from the same draws: once with the
+// exchange-close restart rule switched OFF (NO_RESTART_SIM — gives the natural arrival times, from
+// which "no restart" probabilities follow directly: leg 24 is restarted iff leg 23 is finished at or
+// after 15:50, leg 25 iff leg 24 is) and once with it ON (the real final finish time).
+// Fixed random seed, so the same inputs always give the same curves. Runs in the browser in chunks.
+const MC={n:10000,day:3,res:null,running:false,progress:0};
+function mcRng(seed){let a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296;};}
+function mcTri(rnd,lo,c,hi){if(hi-lo<1e-9)return c;const u=rnd(),F=(c-lo)/(hi-lo);return u<F?lo+Math.sqrt(u*(hi-lo)*(c-lo)):hi-Math.sqrt((1-u)*(hi-lo)*(hi-c));}
+function mcNormal(rnd){let u=0;while(u<1e-12)u=rnd();const v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function mcRunners(){
+  const asgn=currentLineup().assignments||{};const sy=sensYear();const out=[];const seen=new Set();
+  Object.entries(asgn).forEach(([k,id])=>{
+    if(id==null)return;id=Number(id);if(seen.has(id))return;seen.add(id);
+    const m=members.find(x=>x.id===id);if(!m)return;const exp=getEffectivePace(m,k);if(exp==null)return;const e=sy[id]||{};
+    out.push({id,exp,lo:e.best!=null?Math.min(e.best,exp):exp,hi:e.worst!=null?Math.max(e.worst,exp):exp,set:e.best!=null||e.worst!=null});
+  });
+  return out;
+}
+function mcSignature(){return JSON.stringify([currentLineup().assignments||{},mcRunners().map(r=>[r.id,r.exp,r.lo,r.hi]),MC.n,MC.day,activeYear]);}
+function mcQuantile(sorted,p){return sorted.length?sorted[Math.min(sorted.length-1,Math.max(0,Math.floor(p*(sorted.length-1))))]:null;}
+function mcFracBelow(sorted,x){let lo=0,hi=sorted.length;while(lo<hi){const mid=(lo+hi)>>1;if(sorted[mid]<x)lo=mid+1;else hi=mid;}return sorted.length?lo/sorted.length:null;}
+function fmtPct(p){if(p==null)return'—';if(p<0.005)return'<1 %';if(p>0.995)return'>99 %';return Math.round(p*100)+' %';}
+async function runMonteCarlo(){
+  if(MC.running)return;
+  const rules=yearRules[activeYear];const asgn=currentLineup().assignments||{};const runners=mcRunners();
+  if(!rules||!runners.length)return;
+  const nIn=parseInt(String(document.getElementById('mcN')?.value||'').replace(/\s/g,''),10);
+  const dIn=parseFloat(String(document.getElementById('mcDay')?.value||'').replace(',','.'));
+  MC.n=isFinite(nIn)?Math.max(1000,Math.min(50000,nIn)):10000;MC.day=isFinite(dIn)?Math.max(0,Math.min(15,dIn)):3;
+  MC.running=true;MC.progress=0;renderSensMc();
+  const rnd=mcRng(20260);const f23=[],f24=[],fin=[];let anyRestart=0,done=0;
+  // Per-leg natural start / finish times (rule OFF) for the handover table, arrival-order counts inside each
+  // parallel group (which runner comes in 1st..4th), and how often a leg's natural start is at/after 15:50.
+  const legKeys=rules.map(r=>r.key);const SS={},FF={},RK={},RC={},names={};
+  legKeys.forEach(k=>{SS[k]=[];FF[k]=[];RC[k]=0;const id=asgn[k];const m=id!=null?members.find(x=>x.id===Number(id)):null;names[k]=m?m.name:null;});
+  PARALLEL_GROUPS.forEach(g=>{for(let s2=1;s2<=4;s2++)RK[`${g}:${s2}`]=[0,0,0,0];});
+  // Influence analysis ("vem är avgörande?"): each runner's drawn pace relative to expected (before the shared
+  // dagsform) and, in the same order, that run's arrival times — kept unsorted so they stay aligned.
+  const DEV={},T23=new Float64Array(MC.n),T24=new Float64Array(MC.n),TFIN=new Float64Array(MC.n);
+  runners.forEach(r=>{DEV[r.id]=new Float32Array(MC.n);});
+  const CH=500;
+  try{
+    for(let start=0;start<MC.n;start+=CH){
+      const end=Math.min(MC.n,start+CH);const wasNo=NO_RESTART_SIM;
+      try{
+        for(let i=start;i<end;i++){
+          const day=Math.max(-3,Math.min(3,mcNormal(rnd)))*MC.day/100;const ov={};
+          const dr={};runners.forEach(r=>{const v=mcTri(rnd,r.lo,r.exp,r.hi);dr[r.id]=v/r.exp;ov[r.id]=v*(1+day);});
+          PACE_OVERRIDE=ov;
+          NO_RESTART_SIM=true;const a=computeRaceTime(asgn,rules);
+          NO_RESTART_SIM=false;const b=computeRaceTime(asgn,rules);
+          if(a.finishes['23']==null||a.finishes['24']==null||b.finishes['25']==null)continue;
+          runners.forEach(r=>{DEV[r.id][done]=dr[r.id];});T23[done]=a.finishes['23'];T24[done]=a.finishes['24'];TFIN[done]=b.finishes['25'];
+          f23.push(a.finishes['23']);f24.push(a.finishes['24']);fin.push(b.finishes['25']);done++;
+          legKeys.forEach(k=>{const st=a.starts[k],fn=a.finishes[k];if(st!=null){SS[k].push(st);if(st>=EXCHANGE_CLOSE)RC[k]++;}if(fn!=null)FF[k].push(fn);});
+          PARALLEL_GROUPS.forEach(g=>{const ks=[1,2,3,4].map(n=>`${g}:${n}`);const fs=ks.map(k=>a.finishes[k]);if(fs.some(v=>v==null))return;
+            fs.map((v,ix)=>[v,ix]).sort((p,q)=>p[0]-q[0]).forEach((pr,rank)=>{RK[ks[pr[1]]][rank]++;});});
+          if(b.restartKeys.size>0)anyRestart++;
+        }
+      }finally{PACE_OVERRIDE=null;NO_RESTART_SIM=wasNo;}
+      MC.progress=end/MC.n;const bar=document.getElementById('mcBar');if(bar)bar.style.width=Math.round(MC.progress*100)+'%';
+      await new Promise(r=>setTimeout(r,0)); // never hold the globals across a yield
+    }
+  }finally{MC.running=false;}
+  if(!done){MC.res=null;renderSensMc();return;}
+  f23.sort((x,y)=>x-y);f24.sort((x,y)=>x-y);fin.sort((x,y)=>x-y);
+  legKeys.forEach(k=>{SS[k].sort((x,y)=>x-y);FF[k].sort((x,y)=>x-y);});
+  // Influence: compare each runner's best third of draws with their worst third (other runners and the day factor
+  // vary as usual in both groups) — effect on the chance of avoiding the restarts and on the arrival time at 25.
+  const infl=[];const third=Math.floor(done/3);
+  runners.forEach(r=>{
+    if(!r.set||r.hi-r.lo<1e-9||third<50)return;
+    const dv=DEV[r.id];const ord=Array.from({length:done},(_,i)=>i).sort((x,y)=>dv[x]-dv[y]);
+    const stat=(from,to)=>{let m24=0,ok24=0,ok25=0,mf=0;for(let j=from;j<to;j++){const i=ord[j];m24+=T24[i];mf+=TFIN[i];if(T23[i]<EXCHANGE_CLOSE)ok24++;if(T24[i]<EXCHANGE_CLOSE)ok25++;}const n=to-from;return{m24:m24/n,mf:mf/n,ok24:ok24/n,ok25:ok25/n};};
+    const fast=stat(0,third),slow=stat(done-third,done);
+    const key=legKeys.find(k=>asgn[k]!=null&&Number(asgn[k])===r.id)||null;
+    infl.push({id:r.id,key,name:members.find(m=>m.id===r.id)?.name||String(r.id),fast,slow,dOk25:fast.ok25-slow.ok25,dOk24:fast.ok24-slow.ok24,dMin24:slow.m24-fast.m24,dMinFin:slow.mf-fast.mf});
+  });
+  infl.sort((x,y)=>y.dOk25-x.dOk25);
+  MC.res={sig:mcSignature(),n:done,day:MC.day,f23,f24,fin,SS,FF,RK,RC,names,legKeys,infl,
+    p24ok:mcFracBelow(f23,EXCHANGE_CLOSE),p25ok:mcFracBelow(f24,EXCHANGE_CLOSE),anyRestart:anyRestart/done,
+    filled:runners.filter(r=>r.set).length,total:runners.length};
+  renderSensMc();
+}
+function mcChartSvg(res){
+  const W=640,H=300,L=46,R=18,T=14,B=38;
+  const all=[res.f23,res.f24];
+  let x0=Math.min(mcQuantile(res.f23,0.005),EXCHANGE_CLOSE-15),x1=Math.max(mcQuantile(res.f24,0.995),EXCHANGE_CLOSE+15);
+  const steps=[5,10,15,20,30,60];let step=steps.find(s=>(x1-x0)/s<=9)||60;
+  x0=Math.floor(x0/step)*step;x1=Math.ceil(x1/step)*step;
+  const X=v=>L+(v-x0)/(x1-x0)*(W-L-R),Y=p=>T+(1-p)*(H-T-B);
+  let g='';
+  [0,0.25,0.5,0.75,1].forEach(p=>{g+=`<line x1="${L}" x2="${W-R}" y1="${Y(p)}" y2="${Y(p)}" style="stroke:var(--color-border-tertiary)" stroke-width="1"/><text x="${L-6}" y="${Y(p)+4}" text-anchor="end" font-size="11" style="fill:var(--color-text-secondary)">${Math.round(p*100)} %</text>`;});
+  for(let v=x0;v<=x1+1e-9;v+=step){g+=`<line x1="${X(v)}" x2="${X(v)}" y1="${T}" y2="${H-B}" style="stroke:var(--color-border-tertiary)" stroke-width="0.5"/><text x="${X(v)}" y="${H-B+16}" text-anchor="middle" font-size="11" style="fill:var(--color-text-secondary)">${fmtClock(v)}</text>`;}
+  const curve=(arr,color,dash)=>{
+    const n=arr.length,k=Math.min(240,n);let pts='';
+    for(let i=0;i<k;i++){const idx=Math.floor(i*(n-1)/(k-1||1));pts+=`${X(arr[idx]).toFixed(1)},${Y((idx+1)/n).toFixed(1)} `;}
+    return`<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.2" ${dash?'stroke-dasharray="6 4"':''} stroke-linejoin="round"/>`;
+  };
+  const C24='#378ADD',C23='#D85A30',CL='#B3261E';
+  const xl=X(EXCHANGE_CLOSE);
+  const dot=(p,color,lab,dy)=>`<circle cx="${xl}" cy="${Y(p)}" r="4.5" fill="${color}" stroke="#fff" stroke-width="1.2"/><text x="${xl-8}" y="${Y(p)+dy}" text-anchor="end" font-size="12" font-weight="600" style="fill:${color};paint-order:stroke;stroke:var(--color-background-secondary,#fff);stroke-width:3px" >${lab}</text>`;
+  const sv=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Sannolikhet att vara klar med sträcka 23 respektive 24 vid en viss klockslag" style="max-width:${W}px;display:block;">
+    ${g}
+    <line x1="${xl}" x2="${xl}" y1="${T}" y2="${H-B}" stroke="${CL}" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="${xl+6}" y="${Y(0.05)}" font-size="11" style="fill:${CL}">${fmtClock(EXCHANGE_CLOSE)} växlingen stänger</text>
+    ${curve(res.f23,C23,true)}${curve(res.f24,C24,false)}
+    ${dot(res.p25ok,C24,fmtPct(res.p25ok),-8)}${dot(res.p24ok,C23,fmtPct(res.p24ok),res.p24ok>0.9?20:-8)}
+    <text x="${L+(W-L-R)/2}" y="${H-4}" text-anchor="middle" font-size="11" style="fill:var(--color-text-secondary)">Klockslag</text>
+  </svg>`;
+  return sv;
+}
+// "Vem är mest avgörande?": for each runner, compare a good day (fastest third of that runner's own drawn paces) with a
+// bad day (slowest third): the chance of avoiding the restart on 25, and how many minutes later the baton reaches leg 25 /
+// the team finishes. All other runners and the shared day factor vary as usual in both thirds.
+function mcInfluenceHtml(res){
+  const inf=res.infl||[];if(!inf.length)return'';
+  const lab=x=>{const l=LEGS.find(z=>z.key===x.key);return l?l.label:'';};
+  const nm=x=>`<span style="font-weight:500;">${esc(x.name)}</span> <span style="color:var(--color-text-secondary);font-size:11px;">sträcka ${esc(lab(x))}</span>`;
+  const byRestart=[...inf].sort((a,b)=>b.dOk25-a.dOk25);
+  const byFinish=[...inf].sort((a,b)=>b.dMinFin-a.dMinFin);
+  const maxR=Math.max(byRestart[0].dOk25,0.01),maxF=Math.max(byFinish[0].dMinFin,0.1);
+  const bar=(v,m,c)=>`<div style="height:8px;border-radius:3px;background:var(--color-border-tertiary);margin-top:3px;"><div style="height:100%;width:${Math.max(2,Math.round(v/m*100))}%;border-radius:3px;background:${c};"></div></div>`;
+  const listR=byRestart.slice(0,5).map(x=>`<div style="padding:6px 0;border-top:0.5px solid var(--color-border-tertiary);">${nm(x)}<div style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--color-text-secondary);">bra dag <b style="color:var(--color-text-primary);">${fmtPct(x.fast.ok25)}</b> · dålig dag <b style="color:var(--color-text-primary);">${fmtPct(x.slow.ok25)}</b> chans att slippa omstart</div>${bar(x.dOk25,maxR,'#378ADD')}</div>`).join('');
+  const listF=byFinish.slice(0,5).map(x=>`<div style="padding:6px 0;border-top:0.5px solid var(--color-border-tertiary);">${nm(x)}<div style="font-size:12px;font-variant-numeric:tabular-nums;color:var(--color-text-secondary);">dålig dag ger <b style="color:var(--color-text-primary);">${Math.round(x.dMinFin)} min</b> senare mål än en bra dag</div>${bar(x.dMinFin,maxF,'#6b7280')}</div>`).join('');
+  const allRow=x=>`<tr><td style="padding:5px 10px;white-space:nowrap;font-weight:500;">${esc(lab(x))}</td><td style="padding:5px 8px;">${esc(x.name)}</td><td style="padding:5px 8px;text-align:right;font-variant-numeric:tabular-nums;">${fmtPct(x.fast.ok25)}</td><td style="padding:5px 8px;text-align:right;font-variant-numeric:tabular-nums;">${fmtPct(x.slow.ok25)}</td><td style="padding:5px 8px;text-align:right;font-variant-numeric:tabular-nums;">${x.dMin24.toFixed(1).replace('.',',')} min</td><td style="padding:5px 8px;text-align:right;font-variant-numeric:tabular-nums;">${x.dMinFin.toFixed(1).replace('.',',')} min</td></tr>`;
+  return`<div style="margin-top:14px;">
+    <div style="font-size:13px;font-weight:500;margin-bottom:2px;">Vem är mest avgörande?</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px;max-width:680px;">För varje löpare jämförs en bra dag (den snabbaste tredjedelen av löparens slumpade tempon) med en dålig dag (den långsammaste tredjedelen). Alla andra löpare och dagsformen varierar som vanligt i båda fallen. Löparna i kedjan (sträcka 1, 2, 23 och 24) märks minut för minut, medan en löpare i en grupp mest spelar roll om hen blir sist in i gruppen. Den som går sist (25) påverkar däremot inte omstarten, bara måltiden. Måltiden räknas med omstartsregeln: kommer pinnen efter 15:50 startar 25 ändå 16:00, så förseningar före dess märks inte i målet.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;max-width:820px;">
+      <div><div style="font-size:12px;font-weight:500;margin-bottom:2px;">Avgör omstarten på 25</div>${listR}</div>
+      <div><div style="font-size:12px;font-weight:500;margin-bottom:2px;">Avgör måltiden</div>${listF}</div>
+    </div>
+    <details style="margin-top:8px;"><summary style="cursor:pointer;font-size:12px;color:var(--color-text-secondary);">Visa alla ${inf.length} löpare</summary><div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow-x:auto;max-width:760px;margin-top:6px;"><table style="font-size:13px;min-width:600px;"><thead><tr style="background:var(--color-background-secondary);"><th style="text-align:left;padding:6px 10px;">Sträcka</th><th style="text-align:left;padding:6px 8px;">Löpare</th><th style="text-align:right;padding:6px 8px;">Slipper omstart, bra dag</th><th style="text-align:right;padding:6px 8px;">dålig dag</th><th style="text-align:right;padding:6px 8px;">Ankomst 25, skillnad</th><th style="text-align:right;padding:6px 8px;">Mål, skillnad</th></tr></thead><tbody>${byRestart.map(allRow).join('')}</tbody></table></div></details>
+  </div>`;
+}
+// Handover table: for every leg, when the runner is expected to start (= when the baton arrives) and to
+// finish, as P50 with a P10–P90 range, drawn on a shared time axis. In the parallel groups (3–7) slot s starts when
+// the s-th runner of the previous group arrives — not a particular runner — so the table also shows how often each
+// runner comes in 1st..4th within their own group. All times are the natural ones (restart rule off).
+function mcHandoverHtml(res){
+  const keys=res.legKeys;const q=(a,p)=>mcQuantile(a,p);
+  const x0=START_MINS;const x1=Math.ceil((q(res.FF['25'],0.9)+10)/30)*30;
+  const pos=v=>Math.max(0,Math.min(100,(v-x0)/(x1-x0)*100));
+  const W=300,Hh=18;const X=v=>pos(v)*W/100;
+  let ticks='';for(let v=Math.ceil(x0/120)*120;v<=x1&&pos(v)<92;v+=120)ticks+=`<span style="position:absolute;left:${pos(v)}%;transform:translateX(-50%);font-size:10px;color:var(--color-text-secondary);">${fmtClock(v)}</span>`;
+  const rng=(arr)=>{const a=q(arr,0.1),m=q(arr,0.5),b=q(arr,0.9);return{a,m,b};};
+  let rows='',lastG=null;
+  keys.forEach(k=>{
+    const leg=LEGS.find(l=>l.key===k)||{key:k,label:k};const name=res.names[k];
+    if(!res.SS[k].length||!res.FF[k].length)return;
+    const dg=getDef(k)?.diff||'Blå';
+    if(leg.group&&leg.group!==lastG){lastG=leg.group;rows+=`<tr><td colspan="9" class="${DIFF_GHDR[dg]||'ghdr-bla'}" style="padding:5px 12px;font-weight:500;font-size:12px;color:var(--color-text-secondary);border-top:0.5px solid var(--color-border-tertiary);">Sträcka ${leg.group} · ${esc(dg)} · ${getDef(k)?.km??''} km</td></tr>`;}
+    else if(!leg.group)lastG=null;
+    const S=rng(res.SS[k]),F=rng(res.FF[k]);const pr=res.RC[k]/res.n;
+    const ln=(a,b,y,w)=>`<line x1="${X(a)}" x2="${X(b)}" y1="${y}" y2="${y}" stroke="#378ADD" stroke-width="${w}" vector-effect="non-scaling-stroke"/>`;
+    const svg=`<svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="none" width="100%" height="${Hh}" style="display:block;" aria-hidden="true">
+      <line x1="${X(EXCHANGE_CLOSE)}" x2="${X(EXCHANGE_CLOSE)}" y1="0" y2="${Hh}" stroke="#B3261E" stroke-width="1" stroke-dasharray="3 2" vector-effect="non-scaling-stroke"/>
+      ${ln(S.a,S.b,5,1.5)}${ln(F.a,F.b,13,1.5)}<rect x="${X(S.m)}" y="6" width="${Math.max(1,X(F.m)-X(S.m))}" height="6" rx="2" fill="#378ADD" fill-opacity="0.45"/></svg>`;
+    const cell=(r)=>`<td style="padding:5px 8px;font-variant-numeric:tabular-nums;white-space:nowrap;"><span style="font-weight:500;">${fmtClock(r.m)}</span> <span style="font-size:11px;color:var(--color-text-secondary);">${fmtClock(r.a)}–${fmtClock(r.b)}</span></td>`;
+    const startCell=cell(S).replace('</td>',pr>=0.01?` <span style="font-size:10px;color:#B3261E;" title="Sannolikhet att pinnen kommer fram ${fmtClock(EXCHANGE_CLOSE)} eller senare">omstart ${fmtPct(pr)}</span></td>`:'</td>');
+    let rk='<td colspan="4"></td>';
+    if(res.RK[k]){const tot=res.RK[k].reduce((x,y)=>x+y,0)||1;rk=res.RK[k].map(c=>{const p=c/tot;return`<td style="padding:5px 4px;text-align:center;font-size:12px;white-space:nowrap;min-width:46px;font-variant-numeric:tabular-nums;background:rgba(55,138,221,${(p*0.55).toFixed(2)});">${fmtPct(p)}</td>`;}).join('');}
+    rows+=`<tr><td style="padding:5px 10px;font-weight:500;white-space:nowrap;">${esc(leg.label)}</td><td style="padding:5px 8px;">${name?esc(name):'<span style="color:var(--color-text-secondary);">—</span>'}</td>${startCell}${cell(F)}<td style="padding:5px 8px;min-width:170px;">${svg}</td>${rk}</tr>`;
+  });
+  return`<div style="margin-top:14px;">
+    <div style="font-size:13px;font-weight:500;margin-bottom:2px;">Växlingstider per löpare</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px;max-width:680px;">När varje löpare startar (pinnen kommer fram) och går i mål, som median med spann P10–P90. I grupperna 3–7 startar plats 1 när första löparen i föregående grupp kommer in, plats 2 när andra kommer in, och så vidare. Därför visas också hur ofta varje löpare kommer in som 1:a, 2:a, 3:e och 4:e i sin grupp.</div>
+    <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow-x:auto;"><table style="font-size:13px;min-width:900px;"><thead><tr style="background:var(--color-background-secondary);">
+      <th style="text-align:left;padding:6px 10px;">Sträcka</th><th style="text-align:left;padding:6px 8px;">Löpare</th><th style="text-align:left;padding:6px 8px;">Startar</th><th style="text-align:left;padding:6px 8px;">I mål</th>
+      <th style="padding:6px 8px;text-align:left;"><div style="position:relative;height:14px;">${ticks}</div></th>
+      <th style="padding:6px 4px;text-align:center;font-size:11px;">1:a</th><th style="padding:6px 4px;text-align:center;font-size:11px;">2:a</th><th style="padding:6px 4px;text-align:center;font-size:11px;">3:e</th><th style="padding:6px 4px;text-align:center;font-size:11px;">4:e</th>
+    </tr></thead><tbody>${rows}</tbody></table></div>
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;max-width:680px;">Stapeln går från medianstart till medianmål, de tunna linjerna visar P10–P90 för start (övre) och mål (nedre). Den röda linjen är ${fmtClock(EXCHANGE_CLOSE)}, då växlingen stänger. Tiderna är utan omstartsregel, alltså när pinnen naturligt hade kommit fram.</div>
+  </div>`;
+}
+function renderSensMc(){
+  const el=document.getElementById('sensMc');if(!el)return;
+  const res=MC.res;const stale=res&&res.sig!==mcSignature();
+  const ctrl=`<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);">
+    <span style="font-weight:500;font-size:13px;">Monte Carlo</span>
+    <label for="mcN" style="font-size:12px;">simuleringar</label><input type="text" inputmode="numeric" id="mcN" name="mcN" value="${MC.n}" style="width:64px;text-align:right;"${MC.running?' disabled':''}/>
+    <label for="mcDay" style="font-size:12px;" title="Gemensam faktor för hela laget (terräng, väder, dagsform). Standardavvikelse i procent av tempot.">dagsform ±</label><input type="text" inputmode="decimal" id="mcDay" name="mcDay" value="${String(MC.day).replace('.',',')}" style="width:46px;text-align:right;"${MC.running?' disabled':''}/><span style="font-size:12px;">%</span>
+    <button onclick="runMonteCarlo()"${MC.running?' disabled':''} style="font-weight:500;"><i class="ti ti-refresh"></i> ${MC.running?'Räknar…':'Kör simulering'}</button>
+    ${MC.running?`<div style="flex:1;min-width:80px;height:6px;border-radius:3px;background:var(--color-border-tertiary);overflow:hidden;"><div id="mcBar" style="height:100%;width:${Math.round(MC.progress*100)}%;background:#378ADD;"></div></div>`:''}
+  </div>`;
+  if(!res){el.innerHTML=ctrl+`<div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px;max-width:680px;">${MC.running?'':'Kör simuleringen för att se sannolikheten att slippa omstart. Löparna dras ur en triangelfördelning mellan snabbaste och långsammaste tempo (förväntat tempo är toppen), och hela laget påverkas dessutom av en gemensam dagsform.'}</div>`;return;}
+  const tile=(title,val,sub,color)=>`<div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:0.75rem 1rem;border-left:4px solid ${color};"><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px;">${title}</div><div style="font-size:26px;font-weight:500;font-variant-numeric:tabular-nums;">${val}</div><div style="font-size:11px;color:var(--color-text-secondary);">${sub}</div></div>`;
+  const q=(arr,p)=>fmtClock(mcQuantile(arr,p));
+  const row=(lab,arr,col)=>`<tr><td style="padding:5px 10px;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${col};margin-right:6px;"></span>${lab}</td><td style="padding:5px 10px;text-align:right;font-variant-numeric:tabular-nums;">${q(arr,0.1)}</td><td style="padding:5px 10px;text-align:right;font-variant-numeric:tabular-nums;font-weight:500;">${q(arr,0.5)}</td><td style="padding:5px 10px;text-align:right;font-variant-numeric:tabular-nums;">${q(arr,0.9)}</td></tr>`;
+  el.innerHTML=ctrl+(stale?`<div style="margin-top:6px;font-size:12px;padding:6px 10px;border-radius:6px;background:#FAEEDA;color:#633806;">Indata har ändrats sedan simuleringen. Kör igen för att uppdatera.</div>`:'')+`
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:10px;">
+    ${tile('Slipper omstart på 25','<span style="color:#378ADD;">'+fmtPct(res.p25ok)+'</span>','klar med sträcka 24 före '+fmtClock(EXCHANGE_CLOSE),'#378ADD')}
+    ${tile('Slipper omstart på 24','<span style="color:#D85A30;">'+fmtPct(res.p24ok)+'</span>','klar med sträcka 23 före '+fmtClock(EXCHANGE_CLOSE),'#D85A30')}
+    ${tile('Minst en omstart',fmtPct(res.anyRestart),'på någon sträcka, med omstartsregeln på','#B3261E')}
+  </div>
+  <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px 6px;margin-top:10px;overflow-x:auto;background:var(--color-background-secondary);">
+    <div style="font-size:12px;font-weight:500;margin-bottom:4px;">Sannolikhet att vara klar med sträckan senast ett visst klockslag</div>
+    ${mcChartSvg(res)}
+    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;margin:2px 0 8px 46px;"><span><span style="display:inline-block;width:18px;border-top:2.5px solid #378ADD;vertical-align:middle;margin-right:5px;"></span>Klar med 24 (växling till 25)</span><span><span style="display:inline-block;width:18px;border-top:2.5px dashed #D85A30;vertical-align:middle;margin-right:5px;"></span>Klar med 23 (växling till 24)</span></div>
+  </div>
+  <div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow-x:auto;margin-top:10px;max-width:520px;"><table style="font-size:13px;"><thead><tr style="background:var(--color-background-secondary);"><th style="text-align:left;padding:6px 10px;"></th><th style="text-align:right;padding:6px 10px;">P10</th><th style="text-align:right;padding:6px 10px;">P50</th><th style="text-align:right;padding:6px 10px;">P90</th></tr></thead><tbody>
+    ${row('Klar med 23',res.f23,'#D85A30')}${row('Klar med 24',res.f24,'#378ADD')}${row('Målgång (med omstartsregel)',res.fin,'#6b7280')}
+  </tbody></table></div>
+  ${mcInfluenceHtml(res)}
+  ${mcHandoverHtml(res)}
+  <div style="font-size:11px;color:var(--color-text-secondary);margin-top:6px;max-width:680px;">${res.n.toLocaleString('sv-SE')} simuleringar, dagsform ±${String(res.day).replace('.',',')} % (standardavvikelse, gemensam för hela laget). ${res.filled} av ${res.total} löpare har snabbast/långsammast ifyllt, övriga ligger på sitt förväntade tempo. P10 betyder att 10 % av utfallen är tidigare än så. Kurvorna räknar utan omstartsregeln, så de visar när stafettpinnen naturligt hade kommit fram; måltiden i tabellen räknar med omstartsregeln. Löparna slumpas oberoende av varandra utöver dagsformen.</div>`;
 }
 
 // ─── TIMELINE (compact 4-lane layout) ────────────────────────────────────────
