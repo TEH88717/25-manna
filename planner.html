@@ -278,7 +278,7 @@ table{width:100%;border-collapse:collapse;}
 <!-- LIVE -->
 <div id="tab-live" class="section">
   <div id="ghSettingsWrap" style="margin-bottom:1rem;"></div>
-  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:0.75rem;max-width:640px;">Mata in tiden allteftersom löparna kommer i mål för <span id="liveYearLabel"></span> — sträckor som redan har en tid använder den, resten visar fortfarande prognosen från Lineup/tätens tempo. Lämna en ruta tom för att ta bort en inmatad tid. En fullständig resultatlista kan alltid klistras in i efterhand under Resultat-fliken.</div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:0.75rem;max-width:640px;">Mata in <strong>klockslaget</strong> då löparen kom i mål för <span id="liveYearLabel"></span> (t.ex. 11:47 eller 11:47:30). Nästa löpares start följer av klockslaget, så ett fel på en sträcka påverkar bara den sträckans löptid och inte resten av kedjan. Löptiden räknas ut och visas bredvid. Vill du hellre ange en löptid skriver du +32:15. Sträckor som redan har en tid använder den, resten visar prognosen från Lineup/tätens tempo. Lämna en ruta tom för att ta bort en inmatad tid. En fullständig resultatlista kan alltid klistras in i efterhand under Resultat-fliken.</div>
   <div id="liveWrap"></div>
 </div>
 
@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-06 UTC · build 42';
+const BUILD_STAMP='2026-10-07 UTC · build 45';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -439,7 +439,7 @@ let liveState={};
 // year's lineup. Absolute paces, so they go stale if the runner is moved to a leg of another difficulty
 // (the tab flags a best slower than expected / worst faster than expected).
 let sensitivity={};
-function liveYearState(){if(!liveState[activeYear])liveState[activeYear]={started:false,teamPlace:'',legPlaces:{}};const o=liveState[activeYear];if(!o.legPlaces)o.legPlaces={};return o;}
+function liveYearState(){if(!liveState[activeYear])liveState[activeYear]={started:false,teamPlace:'',legPlaces:{}};const o=liveState[activeYear];if(!o.legPlaces)o.legPlaces={};if(!o.splits)o.splits={};if(!o.groupSplits)o.groupSplits={};return o;}
 
 // ─── GITHUB AUTO-PUBLISH (Live-sida för klubbkamrater, build 30) ──────────────
 // Erik's GitHub repo coordinates, used only to build direct github.com links (see ghEditUrl/
@@ -990,6 +990,7 @@ function parallelScore(ga,rules){
 // accumulate in full. Only used for the "mot plan" comparison on the clubmates' page: with restarts
 // on, the final finish is pinned to the restart gun and would hide any earlier delay.
 let NO_RESTART_SIM=false;
+let SPLIT_NOISE=null; // Monte Carlo: {legKey: factor on the REMAINING time of a leg that has a split-based prediction}
 function computeRaceTime(asgn,rules){
   function getM(k){const id=asgn[k]!=null?Number(asgn[k]):null;return id!=null?members.find(x=>x.id===id):null;}
   function lt(k,ur=false){const r=rules.find(x=>x.key===k);if(!r)return null;return calcLegTime(getM(k),r,ur);}
@@ -1114,6 +1115,47 @@ function computeActualRaceTime(asgn,rules,year){
   return{total,breakdown:bd,starts,finishes,groupFinishTimes:gft,restartKeys:rk,groupTimes:gt};
 }
 
+// ─── SPLIT-BASED LEG PREDICTION ─────────────────────────────────────────────
+// Erik types up to three radio-control splits per leg: the leader's ("täten") running time at the control and our
+// runner's, both as time since each one's own start (mm:ss or h:mm:ss). Our runner's ratio to the leader at the LAST
+// control with both times (e.g. 1.12 = 12 % slower) is applied to the leader's total time on the leg: typed once the
+// leader is in (liveState[year].splits[key].lf), otherwise the PM's predicted leader time (winnerLegMin, scaled to the
+// shortened course on a restart leg). Result: predicted running time D of our runner, used by computeLiveRaceTime
+// instead of the pace estimate while the leg is still out. Stored in liveState[year].splits[key]={c:[{n,l,o}x3],lf}.
+// Parallel legs (groups 3–7) share the same radio controls and the same leader, so the control number (n), the leader's
+// time at the control (l) and the leader's finish (lf) are typed ONCE per group and stored in
+// liveState[year].groupSplits[group]={c:[{n,l}x3],lf}; only our own runner's time (o) stays per leg in splits[key].
+// Per-leg n/l/lf saved before build 45 (on any runner of the group) still count as a fallback where the group value is empty.
+function splitGroupOf(key){return String(key).includes(':')?String(key).split(':')[0]:null;}
+function effectiveSplits(key){
+  const ls=liveState[activeYear]||{};const own=(ls.splits||{})[key]||null;const g=splitGroupOf(key);
+  const gs=g?((ls.groupSplits||{})[g]||null):null;
+  // Older per-leg values: this leg's own first, then any other runner's in the same group.
+  const olds=[own,...(g?LEGS.filter(l=>l.group===g&&l.key!==key).map(l=>(ls.splits||{})[l.key]):[])].filter(Boolean);
+  const pick=(i,f)=>{if(gs&&gs.c&&gs.c[i]&&gs.c[i][f])return gs.c[i][f];for(const s of olds){if(s.c&&s.c[i]&&s.c[i][f])return s.c[i][f];}return'';};
+  if(!own&&!gs&&!olds.length)return null;
+  const c=[0,1,2].map(i=>({n:pick(i,'n'),l:pick(i,'l'),o:(own&&own.c&&own.c[i]&&own.c[i].o)||''}));
+  let lf=(gs&&gs.lf)||'';if(!lf){for(const s of olds){if(s.lf){lf=s.lf;break;}}}
+  return{c,lf};
+}
+function hasAnySplit(key){const e=effectiveSplits(key);return!!(e&&(e.lf||e.c.some(c=>c.n||c.l||c.o)));}
+function splitPrediction(key,ur){
+  const sp=effectiveSplits(key);if(!sp)return null;
+  const rows=(sp.c||[]).map(c=>({n:(c&&c.n)||'',l:parseTimeStrToMinutes(c&&c.l),o:parseTimeStrToMinutes(c&&c.o)})).filter(c=>c.l>0&&c.o>0);
+  if(!rows.length)return null;
+  rows.sort((a,b)=>a.o-b.o);const last=rows[rows.length-1];
+  const ratio=last.o/last.l;
+  let leaderTotal=parseTimeStrToMinutes(sp.lf),est=false;
+  if(!(leaderTotal>0)){
+    const def=getDef(key);
+    if(def&&def.winnerLegMin){leaderTotal=def.winnerLegMin;if(ur&&def.restartKm&&def.km)leaderTotal*=def.restartKm/def.km;est=true;}
+  }
+  if(!(leaderTotal>0))return null;
+  if(est&&leaderTotal<last.l*1.05)leaderTotal=last.l*1.05;
+  if(leaderTotal<last.l)return null;
+  let D=leaderTotal*ratio;if(D<last.o)D=last.o+0.5;
+  return{ratio,D,elapsed:last.o,est,leaderTotal,rows,lastN:last.n};
+}
 // Race-day "Live" prognosis: same waterfall as computeRaceTime/computeActualRaceTime, but per leg it
 // prefers a REAL recorded time (results[year].legs, matched by name — same findActualLegResult lookup
 // as the historical modes) and only falls back to the pace ESTIMATE (calcLegTime, same as planning
@@ -1123,37 +1165,51 @@ function computeActualRaceTime(asgn,rules,year){
 // placeholder promised. `actualKeys` tells callers which legs in the result are real vs. estimated.
 function computeLiveRaceTime(asgn,rules,year){
   const r=results[year];
-  const actualKeys=new Set();
+  const actualKeys=new Set();const splitKeys=new Set();
+  const astarts={};
   function getM(k){const id=asgn[k]!=null?Number(asgn[k]):null;return id!=null?members.find(x=>x.id===id):null;}
-  function lt(k,ur=false){
-    const actualStr=findActualLegResult(r,k,expectedRunnerNameForKey(year,k))?.legTime;
-    const am=parseTimeStrToMinutes(actualStr);
-    if(am!=null){actualKeys.add(k);return am;}
+  // Finish CLOCK of leg k given the time it really starts (ast). A recorded finish clock (typed on the Live tab) wins and
+  // is used as is, so an error in an earlier leg can't leak into it; then a recorded duration (older entries / pasted
+  // results) added to the start; otherwise the pace estimate. Entered legs are reported through actualKeys.
+  function fin(k,ast,ur=false){
+    const res=findActualLegResult(r,k,expectedRunnerNameForKey(year,k));
+    if(res&&Number.isFinite(res.finishClock)){actualKeys.add(k);return res.finishClock;}
+    const am=parseTimeStrToMinutes(res?.legTime);
+    if(am!=null){actualKeys.add(k);return ast!=null?ast+am:null;}
+    if(ast==null)return null;
+    const sp=splitPrediction(k,ur);
+    if(sp){
+      splitKeys.add(k);
+      const f=SPLIT_NOISE&&SPLIT_NOISE[k]!=null?SPLIT_NOISE[k]:1;
+      return ast+sp.elapsed+(sp.D-sp.elapsed)*f;
+    }
     const rr=rules.find(x=>x.key===k);if(!rr)return null;
-    return calcLegTime(getM(k),rr,ur);
+    const e=calcLegTime(getM(k),rr,ur);
+    return e!=null?ast+e:null;
   }
   function restartGun(k){return['24','25'].includes(k)?RESTART_24_25:RESTART_OTHER;}
   function actualStart(k,natural){if(natural==null)return null;return natural>=EXCHANGE_CLOSE&&!NO_RESTART_SIM?restartGun(k):natural;}
-  const t1=lt('1'),t2=lt('2');let el=0;const starts={},finishes={};
-  starts['1']=START_MINS;finishes['1']=t1!=null?START_MINS+t1:null;if(t1!=null)el+=t1;
-  starts['2']=START_MINS+el;finishes['2']=t2!=null?START_MINS+el+t2:null;if(t2!=null)el+=t2;
-  const gsb=START_MINS+el;const gft={'3':[],'4':[],'5':[],'6':[],'7':[]};
-  for(let s=1;s<=4;s++){const k=`3:${s}`;starts[k]=gsb;const ast=actualStart(k,gsb);const t=lt(k);finishes[k]=ast!=null&&t!=null?ast+t:null;gft['3'].push(finishes[k]);}
+  const starts={},finishes={};
+  starts['1']=START_MINS;astarts['1']=START_MINS;const f1=fin('1',START_MINS);finishes['1']=f1;
+  const s2=f1!=null?f1:START_MINS;starts['2']=s2;astarts['2']=s2;const f2=fin('2',s2);finishes['2']=f2;
+  const gsb=f2!=null?f2:s2;const gft={'3':[],'4':[],'5':[],'6':[],'7':[]};
+  for(let s=1;s<=4;s++){const k=`3:${s}`;starts[k]=gsb;const ast=actualStart(k,gsb);astarts[k]=ast;finishes[k]=fin(k,ast);gft['3'].push(finishes[k]);}
   for(let gi=1;gi<PARALLEL_GROUPS.length;gi++){
     const pG=PARALLEL_GROUPS[gi-1],cG=PARALLEL_GROUPS[gi];const pf=gft[pG].filter(t=>t!=null).sort((a,b)=>a-b);
-    for(let s=1;s<=4;s++){const k=`${cG}:${s}`;const st=pf[s-1]??null;starts[k]=st;const ast=actualStart(k,st);const t=lt(k);finishes[k]=(ast!=null&&t!=null)?ast+t:null;gft[cG].push(finishes[k]);}
+    for(let s=1;s<=4;s++){const k=`${cG}:${s}`;const st=pf[s-1]??null;starts[k]=st;const ast=actualStart(k,st);astarts[k]=ast;finishes[k]=fin(k,ast);gft[cG].push(finishes[k]);}
   }
   const g7=gft['7'];const l23s=g7.every(t=>t!=null)?Math.max(...g7):null;
-  starts['23']=l23s;const ast23=actualStart('23',l23s);const t23=lt('23');finishes['23']=ast23!=null&&t23!=null?ast23+t23:null;
-  starts['24']=finishes['23'];const is24r=starts['24']!=null&&starts['24']>=EXCHANGE_CLOSE&&!NO_RESTART_SIM;const ast24=actualStart('24',starts['24']);
-  const t24=ast24!=null?lt('24',is24r):null;finishes['24']=ast24!=null&&t24!=null?ast24+t24:null;
-  starts['25']=finishes['24'];const is25r=starts['25']!=null&&starts['25']>=EXCHANGE_CLOSE&&!NO_RESTART_SIM;const ast25=actualStart('25',starts['25']);
-  const t25=ast25!=null?lt('25',is25r):null;finishes['25']=ast25!=null&&t25!=null?ast25+t25:null;
+  starts['23']=l23s;const ast23=actualStart('23',l23s);astarts['23']=ast23;finishes['23']=fin('23',ast23);
+  starts['24']=finishes['23'];const is24r=starts['24']!=null&&starts['24']>=EXCHANGE_CLOSE&&!NO_RESTART_SIM;const ast24=actualStart('24',starts['24']);astarts['24']=ast24;
+  finishes['24']=ast24!=null?fin('24',ast24,is24r):null;
+  starts['25']=finishes['24'];const is25r=starts['25']!=null&&starts['25']>=EXCHANGE_CLOSE&&!NO_RESTART_SIM;const ast25=actualStart('25',starts['25']);astarts['25']=ast25;
+  finishes['25']=ast25!=null?fin('25',ast25,is25r):null;
   const rk=new Set();Object.entries(starts).forEach(([k,s])=>{if(s!=null&&s>=EXCHANGE_CLOSE)rk.add(k);});
-  const gt={};PARALLEL_GROUPS.forEach(g=>{const f=gft[g].filter(t=>t!=null);const s2=LEGS.filter(l=>l.group===g).map(l=>starts[l.key]).filter(t=>t!=null);gt[g]=(f.length===4&&s2.length>0)?Math.max(...f)-Math.min(...s2):null;});
+  const gt={};PARALLEL_GROUPS.forEach(g=>{const f=gft[g].filter(t=>t!=null);const s3=LEGS.filter(l=>l.group===g).map(l=>starts[l.key]).filter(t=>t!=null);gt[g]=(f.length===4&&s3.length>0)?Math.max(...f)-Math.min(...s3):null;});
   const total=finishes['25']!=null?finishes['25']-START_MINS:null;
-  const bd={'1':t1,'2':t2,'23':t23,'24':t24,'25':t25};PARALLEL_GROUPS.forEach(g=>bd[g]=gt[g]);
-  return{total,breakdown:bd,starts,finishes,groupFinishTimes:gft,restartKeys:rk,groupTimes:gt,actualKeys};
+  const dur=k=>(finishes[k]!=null&&astarts[k]!=null)?finishes[k]-astarts[k]:null;
+  const bd={'1':dur('1'),'2':dur('2'),'23':dur('23'),'24':dur('24'),'25':dur('25')};PARALLEL_GROUPS.forEach(g=>bd[g]=gt[g]);
+  return{total,breakdown:bd,starts,astarts,finishes,groupFinishTimes:gft,restartKeys:rk,groupTimes:gt,actualKeys,splitKeys};
 }
 
 // Which legs are out on the course right now, derived from the times Erik has entered (not from
@@ -1196,17 +1252,51 @@ function toggleLiveStarted(checked){liveYearState().started=!!checked;persist();
 // exactly which leg it's showing), so no name-matching/reordering is needed on the way in; the existing
 // findActualLegResult/expectedRunnerNameForKey helpers pick it straight back up by key for Results,
 // Timeline, Löparhistorik, etc.
+// Live entry is a FINISH CLOCK (HH:MM or HH:MM:SS, "13.45" and "1345" also work), not a leg duration: the next
+// start follows from what the clock said, so a slip on one leg can't push every later leg off. The running time of
+// the leg is then derived (finish − actual start) and stored as legTime for History/Resultat/Snapshot, recomputed
+// after every edit (syncClockLegTimes). A leading "+" ("+32:15") still lets you enter a plain leg duration.
+function pad2(n){return String(n).padStart(2,'0');}
+function fmtClockS(a){const t=Math.round(a*60),h=Math.floor(t/3600)%24,m=Math.floor(t%3600/60),sec=t%60;return pad2(h)+':'+pad2(m)+(sec?':'+pad2(sec):'');}
+function fmtDurStr(mins){const t=Math.round(mins*60),h=Math.floor(t/3600),m=Math.floor(t%3600/60),sec=t%60;return h>0?h+':'+pad2(m)+':'+pad2(sec):pad2(m)+':'+pad2(sec);}
+function parseClockInput(v){
+  let t=String(v||'').trim().replace(/\s/g,'').replace(/[.,]/g,':');
+  if(/^\d{3,4}$/.test(t))t=t.slice(0,-2)+':'+t.slice(-2);
+  const m=t.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);if(!m)return null;
+  const h=+m[1],mi=+m[2],se=m[3]!=null?+m[3]:0;if(h>23||mi>59||se>59)return null;
+  return h*60+mi+se/60;
+}
+function syncClockLegTimes(){
+  const r=results[activeYear];if(!r||!r.legs)return;
+  const race=computeLiveRaceTime(currentLineup().assignments||{},yearRules[activeYear]||[],activeYear);
+  Object.entries(r.legs).forEach(([k,l])=>{
+    if(!l||!Number.isFinite(l.finishClock))return;
+    const st=race.astarts[k];
+    l.legTime=(st!=null&&l.finishClock>st)?fmtDurStr(l.finishClock-st):'';
+  });
+}
 async function saveLiveTime(key,val){
   const v=(val||'').trim();
   if(!v){await clearLiveTime(key,true);return;}
-  if(!RESULT_TIME_RE.test(v)){
-    await customAlert('Ange tiden som mm:ss eller h:mm:ss, t.ex. 32:15 eller 1:05:40.');
-    renderLive();
-    return;
-  }
   if(!results[activeYear])results[activeYear]={team:null,legs:{}};
   if(!results[activeYear].legs)results[activeYear].legs={};
-  results[activeYear].legs[key]={runner:expectedRunnerNameForKey(activeYear,key)||null,legTime:v,raw:[]};
+  const runner=expectedRunnerNameForKey(activeYear,key)||null;
+  const prev=results[activeYear].legs[key];
+  if(v[0]==='+'){
+    const d=v.slice(1).trim();
+    if(!RESULT_TIME_RE.test(d)){await customAlert('Ange löptiden som +mm:ss eller +h:mm:ss, t.ex. +32:15. Eller skriv målklockslaget, t.ex. 11:47.');renderLive();return;}
+    results[activeYear].legs[key]={runner,legTime:d,raw:[]};
+  }else{
+    const c=parseClockInput(v);
+    if(c==null||c<=START_MINS){await customAlert('Ange klockslaget då löparen kom i mål, t.ex. 11:47 eller 11:47:30 (efter starten kl. '+fmtClock(START_MINS)+'). Vill du hellre ange löptiden: skriv +32:15.');renderLive();return;}
+    results[activeYear].legs[key]={runner,legTime:'',finishClock:c,raw:[]};
+  }
+  syncClockLegTimes();
+  const l=results[activeYear].legs[key];
+  if(Number.isFinite(l.finishClock)&&!l.legTime){
+    // finish at/before the (not yet known) start → keep the clock (chain stays right) but tell Erik
+    await customAlert('Obs: målklockslaget '+fmtClockS(l.finishClock)+' ligger före sträckans beräknade start. Klockslaget används ändå för kedjan, men löptiden kan inte räknas ut förrän föregående sträckor är inlagda.');
+  }
   persist();
   renderLive();renderResults();renderMembers();
 }
@@ -1215,8 +1305,79 @@ async function clearLiveTime(key,skipConfirm){
   if(!r||!r.legs||!r.legs[key])return;
   if(!skipConfirm&&!(await customConfirm('Ta bort den inlagda tiden för sträcka '+key+'?','Ta bort')))return;
   delete r.legs[key];
+  syncClockLegTimes();
   persist();
   renderLive();renderResults();renderMembers();
+}
+// Split entry UI (Live tab). splitOpen = which legs have their split panel unfolded (view state only).
+let splitOpen=new Set();
+function toggleSplit(key){if(splitOpen.has(key))splitOpen.delete(key);else splitOpen.add(key);renderLive();}
+// Re-render but keep the cursor in whichever field has focus (the change event of one field fires as the next is clicked).
+function renderLiveKeepFocus(){
+  const a=document.activeElement,id=a&&a.id;renderLive();
+  if(id){const e=document.getElementById(id);if(e){e.focus();try{if(e.select)e.select();}catch(_){}}}
+}
+async function saveSplitField(key,i,f,val){
+  let v=String(val||'').trim().replace(/[.,]/g,':');
+  if(f==='n')v=String(val||'').trim().slice(0,6);
+  else if(v&&!RESULT_TIME_RE.test(v)){await customAlert('Ange tiden som löptid mm:ss (eller h:mm:ss), t.ex. 12:30.');renderLiveKeepFocus();return;}
+  const o=liveYearState();const g=splitGroupOf(key);
+  if(g&&f!=='o'){
+    // Shared by all four runners of the group: store once, and drop any older per-leg copy of the same field so a
+    // cleared group value doesn't fall back to a stale one.
+    const gs=o.groupSplits[g]||(o.groupSplits[g]={c:[{},{},{}],lf:''});
+    if(i<0)gs.lf=v;else{if(!gs.c[i])gs.c[i]={};gs.c[i][f]=v;}
+    LEGS.filter(l=>l.group===g).forEach(l=>{const s=o.splits[l.key];if(!s)return;if(i<0)s.lf='';else if(s.c&&s.c[i])delete s.c[i][f];});
+  }else{
+    const sp=o.splits[key]||(o.splits[key]={c:[{},{},{}],lf:''});
+    if(i<0)sp.lf=v;else{if(!sp.c[i])sp.c[i]={};sp.c[i][f]=v;}
+  }
+  persist();
+  setTimeout(renderLiveKeepFocus,0);
+}
+function clearSplits(key){const o=liveYearState();delete o.splits[key];persist();renderLive();}
+async function clearGroupSplits(g){
+  if(!(await customConfirm('Rensa kontroller och tätens tider för sträcka '+g+'? De gäller alla fyra gafflingarna. Våra löpares egna tider ligger kvar.','Rensa')))return;
+  const o=liveYearState();delete o.groupSplits[g];
+  LEGS.filter(l=>l.group===g).forEach(l=>{const s=o.splits[l.key];if(!s)return;s.lf='';(s.c||[]).forEach(c=>{if(c){delete c.n;delete c.l;}});});
+  persist();renderLive();
+}
+function splitPanelHtml(leg,race,isActual){
+  const key=leg.key,id=key.replace(':','-');
+  const sp=effectiveSplits(key)||{c:[{},{},{}],lf:''};
+  const grp=splitGroupOf(key);
+  const ur=race.restartKeys.has(key);
+  const pred=splitPrediction(key,ur);
+  const def=getDef(key);
+  const inp='width:70px;font-family:monospace;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;';
+  let rowsHtml='';
+  for(let i=0;i<3;i++){
+    const c=sp.c[i]||{};const l=parseTimeStrToMinutes(c.l),o=parseTimeStrToMinutes(c.o);
+    const pct=(l>0&&o>0)?Math.round((o/l-1)*100):null;
+    rowsHtml+=`<tr><td style="padding:3px 8px 3px 0;"><input type="text" id="sp-${id}-${i}-n" aria-label="Kontrollnummer ${i+1}" placeholder="nr" value="${esc(c.n||'')}" style="${inp}width:56px;" onchange="saveSplitField('${key}',${i},'n',this.value)"></td>
+      <td style="padding:3px 8px 3px 0;"><input type="text" id="sp-${id}-${i}-l" aria-label="Täten, löptid vid kontroll ${i+1}" placeholder="mm:ss" value="${esc(c.l||'')}" style="${inp}" onchange="saveSplitField('${key}',${i},'l',this.value)"></td>
+      <td style="padding:3px 8px 3px 0;"><input type="text" id="sp-${id}-${i}-o" aria-label="Vår löpare, löptid vid kontroll ${i+1}" placeholder="mm:ss" value="${esc(c.o||'')}" style="${inp}" onchange="saveSplitField('${key}',${i},'o',this.value)"></td>
+      <td style="padding:3px 0;font-size:12px;font-weight:500;color:${pct==null?'var(--color-text-secondary)':(pct>0?'#993C1D':'#27500A')};">${pct==null?'—':(pct>0?'+':(pct<0?'−':''))+Math.abs(pct)+' %'}</td></tr>`;
+  }
+  const pmEst=def&&def.winnerLegMin?Math.round(def.winnerLegMin*(ur&&def.restartKm&&def.km?def.restartKm/def.km:1)):null;
+  let result='<span style="color:var(--color-text-secondary);">Fyll i täten och vår löpares löptid vid minst en kontroll, så räknas sträcktiden fram.</span>';
+  if(pred){
+    const fin=race.astarts[key]!=null?fmtClock(race.astarts[key]+pred.D):null;
+    result=`Prognos sträcktid <strong>${fmtDurStr(pred.D)}</strong> (${pred.ratio>=1?'+':'−'}${Math.abs(Math.round((pred.ratio-1)*100))} % mot täten${pred.lastN?' vid kontroll '+esc(pred.lastN):''}). Täten ${pred.est?'beräknas ca '+fmtDurStr(pred.leaderTotal)+' enligt PM':'gick i mål på '+fmtDurStr(pred.leaderTotal)}.${fin?' Förväntad växling ca <strong>'+fin+'</strong>.':''}${isActual?' <span style="color:var(--color-text-secondary);">(sträckan är redan inlagd — prognosen används inte)</span>':''}`;
+  }
+  return `<tr><td colspan="8" style="padding:8px 10px 12px 28px;background:var(--color-background-secondary);border-top:0.5px solid var(--color-border-tertiary);">
+    <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;">
+      <table style="font-size:12px;border-collapse:collapse;"><thead><tr style="color:var(--color-text-secondary);text-align:left;"><th style="padding:0 8px 4px 0;font-weight:500;">Kontroll</th><th style="padding:0 8px 4px 0;font-weight:500;">Täten</th><th style="padding:0 8px 4px 0;font-weight:500;">Vår löpare</th><th style="padding:0 0 4px 0;font-weight:500;">Skillnad</th></tr></thead><tbody>${rowsHtml}</tbody></table>
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:420px;">
+        <label style="font-size:12px;color:var(--color-text-secondary);display:flex;align-items:center;gap:8px;">Täten i mål (löptid)
+          <input type="text" id="sp-${id}-lf" placeholder="${pmEst?'ca '+pmEst+':00 (PM)':'mm:ss'}" value="${esc(sp.lf||'')}" style="${inp}" onchange="saveSplitField('${key}',-1,'lf',this.value)"></label>
+        <div style="font-size:12px;line-height:1.5;">${result}</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);">Tiderna är löptid sedan respektive löpares start. Procenten vid den senaste kontrollen räknas på täten i mål. Innan täten är i mål används PM:s tid.${grp?` <strong>Kontroll, täten och täten i mål gäller alla gafflingar på sträcka ${grp}</strong>, så de behöver bara fyllas i en gång. Vår löpare fylls i per löpare.`:''}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">${grp
+          ?`<button onclick="clearSplits('${key}')" style="font-size:11px;color:#b91c1c;">Rensa vår löpares tider</button><button onclick="clearGroupSplits('${grp}')" style="font-size:11px;color:#b91c1c;">Rensa tätens tider för sträcka ${grp}</button>`
+          :`<button onclick="clearSplits('${key}')" style="font-size:11px;color:#b91c1c;">Rensa mellantider</button>`}</div>
+      </div>
+    </div></td></tr>`;
 }
 function liveTimeInputId(key){return'live-t-'+key.replace(':','-');}
 // If a leg-time input is mid-edit (focused, not yet blurred) when "Exportera live-sida" is clicked,
@@ -1256,7 +1417,7 @@ function renderLive(){
     html+=`<div style="margin-bottom:10px;padding:8px 12px;background:#FAECE7;color:#993C1D;border-radius:var(--border-radius-lg);font-size:12px;"><i class="ti ti-alert-triangle"></i> <strong>Omstart</strong> väntas/tillämpades för sträckorna ${esc([...race.restartKeys].join(', '))} (start senarelagd till samlingsstarten).</div>`;
   }
   html+=`<div style="border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow-x:auto;"><table style="font-size:13px;table-layout:fixed;min-width:820px;"><thead><tr style="background:var(--color-background-secondary);">
-    <th style="text-align:left;padding:8px 10px;width:8%;">Sträcka</th><th style="text-align:left;padding:8px 10px;width:20%;">Löpare</th><th style="text-align:left;padding:8px 10px;width:9%;">Start</th><th style="text-align:left;padding:8px 10px;width:16%;">Tid</th><th style="text-align:left;padding:8px 10px;width:10%;">Status</th><th style="text-align:left;padding:8px 10px;width:9%;" title="Placering på sträckan — visas på klubbkamraternas sida">Plats</th><th style="text-align:left;padding:8px 10px;">vs. tätens tempo</th><th style="width:6%;"></th>
+    <th style="text-align:left;padding:8px 10px;width:8%;">Sträcka</th><th style="text-align:left;padding:8px 10px;width:20%;">Löpare</th><th style="text-align:left;padding:8px 10px;width:9%;">Start</th><th style="text-align:left;padding:8px 10px;width:18%;" title="Klockslaget då löparen kom i mål (t.ex. 11:47). Löptiden räknas ut. +32:15 anger en löptid istället.">Målgång (klockan)</th><th style="text-align:left;padding:8px 10px;width:10%;">Status</th><th style="text-align:left;padding:8px 10px;width:9%;" title="Placering på sträckan — visas på klubbkamraternas sida">Plats</th><th style="text-align:left;padding:8px 10px;">vs. tätens tempo</th><th style="width:6%;"></th>
   </tr></thead><tbody>`;
   let lastGroupKey=null;
   LEGS.forEach(leg=>{
@@ -1268,9 +1429,11 @@ function renderLive(){
     const def=getDef(leg.key);
     const isRestart=race.restartKeys.has(leg.key);
     const isActual=race.actualKeys.has(leg.key);
-    const savedTime=r?.legs?.[leg.key]?.legTime||'';
+    const finClk=race.finishes[leg.key],astClk=race.astarts[leg.key];
+    const splitPred=splitPrediction(leg.key,isRestart);const hasSplit=hasAnySplit(leg.key);
+    const savedTime=isActual&&finClk!=null?fmtClockS(finClk):'';
     let mins;
-    if(isActual){mins=parseTimeStrToMinutes(savedTime);}
+    if(isActual){mins=(finClk!=null&&astClk!=null&&finClk>astClk)?finClk-astClk:null;}
     else{const m=asgn[leg.key]!=null?members.find(x=>x.id===Number(asgn[leg.key])):null;const ruleRow=rules.find(x=>x.key===leg.key);mins=ruleRow?calcLegTime(m,ruleRow,isRestart):null;}
     const km=(isRestart&&def?.restartKm!=null)?def.restartKm:def?.km;
     const pace=(mins!=null&&km)?mins/km:null;
@@ -1292,17 +1455,18 @@ function renderLive(){
         :`<span class="pill" style="font-size:10px;background:var(--color-background-secondary);color:var(--color-text-secondary);">Prognos</span>`);
     const legPlace=(ls.legPlaces||{})[leg.key]||'';
     const restartNote=isRestart?` <span style="font-size:10px;color:#993C1D;" title="Omstart — kortad bana">↻</span>`:'';
-    const clearBtn=savedTime?`<button onclick="clearLiveTime('${leg.key}')" title="Ta bort inmatad tid" style="color:#b91c1c;padding:2px 6px;"><i class="ti ti-x"></i></button>`:'';
+    const clearBtn=isActual?`<button onclick="clearLiveTime('${leg.key}')" title="Ta bort inmatad tid" style="color:#b91c1c;padding:2px 6px;"><i class="ti ti-x"></i></button>`:'';
     html+=`<tr${isCurrent?' style="background:rgba(39,80,10,0.10);"':(isActual?'':' style="opacity:0.85;"')}>
       <td style="padding:7px 10px;font-weight:500;">${leg.label}${restartNote}</td>
-      <td style="padding:7px 10px;">${name?esc(name):'<span style="color:var(--color-text-secondary);">— ingen tilldelad —</span>'}</td>
+      <td style="padding:7px 10px;"><button onclick="toggleSplit('${leg.key}')" title="Mellantider från radiokontroller" aria-expanded="${splitOpen.has(leg.key)}" style="padding:0 4px;margin-right:2px;border:none;background:none;cursor:pointer;color:${hasSplit?'#27500A':'var(--color-text-secondary)'};">${splitOpen.has(leg.key)?'▾':'▸'}</button>${name?esc(name):'<span style="color:var(--color-text-secondary);">— ingen tilldelad —</span>'}${splitPred?` <span style="font-size:11px;font-weight:500;color:${splitPred.ratio>1?'#993C1D':'#27500A'};" title="Mellantid mot täten">${splitPred.ratio>=1?'+':'−'}${Math.abs(Math.round((splitPred.ratio-1)*100))} %</span>`:''}</td>
       <td style="padding:7px 10px;font-size:12px;color:var(--color-text-secondary);">${startClock}</td>
-      <td style="padding:7px 10px;"><input type="text" inputmode="numeric" placeholder="${mins!=null?'ca '+Math.round(mins)+' min':'mm:ss'}" value="${esc(savedTime)}" id="${liveTimeInputId(leg.key)}" style="width:90px;font-family:monospace;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;" onchange="saveLiveTime('${leg.key}',this.value)"></td>
+      <td style="padding:7px 10px;"><input type="text" inputmode="numeric" placeholder="${!isActual&&finClk!=null?(splitPred?'~ ':'ca ')+fmtClock(finClk):'hh:mm'}" value="${esc(savedTime)}" id="${liveTimeInputId(leg.key)}" aria-label="Målgång (klockslag) sträcka ${leg.label}" style="width:84px;font-family:monospace;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;" onchange="saveLiveTime('${leg.key}',this.value)">${isActual&&mins!=null?` <span style="font-size:11px;color:var(--color-text-secondary);font-family:monospace;" title="Löptid (mål − start)">${fmtDurStr(mins)}</span>`:''}</td>
       <td style="padding:7px 10px;">${statusBadge}</td>
       <td style="padding:7px 10px;"><input type="text" inputmode="numeric" id="live-p-${leg.key.replace(':','-')}" aria-label="Placering på sträcka ${leg.label}" value="${esc(legPlace)}" placeholder="—" style="width:48px;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;" onchange="saveLiveLegPlace('${leg.key}',this.value)"></td>
       <td style="padding:7px 10px;">${deltaHtml}</td>
       <td style="padding:7px 10px;">${clearBtn}</td>
     </tr>`;
+    if(splitOpen.has(leg.key))html+=splitPanelHtml(leg,race,isActual);
   });
   html+='</tbody></table></div>';
   const ghReady=!!(ghConfig.owner&&ghConfig.repo);
@@ -1345,7 +1509,7 @@ function liveForecastMc(n){
   base.actualKeys.forEach(k=>{
     const id=asgn[k];if(id==null)return;const m=members.find(x=>x.id===Number(id));const rr=rules.find(x=>x.key===k);const rn=runners.find(x=>x.id===Number(id));
     if(!m||!rr||!rn)return;
-    const act=parseTimeStrToMinutes(findActualLegResult(results[activeYear],k,expectedRunnerNameForKey(activeYear,k))?.legTime);
+    const act=(base.finishes[k]!=null&&base.astarts[k]!=null)?base.finishes[k]-base.astarts[k]:null;
     const exp=calcLegTime(m,rr,false);if(act==null||exp==null||exp<=0)return;
     if(['24','25'].includes(k)&&base.starts[k]!=null&&base.starts[k]>=EXCHANGE_CLOSE)return; // shortened restart leg: not comparable
     const sdr=Math.max(0.05,Math.sqrt(Math.max(0,(rn.lo*rn.lo+rn.hi*rn.hi+rn.exp*rn.exp-rn.lo*rn.hi-rn.lo*rn.exp-rn.hi*rn.exp)/18))/rn.exp);
@@ -1354,8 +1518,10 @@ function liveForecastMc(n){
   const mu=wdev/wsum,sd=Math.sqrt(1/wsum);
   const rnd=mcRng(777);const keys=rules.map(r=>r.key);const SS={},FF={};keys.forEach(k=>{SS[k]=[];FF[k]=[];});
   const fin=[];let r24=0,r25=0,ok=0;
+  const spSd={};base.splitKeys.forEach(k=>{const sp=splitPrediction(k,base.restartKeys.has(k));if(sp)spSd[k]=sp.est?0.18:0.10;});
   try{
     for(let i=0;i<n;i++){
+      SPLIT_NOISE={};Object.keys(spSd).forEach(k=>{SPLIT_NOISE[k]=Math.max(0.3,1+spSd[k]*mcNormal(rnd));});
       const day=Math.max(-0.3,Math.min(0.3,mu+sd*mcNormal(rnd)));const ov={};
       runners.forEach(r=>{ov[r.id]=mcTri(rnd,r.lo,r.exp,r.hi)*(1+day);});
       PACE_OVERRIDE=ov;const a=computeLiveRaceTime(asgn,rules,activeYear);
@@ -1363,7 +1529,7 @@ function liveForecastMc(n){
       keys.forEach(k=>{if(a.starts[k]!=null)SS[k].push(a.starts[k]);if(a.finishes[k]!=null)FF[k].push(a.finishes[k]);});
       fin.push(a.finishes['25']);if(a.restartKeys.has('24'))r24++;if(a.restartKeys.has('25'))r25++;ok++;
     }
-  }finally{PACE_OVERRIDE=null;}
+  }finally{PACE_OVERRIDE=null;SPLIT_NOISE=null;}
   if(!ok)return null;
   keys.forEach(k=>{SS[k].sort((x,y)=>x-y);FF[k].sort((x,y)=>x-y);});fin.sort((x,y)=>x-y);
   return{n:ok,mu,sd,SS,FF,fin,r24:r24/ok,r25:r25/ok};
@@ -1384,7 +1550,7 @@ function buildLiveSnapshotData(){
     const def=getDef(leg.key);
     const isRestart=race.restartKeys.has(leg.key);
     const isActual=race.actualKeys.has(leg.key);
-    const savedTime=r?.legs?.[leg.key]?.legTime||null;
+    const savedTime=(isActual&&race.finishes[leg.key]!=null&&race.astarts[leg.key]!=null&&race.finishes[leg.key]>race.astarts[leg.key])?fmtDurStr(race.finishes[leg.key]-race.astarts[leg.key]):null;
     let startClock=race.starts[leg.key]!=null?fmtClock(race.starts[leg.key]):null,finishClock=race.finishes[leg.key]!=null?fmtClock(race.finishes[leg.key]):null,startRange=null;
     if(fc&&!isActual){
       const se=est(fc.SS[leg.key]),fe=est(fc.FF[leg.key]);
@@ -1394,6 +1560,7 @@ function buildLiveSnapshotData(){
     return{key:leg.key,label:leg.label,group:leg.group||null,diff:def?.diff||null,km:def?.km??null,
       runner:name||null,startClock,finishClock,startRange,
       legTime:savedTime,isActual,isRestart,isCurrent:curKeys.has(leg.key),
+      splitNote:(()=>{if(isActual)return null;const sp=splitPrediction(leg.key,isRestart);return sp?{pct:Math.round((sp.ratio-1)*100),min:Math.round(sp.D)}:null;})(),
       place:(ls.legPlaces&&ls.legPlaces[leg.key])||null};
   });
   // "Mot plan": how the forecast finish compares with the original, untouched plan (the pure
@@ -1513,7 +1680,7 @@ function render(){
     else if(!leg.group)lastGroup=null;
     const dc=DIFF_COLORS[leg.diff]||DIFF_COLORS['Bl\\u00e5'];
     const restartNote=leg.isRestart?' <span title="Omstart \\u2014 kortad bana">\\u21bb</span>':'';
-    const timeLabel=leg.legTime?leg.legTime:(leg.finishClock?'ca '+esc(leg.startClock||'')+'\\u2013'+esc(leg.finishClock||''):'\\u2014');
+    const timeLabel=leg.legTime?leg.legTime:(leg.splitNote?'ca '+leg.splitNote.min+' min':leg.finishClock?'ca '+esc(leg.startClock||'')+'\\u2013'+esc(leg.finishClock||''):'\\u2014');
     const stCls=leg.isActual?'status-done':(leg.isCurrent?'status-cur':'status-eta');
     const stTxt=leg.isActual?'Klar':(leg.isCurrent?'P\\u00e5g\\u00e5r':'Prognos');
     html+='<div class="leg'+(leg.isCurrent?' cur':'')+'">'
@@ -1521,7 +1688,7 @@ function render(){
       +'<div class="diffpill" style="background:'+dc.bg+';color:'+dc.fg+';">'+esc(leg.diff||'')+'</div>'
       +'<div class="leg-main"><div class="leg-runner">'+(leg.runner?esc(leg.runner):'\\u2014 ingen tilldelad \\u2014')+'</div><div class="leg-meta">'+(leg.startRange?'v\\u00e4xling '+esc(leg.startRange):(leg.startClock?'start '+esc(leg.startClock):''))+(leg.km?' \\u00b7 '+leg.km+' km':'')+'</div></div>'
       +'<div class="leg-right"><div class="leg-time">'+esc(timeLabel)+'</div>'
-      +'<div class="leg-sub">'+(leg.place?'<span>plats '+esc(leg.place)+'</span>':'')+'<span class="leg-status '+stCls+'">'+stTxt+'</span></div></div>'
+      +'<div class="leg-sub">'+(leg.splitNote?'<span>mellantid '+(leg.splitNote.pct>0?'+':leg.splitNote.pct<0?'\u2212':'\u00b1')+Math.abs(leg.splitNote.pct)+' % mot t\u00e4ten</span>':'')+(leg.place?'<span>plats '+esc(leg.place)+'</span>':'')+'<span class="leg-status '+stCls+'">'+stTxt+'</span></div></div>'
       +'</div>';
   });
   html+='</div>';
