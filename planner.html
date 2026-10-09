@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-09 UTC · build 46';
+const BUILD_STAMP='2026-10-09 UTC · build 47';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -1116,16 +1116,18 @@ function computeActualRaceTime(asgn,rules,year){
 }
 
 // ─── SPLIT-BASED LEG PREDICTION ─────────────────────────────────────────────
-// Erik types up to three radio-control splits per leg: the leader's ("täten") running time at the control and our
+// Erik types up to SPLIT_N (4, from 2026) radio-control splits per leg: the leader's ("täten") running time at the control and our
 // runner's, both as time since each one's own start (mm:ss or h:mm:ss). Our runner's ratio to the leader at the LAST
 // control with both times (e.g. 1.12 = 12 % slower) is applied to the leader's total time on the leg: typed once the
 // leader is in (liveState[year].splits[key].lf), otherwise the PM's predicted leader time (winnerLegMin, scaled to the
 // shortened course on a restart leg). Result: predicted running time D of our runner, used by computeLiveRaceTime
-// instead of the pace estimate while the leg is still out. Stored in liveState[year].splits[key]={c:[{n,l,o}x3],lf}.
+// instead of the pace estimate while the leg is still out. Stored in liveState[year].splits[key]={c:[{n,l,o}xSPLIT_N],lf}; rows saved with 3 entries (build 44-46) just grow.
 // Parallel legs (groups 3–7) share the same radio controls and the same leader, so the control number (n), the leader's
 // time at the control (l) and the leader's finish (lf) are typed ONCE per group and stored in
-// liveState[year].groupSplits[group]={c:[{n,l}x3],lf}; only our own runner's time (o) stays per leg in splits[key].
+// liveState[year].groupSplits[group]={c:[{n,l}xSPLIT_N],lf}; only our own runner's time (o) stays per leg in splits[key].
 // Per-leg n/l/lf saved before build 45 (on any runner of the group) still count as a fallback where the group value is empty.
+const SPLIT_N=4; // radio controls per leg (2026: 4 on leg 1 at least, so 4 everywhere)
+function emptySplitRows(){return Array.from({length:SPLIT_N},()=>({}));}
 function splitGroupOf(key){return String(key).includes(':')?String(key).split(':')[0]:null;}
 function effectiveSplits(key){
   const ls=liveState[activeYear]||{};const own=(ls.splits||{})[key]||null;const g=splitGroupOf(key);
@@ -1134,7 +1136,7 @@ function effectiveSplits(key){
   const olds=[own,...(g?LEGS.filter(l=>l.group===g&&l.key!==key).map(l=>(ls.splits||{})[l.key]):[])].filter(Boolean);
   const pick=(i,f)=>{if(gs&&gs.c&&gs.c[i]&&gs.c[i][f])return gs.c[i][f];for(const s of olds){if(s.c&&s.c[i]&&s.c[i][f])return s.c[i][f];}return'';};
   if(!own&&!gs&&!olds.length)return null;
-  const c=[0,1,2].map(i=>({n:pick(i,'n'),l:pick(i,'l'),o:(own&&own.c&&own.c[i]&&own.c[i].o)||''}));
+  const c=Array.from({length:SPLIT_N},(_,i)=>i).map(i=>({n:pick(i,'n'),l:pick(i,'l'),o:(own&&own.c&&own.c[i]&&own.c[i].o)||''}));
   let lf=(gs&&gs.lf)||'';if(!lf){for(const s of olds){if(s.lf){lf=s.lf;break;}}}
   return{c,lf};
 }
@@ -1325,11 +1327,11 @@ async function saveSplitField(key,i,f,val){
   if(g&&f!=='o'){
     // Shared by all four runners of the group: store once, and drop any older per-leg copy of the same field so a
     // cleared group value doesn't fall back to a stale one.
-    const gs=o.groupSplits[g]||(o.groupSplits[g]={c:[{},{},{}],lf:''});
+    const gs=o.groupSplits[g]||(o.groupSplits[g]={c:emptySplitRows(),lf:''});
     if(i<0)gs.lf=v;else{if(!gs.c[i])gs.c[i]={};gs.c[i][f]=v;}
     LEGS.filter(l=>l.group===g).forEach(l=>{const s=o.splits[l.key];if(!s)return;if(i<0)s.lf='';else if(s.c&&s.c[i])delete s.c[i][f];});
   }else{
-    const sp=o.splits[key]||(o.splits[key]={c:[{},{},{}],lf:''});
+    const sp=o.splits[key]||(o.splits[key]={c:emptySplitRows(),lf:''});
     if(i<0)sp.lf=v;else{if(!sp.c[i])sp.c[i]={};sp.c[i][f]=v;}
   }
   persist();
@@ -1344,14 +1346,14 @@ async function clearGroupSplits(g){
 }
 function splitPanelHtml(leg,race,isActual){
   const key=leg.key,id=key.replace(':','-');
-  const sp=effectiveSplits(key)||{c:[{},{},{}],lf:''};
+  const sp=effectiveSplits(key)||{c:emptySplitRows(),lf:''};
   const grp=splitGroupOf(key);
   const ur=race.restartKeys.has(key);
   const pred=splitPrediction(key,ur);
   const def=getDef(key);
   const inp='width:70px;font-family:monospace;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;';
   let rowsHtml='';
-  for(let i=0;i<3;i++){
+  for(let i=0;i<SPLIT_N;i++){
     const c=sp.c[i]||{};const l=parseTimeStrToMinutes(c.l),o=parseTimeStrToMinutes(c.o);
     const pct=(l>0&&o>0)?Math.round((o/l-1)*100):null;
     rowsHtml+=`<tr><td style="padding:3px 8px 3px 0;"><input type="text" id="sp-${id}-${i}-n" aria-label="Kontrollnummer ${i+1}" placeholder="nr" value="${esc(c.n||'')}" style="${inp}width:56px;" onchange="saveSplitField('${key}',${i},'n',this.value)"></td>
