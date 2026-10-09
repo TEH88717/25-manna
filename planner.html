@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-07 UTC · build 45';
+const BUILD_STAMP='2026-10-09 UTC · build 46';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -1575,7 +1575,7 @@ function buildLiveSnapshotData(){
   const fe25=fc?est(fc.fin):null;
   if(fe25&&fe25.range&&race.actualKeys.size<LEGS.length){etaClock=fmtClock(fe25.m);etaRange=fmtClock(fe25.a)+'\u2013'+fmtClock(fe25.b);}
   const restartRisk=[];
-  if(fc&&race.actualKeys.size<LEGS.length){[['24',fc.r24],['25',fc.r25]].forEach(([k,p])=>{if(p>=0.01&&p<=0.99)restartRisk.push({leg:k,pct:Math.round(p*100)});});}
+  if(fc&&race.actualKeys.size<LEGS.length){[['24',fc.r24],['25',fc.r25]].forEach(([k,p])=>{if(p>=0.01&&p<=0.99)restartRisk.push({leg:k,pct:Math.round(p*100),ok:Math.round((1-p)*100)});});}
   const vsPlanMin=(race.actualKeys.size>0&&liveEnd!=null&&planEnd!=null)?(Math.round(liveEnd-planEnd)||0):null;
   return{year:activeYear,
     generatedAtLabel:new Date().toLocaleString('sv-SE',{dateStyle:'short',timeStyle:'short'}),
@@ -1661,7 +1661,8 @@ function render(){
     const m=DATA.vsPlanMin;
     vs='<div><div class="stat-label">Mot plan</div><div class="stat-value">'+(m===0?'I fas':(m>0?'+':'\\u2212')+Math.abs(m)+' min')+'</div><div class="stat-sub">'+(m===0?'med planen':(m>0?'efter':'f\\u00f6re')+' plan')+'</div></div>';
   }
-  const risk=(DATA.restartRisk||[]).map(r=>'<div><div class="stat-label">Risk omstart</div><div class="stat-value">'+r.pct+' %</div><div class="stat-sub">p\\u00e5 str\\u00e4cka '+esc(r.leg)+'</div></div>').join('');
+  // Shown as the chance of AVOIDING the restart (1 - risk), as Erik prefers on the clubmates' page.
+  const risk=(DATA.restartRisk||[]).map(r=>'<div><div class="stat-label">Chans att slippa omstart</div><div class="stat-value">'+(r.ok!=null?r.ok:100-r.pct)+' %</div><div class="stat-sub">p\\u00e5 str\\u00e4cka '+esc(r.leg)+'</div></div>').join('');
   const place=DATA.teamPlace?'<div><div class="stat-label">Placering</div><div class="stat-value">'+esc(DATA.teamPlace)+'</div><div class="stat-sub">just nu</div></div>':'';
   html+='<div class="card"><div class="stats">'
     +'<div><div class="stat-label">Prognos m\\u00e5ltid</div><div class="stat-value">'+esc(DATA.etaClock||'\\u2014')+'</div>'+(DATA.etaRange?'<div class="stat-sub">sannolikt '+esc(DATA.etaRange)+'</div>':'')+'</div>'
