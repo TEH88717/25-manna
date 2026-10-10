@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-10 UTC · build 48';
+const BUILD_STAMP='2026-10-10 UTC · build 49';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -1264,6 +1264,7 @@ function fmtDurStr(mins){const t=Math.round(mins*60),h=Math.floor(t/3600),m=Math
 function parseClockInput(v){
   let t=String(v||'').trim().replace(/\s/g,'').replace(/[.,]/g,':');
   if(/^\d{3,4}$/.test(t))t=t.slice(0,-2)+':'+t.slice(-2);
+  else if(/^\d{5,6}$/.test(t))t=t.slice(0,-4)+':'+t.slice(-4,-2)+':'+t.slice(-2); // 94830 / 114730 → h:mm:ss
   const m=t.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);if(!m)return null;
   const h=+m[1],mi=+m[2],se=m[3]!=null?+m[3]:0;if(h>23||mi>59||se>59)return null;
   return h*60+mi+se/60;
@@ -1462,7 +1463,7 @@ function renderLive(){
       <td style="padding:7px 10px;font-weight:500;">${leg.label}${restartNote}</td>
       <td style="padding:7px 10px;"><button onclick="toggleSplit('${leg.key}')" title="Mellantider från radiokontroller" aria-expanded="${splitOpen.has(leg.key)}" style="padding:0 4px;margin-right:2px;border:none;background:none;cursor:pointer;color:${hasSplit?'#27500A':'var(--color-text-secondary)'};">${splitOpen.has(leg.key)?'▾':'▸'}</button>${name?esc(name):'<span style="color:var(--color-text-secondary);">— ingen tilldelad —</span>'}${splitPred?` <span style="font-size:11px;font-weight:500;color:${splitPred.ratio>1?'#993C1D':'#27500A'};" title="Mellantid mot täten">${splitPred.ratio>=1?'+':'−'}${Math.abs(Math.round((splitPred.ratio-1)*100))} %</span>`:''}</td>
       <td style="padding:7px 10px;font-size:12px;color:var(--color-text-secondary);">${startClock}</td>
-      <td style="padding:7px 10px;"><input type="text" inputmode="numeric" placeholder="${!isActual&&finClk!=null?(splitPred?'~ ':'ca ')+fmtClock(finClk):'hh:mm'}" value="${esc(savedTime)}" id="${liveTimeInputId(leg.key)}" aria-label="Målgång (klockslag) sträcka ${leg.label}" style="width:84px;font-family:monospace;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;" onchange="saveLiveTime('${leg.key}',this.value)">${isActual&&mins!=null?` <span style="font-size:11px;color:var(--color-text-secondary);font-family:monospace;" title="Löptid (mål − start)">${fmtDurStr(mins)}</span>`:''}</td>
+      <td style="padding:7px 10px;"><input type="text" inputmode="decimal" placeholder="${!isActual&&finClk!=null?(splitPred?'~ ':'ca ')+fmtClock(finClk):'hh:mm'}" value="${esc(savedTime)}" id="${liveTimeInputId(leg.key)}" aria-label="Målgång (klockslag) sträcka ${leg.label}" style="width:84px;font-family:monospace;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;" onchange="saveLiveTime('${leg.key}',this.value)">${isActual&&mins!=null?` <span style="font-size:11px;color:var(--color-text-secondary);font-family:monospace;" title="Löptid (mål − start)">${fmtDurStr(mins)}</span>`:''}</td>
       <td style="padding:7px 10px;">${statusBadge}</td>
       <td style="padding:7px 10px;"><input type="text" inputmode="numeric" id="live-p-${leg.key.replace(':','-')}" aria-label="Placering på sträcka ${leg.label}" value="${esc(legPlace)}" placeholder="—" style="width:48px;font-size:12px;padding:4px 6px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-sm,4px);box-sizing:border-box;" onchange="saveLiveLegPlace('${leg.key}',this.value)"></td>
       <td style="padding:7px 10px;">${deltaHtml}</td>
