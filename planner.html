@@ -241,7 +241,7 @@ table{width:100%;border-collapse:collapse;}
       <div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px;">Total race time</div><div id="totalTime" style="font-size:26px;font-weight:500;"></div></div>
       <div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px;">Est. finish (09:00 start)</div><div id="estFinish" style="font-size:26px;font-weight:500;"></div></div>
       <div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px;">Legs assigned</div><div id="legsWithTime" style="font-size:26px;font-weight:500;"></div></div>
-      <div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px;">Exchange closes</div><div style="font-size:26px;font-weight:500;color:var(--color-text-secondary);">15:50</div></div>
+      <div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px;">Exchange closes</div><div style="font-size:26px;font-weight:500;color:var(--color-text-secondary);">15:45</div></div>
     </div>
     <div id="restartWarning" style="display:none;border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;margin-bottom:0.75rem;"></div>
     <div id="groupBreakdown" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;"></div>
@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-10 UTC · build 51';
+const BUILD_STAMP='2026-10-10 UTC · build 52';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -386,7 +386,7 @@ const BUILD_STAMP='2026-10-10 UTC · build 51';
 const DIFF_RANK={'Grön':0,'Vit':1,'Gul':2,'Orange':3,'Violett':4,'Röd':4,'Blå':5};
 const PACE_DIFFS=['Vit','Gul','Orange','Violett','Blå'];
 const VALID_DIFFS=['Vit','Gul','Orange','Violett','Röd','Blå','Svart'];
-const START_MINS=9*60,EXCHANGE_CLOSE=15*60+50,RESTART_24_25=16*60,RESTART_OTHER=16*60+5;
+const START_MINS=9*60,EXCHANGE_CLOSE=15*60+45, /* build 52: organisers moved the close to 15:45 on race day 2026 */RESTART_24_25=16*60,RESTART_OTHER=16*60+5;
 const RESTART_KM={'24':4.5,'25':6.3};
 const PARALLEL_GROUPS=['3','4','5','6','7'];
 const BOOST={'1':1.0,'2':0.5};
@@ -2490,7 +2490,7 @@ function renderLineup(){
     const rd=document.getElementById('restartWarning');
     if(duplicateIds.size>0){const dn=[...duplicateIds].map(id=>members.find(m=>m.id===id)?.name||id).join(', ');rd.style.display='block';rd.style.background='#FCEBEB';rd.style.color='#791F1F';rd.innerHTML=`<i class="ti ti-alert-circle"></i> <strong>Duplicate runners:</strong> ${esc(dn)}`;}
     else if(restartKeys.size>0){const ll=[...restartKeys].join(', ');rd.style.display='block';rd.style.background='#FAECE7';rd.style.color='#993C1D';rd.innerHTML=`<i class="ti ti-alert-triangle"></i> <strong>Restart risk</strong> — legs ${esc(ll)}.`;}
-    else if(race.total!=null){rd.style.display='block';rd.style.background='#EAF3DE';rd.style.color='#27500A';rd.innerHTML=`<i class="ti ti-circle-check"></i> All legs estimated to start before 15:50.`;}
+    else if(race.total!=null){rd.style.display='block';rd.style.background='#EAF3DE';rd.style.color='#27500A';rd.innerHTML=`<i class="ti ti-circle-check"></i> All legs estimated to start before 15:45.`;}
     else rd.style.display='none';
     const g7f=groupFinishTimes?.['7']?.filter(t=>t!=null)||[];let spreadNote='';
     if(g7f.length===4){const sp=Math.max(...g7f)-Math.min(...g7f);spreadNote=` · <span style="color:var(--color-text-secondary);">spread: ${fmtMins(sp)}</span>`;}
@@ -3112,7 +3112,7 @@ function renderTimeline(){
   const grid=ticks.map(tk=>`<line x1="${tk.x.toFixed(1)}" y1="${HEADER_H-4}" x2="${tk.x.toFixed(1)}" y2="${TOTAL_H-AXIS_H}" stroke="var(--color-border-tertiary)" stroke-width="0.5"/><text x="${tk.x.toFixed(1)}" y="${TOTAL_H-AXIS_H+14}" text-anchor="middle" font-size="10" fill="var(--color-text-secondary)">${tk.label}</text>`).join('');
   const hgrid=hticks.map(x=>`<line x1="${x.toFixed(1)}" y1="${HEADER_H}" x2="${x.toFixed(1)}" y2="${TOTAL_H-AXIS_H}" stroke="var(--color-border-tertiary)" stroke-width="0.3" stroke-dasharray="2 2"/>`).join('');
   function vline(t,color,dash,label,ly){const x=tx(t);if(x<LABEL_W||x>LABEL_W+CHART_W)return'';return`<line x1="${x.toFixed(1)}" y1="${HEADER_H-4}" x2="${x.toFixed(1)}" y2="${TOTAL_H-AXIS_H}" stroke="${color}" stroke-width="1" stroke-dasharray="${dash}" opacity="0.8"/><text x="${(x+2).toFixed(1)}" y="${ly}" font-size="9" fill="${color}">${label}</text>`;}
-  const refs=vline(EXCHANGE_CLOSE,'#BA7517','4 2','15:50',HEADER_H+9)+vline(RESTART_24_25,'#E24B4A','3 2','16:00',HEADER_H+20)+(Math.abs(tx(RESTART_OTHER)-tx(RESTART_24_25))>16?vline(RESTART_OTHER,'#E24B4A','3 2','16:05',HEADER_H+31):'');
+  const refs=vline(EXCHANGE_CLOSE,'#BA7517','4 2',fmtClock(EXCHANGE_CLOSE),HEADER_H+9)+vline(RESTART_24_25,'#E24B4A','3 2','16:00',HEADER_H+20)+(Math.abs(tx(RESTART_OTHER)-tx(RESTART_24_25))>16?vline(RESTART_OTHER,'#E24B4A','3 2','16:05',HEADER_H+31):'');
   const legend=Object.entries(DIFF_BAR).map(([d,c],i)=>`<rect x="${(LABEL_W+i*60).toFixed(0)}" y="5" width="9" height="9" rx="2" fill="${c.fill}" stroke="${c.stroke}" stroke-width="0.7"/><text x="${(LABEL_W+i*60+12).toFixed(0)}" y="13" font-size="9" fill="var(--color-text-secondary)">${d}</text>`).join('');
   const rlx=LABEL_W+5*60;const rl=`<rect x="${rlx}" y="5" width="9" height="9" rx="2" fill="none" stroke="#E24B4A" stroke-width="1.1"/><rect x="${rlx}" y="5" width="3" height="9" fill="#E24B4A" opacity="0.8"/><text x="${rlx+12}" y="13" font-size="9" fill="#A32D2D">Restart</text>`;
   const axes=`<line x1="${LABEL_W}" y1="${HEADER_H-4}" x2="${LABEL_W}" y2="${TOTAL_H-AXIS_H}" stroke="var(--color-border-secondary)" stroke-width="0.5"/><line x1="${LABEL_W}" y1="${TOTAL_H-AXIS_H}" x2="${LABEL_W+CHART_W}" y2="${TOTAL_H-AXIS_H}" stroke="var(--color-border-secondary)" stroke-width="0.5"/>`;
