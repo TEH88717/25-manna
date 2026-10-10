@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-10 UTC · build 50';
+const BUILD_STAMP='2026-10-10 UTC · build 51';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -1562,6 +1562,7 @@ function buildLiveSnapshotData(){
     }
     return{key:leg.key,label:leg.label,group:leg.group||null,diff:def?.diff||null,km:def?.km??null,
       runner:name||null,startClock,finishClock,startRange,
+      finishExact:race.finishes[leg.key]!=null?fmtClock(race.finishes[leg.key]):null, // build 51: minute-precise estimate for running legs
       legTime:savedTime,isActual,isRestart,isCurrent:curKeys.has(leg.key),
       splitNote:(()=>{if(isActual)return null;const sp=splitPrediction(leg.key,isRestart);return sp?{pct:Math.round((sp.ratio-1)*100),min:Math.round(sp.D)}:null;})(),
       place:(ls.legPlaces&&ls.legPlaces[leg.key])||null};
@@ -1684,7 +1685,7 @@ function render(){
     else if(!leg.group)lastGroup=null;
     const dc=DIFF_COLORS[leg.diff]||DIFF_COLORS['Bl\\u00e5'];
     const restartNote=leg.isRestart?' <span title="Omstart \\u2014 kortad bana">\\u21bb</span>':'';
-    const timeLabel=leg.legTime?leg.legTime:(leg.splitNote?'ca '+leg.splitNote.min+' min':leg.finishClock?'ca '+esc(leg.startClock||'')+'\\u2013'+esc(leg.finishClock||''):'\\u2014');
+    const timeLabel=leg.legTime?leg.legTime:((leg.isCurrent||leg.splitNote)&&leg.finishClock?'m\\u00e5l ca '+(leg.finishExact||leg.finishClock):leg.splitNote?'ca '+leg.splitNote.min+' min':leg.finishClock?'ca '+esc(leg.startClock||'')+'\\u2013'+esc(leg.finishClock||''):'\\u2014');
     const stCls=leg.isActual?'status-done':(leg.isCurrent?'status-cur':'status-eta');
     const stTxt=leg.isActual?'Klar':(leg.isCurrent?'P\\u00e5g\\u00e5r':'Prognos');
     html+='<div class="leg'+(leg.isCurrent?' cur':'')+'">'
