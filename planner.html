@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-10 UTC · build 49';
+const BUILD_STAMP='2026-10-10 UTC · build 50';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -1583,7 +1583,7 @@ function buildLiveSnapshotData(){
   return{year:activeYear,
     generatedAtLabel:new Date().toLocaleString('sv-SE',{dateStyle:'short',timeStyle:'short'}),
     etaClock,etaRange,restartRisk,
-    vsPlanMin,
+    vsPlanMin:null, // build 50: Erik doesn't want 'Mot plan' on the clubmates' page (computed value kept above)
     teamPlace:ls.teamPlace||null,
     confirmedCount:race.actualKeys.size,totalLegs:LEGS.length,
     restartKeys:[...race.restartKeys],
