@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-09 UTC · build 47';
+const BUILD_STAMP='2026-10-10 UTC · build 48';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -1126,7 +1126,7 @@ function computeActualRaceTime(asgn,rules,year){
 // time at the control (l) and the leader's finish (lf) are typed ONCE per group and stored in
 // liveState[year].groupSplits[group]={c:[{n,l}xSPLIT_N],lf}; only our own runner's time (o) stays per leg in splits[key].
 // Per-leg n/l/lf saved before build 45 (on any runner of the group) still count as a fallback where the group value is empty.
-const SPLIT_N=4; // radio controls per leg (2026: 4 on leg 1 at least, so 4 everywhere)
+const SPLIT_N=6; // radio controls per leg (2026: 5 on leg 1 on race day, room for 6)
 function emptySplitRows(){return Array.from({length:SPLIT_N},()=>({}));}
 function splitGroupOf(key){return String(key).includes(':')?String(key).split(':')[0]:null;}
 function effectiveSplits(key){
