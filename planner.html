@@ -374,7 +374,7 @@ function customPrompt(message,defaultValue){return showModal({message,defaultVal
 // ─── BUILD STAMP ──────────────────────────────────────────────────────────────
 // Bumped by hand on every publish so it's obvious from the page itself (top right of the tab bar)
 // whether you're looking at the latest version Claude published, or a stale/cached copy.
-const BUILD_STAMP='2026-10-10 UTC · build 52';
+const BUILD_STAMP='2026-10-10 UTC · build 53';
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 // 'Röd' (red) is a difficulty color used by 2024's historical rules, alongside 'Violett' used by
@@ -1001,7 +1001,7 @@ function computeRaceTime(asgn,rules){
   // downstream leg's start, must be computed from that ACTUAL (clamped) start, never the natural
   // one. Mixing the two (using natural start + restart-shortened duration) is exactly what
   // produced wrong arrival estimates in the Lineup table before this fix.
-  function restartGun(k){return['24','25'].includes(k)?RESTART_24_25:RESTART_OTHER;}
+  function restartGun(k){return k==='25'?RESTART_24_25:RESTART_OTHER;} /* build 53: 25 at 16:00, 24 at 16:05 */
   function actualStart(k,natural){if(natural==null)return null;return natural>=EXCHANGE_CLOSE&&!NO_RESTART_SIM?restartGun(k):natural;}
   const t1=lt('1'),t2=lt('2');let el=0;const starts={},finishes={};
   starts['1']=START_MINS;finishes['1']=t1!=null?START_MINS+t1:null;if(t1!=null)el+=t1;
@@ -1093,7 +1093,7 @@ function trueLegKeyForRunner(year,name){
 function computeActualRaceTime(asgn,rules,year){
   const r=results[year];
   function lt(k){return parseTimeStrToMinutes(findActualLegResult(r,k,expectedRunnerNameForKey(year,k))?.legTime);}
-  function restartGun(k){return['24','25'].includes(k)?RESTART_24_25:RESTART_OTHER;}
+  function restartGun(k){return k==='25'?RESTART_24_25:RESTART_OTHER;} /* build 53: 25 at 16:00, 24 at 16:05 */
   function actualStart(k,natural){if(natural==null)return null;return natural>=EXCHANGE_CLOSE?restartGun(k):natural;}
   const t1=lt('1'),t2=lt('2');let el=0;const starts={},finishes={};
   starts['1']=START_MINS;finishes['1']=t1!=null?START_MINS+t1:null;if(t1!=null)el+=t1;
@@ -1189,7 +1189,7 @@ function computeLiveRaceTime(asgn,rules,year){
     const e=calcLegTime(getM(k),rr,ur);
     return e!=null?ast+e:null;
   }
-  function restartGun(k){return['24','25'].includes(k)?RESTART_24_25:RESTART_OTHER;}
+  function restartGun(k){return k==='25'?RESTART_24_25:RESTART_OTHER;} /* build 53: 25 at 16:00, 24 at 16:05 */
   function actualStart(k,natural){if(natural==null)return null;return natural>=EXCHANGE_CLOSE&&!NO_RESTART_SIM?restartGun(k):natural;}
   const starts={},finishes={};
   starts['1']=START_MINS;astarts['1']=START_MINS;const f1=fin('1',START_MINS);finishes['1']=f1;
@@ -1543,6 +1543,7 @@ function buildLiveSnapshotData(){
   const r=results[activeYear];
   const ls=liveState[activeYear]||{};
   const curKeys=new Set(liveCurrentKeys(race));
+  if(race.restartKeys.has('25')&&race.actualKeys.has('23')&&!race.actualKeys.has('25'))curKeys.add('25'); // build 53: 25 goes off in the restart, not on the baton
   let fc=null;try{fc=liveForecastMc(4000);}catch(e){console.error('liveForecastMc',e);fc=null;}
   // Rounded to 5 minutes: median as the point estimate, P10/P90 rounded outwards as the range. A range that collapses
   // (everything before it is known) is dropped and the exact deterministic time is used instead.
@@ -1560,6 +1561,7 @@ function buildLiveSnapshotData(){
       if(se&&se.range){startClock=fmtClock(se.m);startRange=fmtClock(se.a)+'\u2013'+fmtClock(se.b);}
       if(fe&&fe.range)finishClock=fmtClock(fe.m);
     }
+    if(isRestart&&race.astarts[leg.key]!=null){startClock=fmtClock(race.astarts[leg.key]);startRange=null;} // build 53: show the restart gun, not the baton arrival
     return{key:leg.key,label:leg.label,group:leg.group||null,diff:def?.diff||null,km:def?.km??null,
       runner:name||null,startClock,finishClock,startRange,
       finishExact:race.finishes[leg.key]!=null?fmtClock(race.finishes[leg.key]):null, // build 51: minute-precise estimate for running legs
@@ -1687,11 +1689,11 @@ function render(){
     const restartNote=leg.isRestart?' <span title="Omstart \\u2014 kortad bana">\\u21bb</span>':'';
     const timeLabel=leg.legTime?leg.legTime:((leg.isCurrent||leg.splitNote)&&leg.finishClock?'m\\u00e5l ca '+(leg.finishExact||leg.finishClock):leg.splitNote?'ca '+leg.splitNote.min+' min':leg.finishClock?'ca '+esc(leg.startClock||'')+'\\u2013'+esc(leg.finishClock||''):'\\u2014');
     const stCls=leg.isActual?'status-done':(leg.isCurrent?'status-cur':'status-eta');
-    const stTxt=leg.isActual?'Klar':(leg.isCurrent?'P\\u00e5g\\u00e5r':'Prognos');
+    const stTxt=leg.isActual?'Klar':(leg.isCurrent?(leg.isRestart?'Omstart '+esc(leg.startClock||''):'P\\u00e5g\\u00e5r'):'Prognos');
     html+='<div class="leg'+(leg.isCurrent?' cur':'')+'">'
       +'<div class="leg-key">'+esc(leg.label)+restartNote+'</div>'
       +'<div class="diffpill" style="background:'+dc.bg+';color:'+dc.fg+';">'+esc(leg.diff||'')+'</div>'
-      +'<div class="leg-main"><div class="leg-runner">'+(leg.runner?esc(leg.runner):'\\u2014 ingen tilldelad \\u2014')+'</div><div class="leg-meta">'+(leg.startRange?'v\\u00e4xling '+esc(leg.startRange):(leg.startClock?'start '+esc(leg.startClock):''))+(leg.km?' \\u00b7 '+leg.km+' km':'')+'</div></div>'
+      +'<div class="leg-main"><div class="leg-runner">'+(leg.runner?esc(leg.runner):'\\u2014 ingen tilldelad \\u2014')+'</div><div class="leg-meta">'+(leg.startRange?'v\\u00e4xling '+esc(leg.startRange):(leg.startClock?(leg.isRestart?'omstart ':'start ')+esc(leg.startClock):''))+(leg.km?' \\u00b7 '+leg.km+' km':'')+'</div></div>'
       +'<div class="leg-right"><div class="leg-time">'+esc(timeLabel)+'</div>'
       +'<div class="leg-sub">'+(leg.splitNote?'<span>mellantid '+(leg.splitNote.pct>0?'+':leg.splitNote.pct<0?'\u2212':'\u00b1')+Math.abs(leg.splitNote.pct)+' % mot t\u00e4ten</span>':'')+(leg.place?'<span>plats '+esc(leg.place)+'</span>':'')+'<span class="leg-status '+stCls+'">'+stTxt+'</span></div></div>'
       +'</div>';
@@ -2526,7 +2528,7 @@ function renderLineup(){
     const isAnchorSlot=strategy==='safe'&&r.key==='7:4';
     const eligible=pool.filter(m=>memberEligibleForLeg(m,r)).sort((a,b)=>(getEffectivePace(a,r.key)??999)-(getEffectivePace(b,r.key)??999));
     const legTimeMins=calcLegTime(assignedMember,r,isRestart&&def?.restartKm!=null);
-    const estStart=starts[r.key];const restartTime=is2425?RESTART_24_25:RESTART_OTHER;
+    const estStart=starts[r.key];const restartTime=r.key==='25'?RESTART_24_25:RESTART_OTHER;
     const startCell=estStart!=null?`<span style="font-size:12px;${isRestart?'color:#993C1D;font-weight:500;':'color:var(--color-text-secondary);'}">${fmtClock(estStart)}${isRestart?` → ${fmtClock(restartTime)}`:''}</span>`:'<span style="font-size:11px;color:var(--color-text-secondary);">—</span>';
     const legDiffPace=assignedMember?getEffectivePace(assignedMember,r.key):null;const rawPace=assignedMember&&def?getPaceForDiff(assignedMember,def.diff):null;
     const hasBoost=boostEnabled&&BOOST[r.key]!=null;const dc=assignedMember?DIFF_CLASSES[assignedMember.diff]||'d-bla':'';
@@ -2979,7 +2981,7 @@ function renderTimeline(){
     // shortened restart-km duration for legs 24/25. So the bar's end is just rawF; no need to
     // recompute a duration here (recomputing via a pace estimate is wrong for historical mode, where
     // the real recorded result time, not a pace estimate, is the only correct duration).
-    const is2425=['24','25'].includes(k);const gun=is2425?RESTART_24_25:RESTART_OTHER;
+    const gun=k==='25'?RESTART_24_25:RESTART_OTHER;
     const gapStart=rawS<gun?rawS:null;const gapEnd=gapStart!=null?gun:null;
     return{barStart:gun,barEnd:rawF,isRestart:true,gapStart,gapEnd};
   }
